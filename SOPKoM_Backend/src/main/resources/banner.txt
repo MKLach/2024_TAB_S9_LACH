@@ -1,0 +1,7 @@
+${AnsiColor.GREEN}  .  ${AnsiColor.BRIGHT_BLUE}  ________ ___  ${AnsiColor.MAGENTA} __  __ _     ____ _____  ${AnsiColor.GREEN} ____             _             __ _ _
+${AnsiColor.GREEN} /\\ ${AnsiColor.BRIGHT_BLUE} |__  /_ _|_ _| ${AnsiColor.MAGENTA}|  \/  | |   | ___|___ /  ${AnsiColor.GREEN}/ ___| _ __  _ __(_)_ __   __ _ \ \ \ \
+${AnsiColor.GREEN}( ( )${AnsiColor.BRIGHT_BLUE}   / / | | | |  ${AnsiColor.MAGENTA}| |\/| | |   |___ \ |_ \  ${AnsiColor.GREEN}\___ \| '_ \| '__| | '_ \ / _` | \ \ \ \
+${AnsiColor.GREEN} \\/ ${AnsiColor.BRIGHT_BLUE}  / /_ | | | |  ${AnsiColor.MAGENTA}| |  | | |___ ___) |__) | ${AnsiColor.GREEN} ___) | |_) | |  | | | | | (_| |  ) ) ) )
+${AnsiColor.GREEN}  '  ${AnsiColor.BRIGHT_BLUE} /____|___|___| ${AnsiColor.MAGENTA}|_|  |_|_____|____/____/  ${AnsiColor.GREEN}|____/| .__/|_|  |_|_| |_|\__, | / / / /
+${AnsiColor.BLACK}=====================================================${AnsiColor.GREEN}|_|${AnsiColor.BLACK}=================${AnsiColor.GREEN}|___/${AnsiColor.BLACK}=${AnsiColor.GREEN}/_/_/_/
+[32m :: Spring Boot :: [39m                                                   [2m (v3.1.4)
