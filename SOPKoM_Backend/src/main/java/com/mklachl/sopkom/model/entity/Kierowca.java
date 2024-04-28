@@ -6,8 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
@@ -21,16 +19,15 @@ public class Kierowca {
     private Long kierowcaId;
 
     @Column(name = "prawojazdywaznedo", nullable = false)
-    @Temporal(TemporalType.DATE)
     private Date prawoJazdyWazneDo;
 
-    @Column(name = "imie", nullable = false, length = 30)
+    @Column(name = "imie", nullable = false, length = 50)
     private String imie;
 
-    @Column(name = "nazwisko", nullable = false, length = 30)
+    @Column(name = "nazwisko", nullable = false, length = 50)
     private String nazwisko;
 
-    @Column(name = "pesel", nullable = false, length = 30)
+    @Column(name = "pesel", nullable = false, length = 11)
     private String pesel;
 
     @ManyToOne

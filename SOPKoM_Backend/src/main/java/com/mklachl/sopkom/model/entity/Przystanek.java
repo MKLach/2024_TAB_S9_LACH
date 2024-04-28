@@ -1,7 +1,13 @@
 package com.mklachl.sopkom.model.entity;
 
-import jakarta.persistence.*;
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 
 @Entity
 @Table(name = "przystanki")
@@ -11,7 +17,7 @@ public class Przystanek {
     @Column(name = "przystanek_id")
     private Long przystanekId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "przystanek_odwrotny_id", referencedColumnName = "przystanek_id")
     private Przystanek przystanekOdwrotny;
 
@@ -32,9 +38,6 @@ public class Przystanek {
 
     @Column(name = "szerokosc_geograficzna", nullable = false, length = 20)
     private String szerokoscGeograficzna;
-
-    @OneToMany(mappedBy = "przystanek")
-    private List<PrzystanekWlini> przystankiWlini;
 
     // Getters
     public Long getPrzystanekId() {
@@ -69,9 +72,9 @@ public class Przystanek {
         return szerokoscGeograficzna;
     }
 
-    public List<PrzystanekWlini> getPrzystankiWlini() {
+    /*public List<PrzystanekWlini> getPrzystankiWlini() {
         return przystankiWlini;
-    }
+    }*/
 
     // Setters
     public void setPrzystanekId(Long przystanekId) {
@@ -106,7 +109,7 @@ public class Przystanek {
         this.szerokoscGeograficzna = szerokoscGeograficzna;
     }
 
-    public void setPrzystankiWlini(List<PrzystanekWlini> przystankiWlini) {
+    /*public void setPrzystankiWlini(List<PrzystanekWlini> przystankiWlini) {
         this.przystankiWlini = przystankiWlini;
-    }
+    }*/
 }
