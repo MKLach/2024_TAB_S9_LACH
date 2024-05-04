@@ -18,7 +18,7 @@ public class KierowcaServiceImpl implements KierowcaService {
     }
 
     @Override
-    public void saveKierowca(Kierowca kierowcaDto) {
+    public Kierowca saveKierowca(Kierowca kierowcaDto) {
         Kierowca kierowca = new Kierowca();
         kierowca.setPrawoJazdyWazneDo(kierowcaDto.getPrawoJazdyWazneDo());
         kierowca.setImie(kierowcaDto.getImie());
@@ -27,9 +27,10 @@ public class KierowcaServiceImpl implements KierowcaService {
         kierowca.setUser(kierowcaDto.getUser());
 
         kierowcaRepository.save(kierowca);
+        return kierowca;
     }
 
-    public void saveKierowca(KierowcaDto kierowcaDto) {
+    public Kierowca saveKierowca(KierowcaDto kierowcaDto) {
         Kierowca kierowca = new Kierowca();
         kierowca.setPrawoJazdyWazneDo(kierowcaDto.getPrawoJazdyWazneDo());
         kierowca.setImie(kierowcaDto.getImie());
@@ -38,6 +39,7 @@ public class KierowcaServiceImpl implements KierowcaService {
         kierowca.setUser(kierowcaDto.getUser());
 
         kierowcaRepository.save(kierowca);
+        return kierowca;
     }
 
     @Override

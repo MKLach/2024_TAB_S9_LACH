@@ -14,7 +14,7 @@ public class PrzystanekServiceImpl implements PrzystanekService {
     public PrzystanekServiceImpl(PrzystanekRepository przystanekRepository) {this.przystanekRepository = przystanekRepository;}
 
     @Override
-    public void savePrzystanek(Przystanek przystanekDto) {
+    public Przystanek savePrzystanek(Przystanek przystanekDto) {
         Przystanek przystanek = new Przystanek();
         przystanek.setPrzystanekOdwrotny(przystanekDto.getPrzystanekOdwrotny());
         przystanek.setNazwa(przystanekDto.getNazwa());
@@ -25,9 +25,10 @@ public class PrzystanekServiceImpl implements PrzystanekService {
         przystanek.setSzerokoscGeograficzna(przystanekDto.getSzerokoscGeograficzna());
 
         przystanekRepository.save(przystanek);
+        return przystanek;
     }
 
-    public void savePrzystanek(PrzystanekDto przystanekDto) {
+    public Przystanek savePrzystanek(PrzystanekDto przystanekDto) {
         Przystanek przystanek = new Przystanek();
         przystanek.setPrzystanekOdwrotny(przystanekDto.getPrzystanekOdwrotny());
         przystanek.setNazwa(przystanekDto.getNazwa());
@@ -38,6 +39,7 @@ public class PrzystanekServiceImpl implements PrzystanekService {
         przystanek.setSzerokoscGeograficzna(przystanekDto.getSzerokoscGeograficzna());
 
         przystanekRepository.save(przystanek);
+        return przystanek;
     }
 
     @Override

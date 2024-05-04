@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PrzystanekService {
-    void savePrzystanek(Przystanek przystanekDto);
+    Przystanek savePrzystanek(Przystanek przystanekDto);
 
-    void savePrzystanek(PrzystanekDto przystanekDto);
+    Przystanek savePrzystanek(PrzystanekDto przystanekDto);
 
     Przystanek findPrzystanekByNazwa(String nazwa);
 

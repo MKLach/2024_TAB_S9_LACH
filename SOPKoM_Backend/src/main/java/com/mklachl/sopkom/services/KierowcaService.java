@@ -10,9 +10,9 @@ import java.util.Optional;
 
 public interface KierowcaService {
 
-    void saveKierowca(Kierowca kierowca);
+    Kierowca saveKierowca(Kierowca kierowca);
 
-    void saveKierowca(KierowcaDto kierowcaDto);
+    Kierowca saveKierowca(KierowcaDto kierowcaDto);
 
     Kierowca findKierowcaByPesel(String pesel);
 

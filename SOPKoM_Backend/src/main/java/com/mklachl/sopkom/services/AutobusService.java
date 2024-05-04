@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface AutobusService {
 
-    void saveAutobus(Autobus autobus);
+    Autobus saveAutobus(Autobus autobus);
 
-    void saveAutobus(AutobusDto autobusDto);
+    Autobus saveAutobus(AutobusDto autobusDto);
 
     Autobus findAutobusByNumerRejestracyjny(String numerRejestracyjny);
 

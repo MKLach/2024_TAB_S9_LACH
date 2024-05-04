@@ -18,7 +18,7 @@ public class AutobusServiceImpl implements AutobusService {
         this.autobusRepository = autobusRepository;
     }
 
-    public void saveAutobus(AutobusDto autobusDto) {
+    public Autobus saveAutobus(AutobusDto autobusDto) {
         Autobus autobus = new Autobus();
         autobus.setNumerRejestracyjny(autobusDto.getNumerRejestracyjny());
         autobus.setPrzebieg(autobusDto.getPrzebieg());
@@ -26,10 +26,11 @@ public class AutobusServiceImpl implements AutobusService {
         autobus.setStatus(autobusDto.getStatus());
 
         autobusRepository.save(autobus);
+        return autobus;
     }
 
     @Override
-    public void saveAutobus(Autobus autobusDto) {
+    public Autobus saveAutobus(Autobus autobusDto) {
         Autobus autobus = new Autobus();
         autobus.setNumerRejestracyjny(autobusDto.getNumerRejestracyjny());
         autobus.setPrzebieg(autobusDto.getPrzebieg());
@@ -37,6 +38,7 @@ public class AutobusServiceImpl implements AutobusService {
         autobus.setStatus(autobusDto.getStatus());
 
         autobusRepository.save(autobus);
+        return autobus;
     }
 
     @Override
