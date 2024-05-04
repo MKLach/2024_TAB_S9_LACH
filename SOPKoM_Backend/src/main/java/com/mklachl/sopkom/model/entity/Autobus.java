@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.persistence.Column;
 @Entity
 @Table(name = "autobusy")
@@ -18,7 +20,8 @@ public class Autobus {
     @Column(name = "numer_rejestracyjny", nullable = false, length = 10)
     private String numerRejestracyjny;
 
-    @Column(name = "przegladwaznydo", nullable = false)
+    @Column(name = "przegladwazydo", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date przegladWaznyDo;
 
     @Column(name = "status", nullable = false, length = 20)
