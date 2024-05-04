@@ -20,7 +20,7 @@ public class Autobus {
     @Column(name = "numer_rejestracyjny", nullable = false, length = 10)
     private String numerRejestracyjny;
 
-    @Column(name = "przegladwazydo", nullable = false)
+    @Column(name = "przegladwaznydo", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date przegladWaznyDo;
 
