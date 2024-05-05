@@ -49,27 +49,27 @@ public class PrzystanekServiceImpl implements PrzystanekService {
 
     @Override
     public List<Przystanek> findPrzystanekByKodPocztowy(String kodPocztowy){
-        return przystanekRepository.findByKodPocztowy(kodPocztowy);
+        return przystanekRepository.findAllByKodPocztowy(kodPocztowy);
     }
 
     @Override
     public List<Przystanek> findPrzystanekByMiasto(String miasto){
-        return przystanekRepository.findByMiasto(miasto);
+        return przystanekRepository.findAllByMiasto(miasto);
     }
 
     @Override
     public List<Przystanek> findPrzystanekByUlica(String ulica){
-        return przystanekRepository.findByUlica(ulica);
+        return przystanekRepository.findAllByUlica(ulica);
     }
 
     @Override
     public List<Przystanek> findPrzystanekBySzerokoscGeograficzna(String szerokoscGeograficzna){
-        return przystanekRepository.findBySzerokoscGeograficzna(szerokoscGeograficzna);
+        return przystanekRepository.findAllBySzerokoscGeograficzna(szerokoscGeograficzna);
     }
 
     @Override
     public List<Przystanek> findPrzystanekByDlugoscGeograficzna(String dlugoscGeograficzna){
-        return przystanekRepository.findByDlugoscGeograficzna(dlugoscGeograficzna);
+        return przystanekRepository.findAllByDlugoscGeograficzna(dlugoscGeograficzna);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class PrzystanekServiceImpl implements PrzystanekService {
 
     @Override
     public List<Przystanek> findPrzystanekByPrzystanekOdwrotny(Przystanek przystanekOdwrotny){
-        return przystanekRepository.findByPrzystanekOdwrotny(przystanekOdwrotny);
+        return przystanekRepository.findAllByPrzystanekOdwrotny(przystanekOdwrotny);
     }
 
 }

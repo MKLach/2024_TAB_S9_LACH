@@ -1,24 +1,32 @@
 package com.mklachl.sopkom.repository;
 
-import com.mklachl.sopkom.model.entity.Przystanek;
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
+import com.mklachl.sopkom.model.entity.Kierowca;
+import com.mklachl.sopkom.model.entity.Przystanek;
 
 public interface PrzystanekRepository extends CrudRepository<Przystanek, Long> {
 
-    List<Przystanek> findByPrzystanekOdwrotny(Przystanek przystanekOdwrotny);
+    List<Przystanek> findAllByPrzystanekOdwrotny(Przystanek przystanekOdwrotny);
 
     Przystanek findByNazwa(String nazwa);
+    
+    List<Przystanek> findAllByNazwaLike(String nazwa);
 
-    List<Przystanek> findByKodPocztowy(String kodPocztowy);
+    List<Przystanek> findAllByKodPocztowy(String kodPocztowy);
 
-    List<Przystanek> findByMiasto(String miasto);
+    List<Przystanek> findAllByMiasto(String miasto);
 
-    List<Przystanek> findByUlica(String ulica);
+    List<Przystanek> findAllByUlica(String ulica);
+    
+    List<Przystanek> findAllByUlicaLike(String ulica);  
 
-    List<Przystanek> findBySzerokoscGeograficzna(String szerokoscGeograficzna);
+    List<Przystanek> findAllBySzerokoscGeograficzna(String szerokoscGeograficzna);
 
-    List<Przystanek> findByDlugoscGeograficzna(String dlugoscGeograficzna);
+    List<Przystanek> findAllByDlugoscGeograficzna(String dlugoscGeograficzna);
+    
+    List<Przystanek> findAll();    
 
 }

@@ -2,9 +2,19 @@
   text-align: center;
 }
 
+div{
+    background-color: #93979a;
+    font-size: x-large;
+    font-weight: 500;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+hover:route{
+    color: pink;
 }
 
 @media (prefers-reduced-motion: no-preference) {

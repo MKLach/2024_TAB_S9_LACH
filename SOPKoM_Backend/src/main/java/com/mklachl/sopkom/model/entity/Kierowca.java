@@ -24,13 +24,13 @@ public class Kierowca {
     @Temporal(TemporalType.DATE)
     private Date prawoJazdyWazneDo;
 
-    @Column(name = "imie", nullable = false, length = 50)
+    @Column(name = "imie", nullable = false, length = 30)
     private String imie;
 
-    @Column(name = "nazwisko", nullable = false, length = 50)
+    @Column(name = "nazwisko", nullable = false, length = 30)
     private String nazwisko;
 
-    @Column(name = "pesel", nullable = false, length = 11)
+    @Column(name = "pesel", nullable = false, length = 30)
     private String pesel;
 
     @ManyToOne

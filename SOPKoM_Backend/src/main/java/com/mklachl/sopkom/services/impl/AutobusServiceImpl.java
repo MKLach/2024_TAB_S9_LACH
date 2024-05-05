@@ -25,7 +25,7 @@ public class AutobusServiceImpl implements AutobusService {
         autobus.setPrzegladWaznyDo(autobusDto.getPrzegladWaznyDo());
         autobus.setStatus(autobusDto.getStatus());
 
-        autobusRepository.save(autobus);
+        autobus = autobusRepository.save(autobus);
         return autobus;
     }
 
@@ -37,7 +37,7 @@ public class AutobusServiceImpl implements AutobusService {
         autobus.setPrzegladWaznyDo(autobusDto.getPrzegladWaznyDo());
         autobus.setStatus(autobusDto.getStatus());
 
-        autobusRepository.save(autobus);
+        autobus = autobusRepository.save(autobus);
         return autobus;
     }
 
@@ -62,22 +62,22 @@ public class AutobusServiceImpl implements AutobusService {
     }
 
     @Override
-    public Autobus findAutobusByStatus(String status){
-        return autobusRepository.findByStatus(status);
+    public List<Autobus> findAutobusByStatus(String status){
+        return autobusRepository.findAllByStatus(status);
     }
 
     @Override
     public List<Autobus> findAutobusByPrzebiegGreaterThan(float przebieg){
-        return autobusRepository.findByPrzebiegGreaterThan(przebieg);
+        return autobusRepository.findAllByPrzebiegGreaterThan(przebieg);
     }
 
     @Override
     public List<Autobus> findAutobusByPrzebiegLessThan(float przebieg){
-        return autobusRepository.findByPrzebiegLessThan(przebieg);
+        return autobusRepository.findAllByPrzebiegLessThan(przebieg);
     }
 
     @Override
     public List<Autobus> findAutobusByPrzebieg(float przebieg){
-        return autobusRepository.findByPrzebieg(przebieg);
+        return autobusRepository.findAllByPrzebieg(przebieg);
     }
 }

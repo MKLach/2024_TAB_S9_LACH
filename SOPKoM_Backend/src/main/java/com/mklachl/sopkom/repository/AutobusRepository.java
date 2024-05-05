@@ -13,12 +13,17 @@ public interface AutobusRepository extends CrudRepository<Autobus, Long>{
 
     Autobus findByPrzegladWaznyDoAfter(Date date);
 
-    Autobus findByStatus(String status);
+    List<Autobus> findAllByStatus(String status);
 
-    List<Autobus> findByPrzebiegGreaterThan(float przebieg);
+    List<Autobus> findAllByPrzebiegGreaterThan(float przebieg);
 
-    List<Autobus> findByPrzebiegLessThan(float przebieg);
+    List<Autobus> findAllByPrzebiegLessThan(float przebieg);
 
-    List<Autobus> findByPrzebieg(float przebieg);
+    List<Autobus> findAllByPrzebieg(float przebieg);
+    
+    List<Autobus> findByStatusLike(String status);
 
+    List<Autobus> findAllByNumerRejestracyjnyLike(String numerRejestracyjny);
+
+    List<Autobus> findAll();    
 }

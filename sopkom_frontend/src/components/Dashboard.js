@@ -8,7 +8,7 @@ const Dashboard = () => {
 		
 		try {
 			
-			const response = await fetch(SERVER_URL + "/get2", {method: "GET", credentials: "include"});
+			const response = await fetch(SERVER_URL + "/api/autobus/", {method: "GET", credentials: "include"});
 			
 			if(!response.ok){
 				throw new Error("error on get 2");

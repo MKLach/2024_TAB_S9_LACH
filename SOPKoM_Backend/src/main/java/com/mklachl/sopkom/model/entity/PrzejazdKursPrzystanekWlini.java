@@ -23,7 +23,7 @@ public class PrzejazdKursPrzystanekWlini {
     private Przejazd przejazd;
 
     @ManyToOne
-    @JoinColumn(name = "kursprzystanekwlini_id", referencedColumnName = "kursprzystankiwlini")
+    @JoinColumn(name = "kursprzystanekwlini_id", referencedColumnName = "kursprzystankiwlini_id")
     private KursPrzystanekWlini kursPrzystanekWlini;
 
     @Column(name = "realnagodzinna", nullable = false)

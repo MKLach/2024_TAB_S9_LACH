@@ -1,20 +1,24 @@
 package com.mklachl.sopkom.services.impl;
 
-import com.mklachl.sopkom.model.entity.User;
-import com.mklachl.sopkom.model.entity.Kierowca;
-import com.mklachl.sopkom.model.dto.KierowcaDto;
-import com.mklachl.sopkom.repository.KierowcaRepository;
-import com.mklachl.sopkom.services.KierowcaService;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.mklachl.sopkom.model.dto.KierowcaDto;
+import com.mklachl.sopkom.model.dto.UserDto;
+import com.mklachl.sopkom.model.entity.Kierowca;
+import com.mklachl.sopkom.model.entity.User;
+import com.mklachl.sopkom.repository.KierowcaRepository;
+import com.mklachl.sopkom.services.KierowcaService;
+import com.mklachl.sopkom.services.UserService;
+
 public class KierowcaServiceImpl implements KierowcaService {
     private KierowcaRepository kierowcaRepository;
+    private UserService userService;
 
-    public KierowcaServiceImpl(KierowcaRepository kierowcaRepository) {
+    public KierowcaServiceImpl(KierowcaRepository kierowcaRepository,UserService userService) {
         this.kierowcaRepository = kierowcaRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -26,7 +30,7 @@ public class KierowcaServiceImpl implements KierowcaService {
         kierowca.setPesel(kierowcaDto.getPesel());
         kierowca.setUser(kierowcaDto.getUser());
 
-        kierowcaRepository.save(kierowca);
+        kierowca=kierowcaRepository.save(kierowca);
         return kierowca;
     }
 
@@ -36,9 +40,14 @@ public class KierowcaServiceImpl implements KierowcaService {
         kierowca.setImie(kierowcaDto.getImie());
         kierowca.setNazwisko(kierowcaDto.getNazwisko());
         kierowca.setPesel(kierowcaDto.getPesel());
-        kierowca.setUser(kierowcaDto.getUser());
+        
+        if(kierowcaDto.getUser() != null) {
+        	 User userIn = userService.findUserById(kierowcaDto.getUser().getId());
+        	 kierowca.setUser(userIn);
 
-        kierowcaRepository.save(kierowca);
+        }
+        
+        kierowca = kierowcaRepository.save(kierowca);
         return kierowca;
     }
 
@@ -54,17 +63,17 @@ public class KierowcaServiceImpl implements KierowcaService {
 
     @Override
     public List<Kierowca> findKierowcaByImieAndNazwisko(String imie, String nazwisko){
-        return kierowcaRepository.findByImieAndNazwisko(imie, nazwisko);
+        return kierowcaRepository.findAllByImieAndNazwisko(imie, nazwisko);
     }
 
     @Override
     public List<Kierowca> findKierowcaByPrawoJazdyWazneDoBefore(Date date){
-        return kierowcaRepository.findByPrawoJazdyWazneDoAfter(date);
+        return kierowcaRepository.findAllByPrawoJazdyWazneDoAfter(date);
     }
 
     @Override
     public List<Kierowca> findKierowcaByPrawoJazdyWazneDoAfter(Date date){
-        return kierowcaRepository.findByPrawoJazdyWazneDoAfter(date);
+        return kierowcaRepository.findAllByPrawoJazdyWazneDoAfter(date);
     }
 
     @Override

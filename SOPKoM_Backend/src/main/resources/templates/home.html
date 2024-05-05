@@ -2,8 +2,46 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
     <head>
         <title>Logged out!</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #93979a;
+                height: 100vh;
+                width: 100vw;
+                }
+            .mainDiv{
+                height: 100%;
+                width: 100%;
+                flex-direction: column;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            input {
+                width: 100px;
+                height: 50px;
+                font-size: large;
+            }
+            hover:button{
+                color: pink;
+            }
+            h1{
+                margin-bottom: 5vh;
+            }
+        </style>
     </head>
     <body>
-       <h1>Logged Out!</h1>
+        <div class="mainDiv">
+            <div>
+                <h1>Logged Out!</h1>
+            </div>
+
+            <div>
+                <form th:action="@{/login}" method="get">
+                    <input type="submit" value="Log in" />
+                </form>
+            </div>
+        </div>
     </body>
 </html>

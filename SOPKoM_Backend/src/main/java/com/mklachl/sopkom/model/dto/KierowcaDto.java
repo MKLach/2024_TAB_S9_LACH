@@ -15,7 +15,7 @@ public class KierowcaDto {
 
     private String pesel;
 
-    private User user;
+    private UserDto user;
 
     public KierowcaDto(){
 
@@ -27,7 +27,11 @@ public class KierowcaDto {
         this.imie = kierowca.getImie();
         this.nazwisko = kierowca.getNazwisko();
         this.pesel = kierowca.getPesel();
-        this.user = kierowca.getUser();
+        
+        if(kierowca.getUser() != null) {
+        	this.user = new UserDto(kierowca.getUser());
+        }
+        
     }
 
     // Getters
@@ -51,7 +55,7 @@ public class KierowcaDto {
         return pesel;
     }
 
-    public User getUser() {
+    public UserDto getUser() {
         return user;
     }
 
@@ -76,7 +80,15 @@ public class KierowcaDto {
         this.pesel = pesel;
     }
 
-    public void setUser(User user) {
+    public void setUserDto(UserDto user) {
         this.user = user;
     }
+
+	@Override
+	public String toString() {
+		return "KierowcaDto [kierowcaId=" + kierowcaId + ", prawoJazdyWazneDo=" + prawoJazdyWazneDo + ", imie=" + imie
+				+ ", nazwisko=" + nazwisko + ", pesel=" + pesel + ", user=" + user + "]";
+	}
+    
+    
 }

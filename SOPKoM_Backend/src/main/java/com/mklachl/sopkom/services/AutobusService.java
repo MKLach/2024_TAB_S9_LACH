@@ -21,11 +21,13 @@ public interface AutobusService {
 
     Autobus findAutobusByPrzegladWaznyDoAfter(Date date);
 
-    Autobus findAutobusByStatus(String status);
+    List<Autobus> findAutobusByStatus(String status);
 
     List<Autobus> findAutobusByPrzebiegGreaterThan(float przebieg);
 
     List<Autobus> findAutobusByPrzebiegLessThan(float przebieg);
 
     List<Autobus> findAutobusByPrzebieg(float przebieg);
+    
+    
 }

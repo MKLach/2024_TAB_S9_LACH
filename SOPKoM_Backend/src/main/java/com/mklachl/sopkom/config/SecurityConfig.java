@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -42,7 +43,11 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                 		.requestMatchers("/logout").permitAll()
-                		.requestMatchers("/not_auth").permitAll()
+                		// TODO testing, later for delete
+                		.requestMatchers("/api/**").permitAll()
+                		.requestMatchers("/error").permitAll()
+                   		.requestMatchers("/not_auth").permitAll()
+                   		
                         .anyRequest().authenticated())
                 		
                 .formLogin(
@@ -56,15 +61,15 @@ public class SecurityConfig {
                        
                 ).logout(
                     logout -> logout
-                            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                            .logoutSuccessUrl("/home")
-                            .permitAll()
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .logoutSuccessUrl("/home")
+                        .permitAll()
                 )
                 
             
                 .cors(t -> t.configurationSource(corsConfiguration()))
                 
-               // .csrf(AbstractHttpConfigurer::enable)
+                .csrf(AbstractHttpConfigurer::disable)
                 .build();
     }
 

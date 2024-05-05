@@ -9,7 +9,7 @@ import java.util.Date;
 public class KursPrzystanekWlini {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "kursprzystankiwlini")
+    @Column(name = "kursprzystankiwlini_id")
     private Long kursPrzystanekWliniId;
 
     @ManyToOne

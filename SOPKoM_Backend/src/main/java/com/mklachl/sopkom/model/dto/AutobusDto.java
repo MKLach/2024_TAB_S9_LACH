@@ -67,4 +67,12 @@ public class AutobusDto {
     public void setPrzebieg(float przebieg) {
         this.przebieg = przebieg;
     }
+
+	@Override
+	public String toString() {
+		return "AutobusDto [autbousId=" + autbousId + ", numerRejestracyjny=" + numerRejestracyjny
+				+ ", przegladWaznyDo=" + przegladWaznyDo + ", status=" + status + ", przebieg=" + przebieg + "]";
+	}
+    
+    
 }
