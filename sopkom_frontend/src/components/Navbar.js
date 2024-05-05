@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
 import { IoMdListBox, IoMdApps, IoMdHome } from 'react-icons/io';
 import { RiUserFill } from 'react-icons/ri';
+import { FaBusAlt } from "react-icons/fa";
+import { FaPersonMilitaryToPerson } from "react-icons/fa6";
 import { IoHeart, IoLogOut } from 'react-icons/io5';
 import { SERVER_URL } from './constant';
 
@@ -33,6 +35,8 @@ const Navbar = () => {
     <div className='fixed bg-white flex justify-between items-center mx-auto w-full z-10 pr-4 pl-12 border-b'>
       <h1 className="pl-4  bg-clip-text text-4xl font-black">SOPKoM</h1>
       <ul /**/className='hidden md:flex gap-2 rounded-xl bg-white m-2'>
+        <NavItem icon={<FaPersonMilitaryToPerson style={{ color: 'black' }} size={20} />} to="/driver" />
+        <NavItem icon={<FaBusAlt style={{ color: 'black' }} size={20} />} to="/bus" />
         <NavItem icon={<IoMdHome style={{ color: 'black' }} size={20} />} to="/" />
         <NavItem icon={<IoMdListBox style={{ color: 'black' }} size={20} />} to="/dashboard" />
         <NavItem icon={<RiUserFill style={{ color: 'black' }} size={20} />} to="/me" />
@@ -42,6 +46,8 @@ const Navbar = () => {
         {nav ? <AiOutlineClose style={{ color: 'black' }} size={20} /> : <AiOutlineMenu style={{ color: 'black' }} size={20} />}
       </div>
       <ul className={nav ? 'fixed md:hidden left-0 top-0 w-[12%] h-full bg-[#e0fbfc] ease-in-out duration-500 z-10 flex content-center items-center flex-col' : 'ease-in-out w-[15%] duration-500 fixed top-0 bottom-0 left-[-100%] z-10'}>
+        <NavItemMobile icon={<FaPersonMilitaryToPerson style={{ color: 'black' }} size={24} />} to="/driver" />
+        <NavItemMobile icon={<FaBusAlt style={{ color: 'black' }} size={24} />} to="/bus" />
         <NavItemMobile icon={<IoMdHome style={{ color: 'black' }} size={24} />} to="/" onClick={handleNav} />
         <NavItemMobile icon={<IoMdListBox style={{ color: 'black' }} size={24} />} to="/dashboard" onClick={handleNav} />
         <NavItemMobile icon={<RiUserFill style={{ color: 'black' }} size={24} />} to="/me" onClick={handleNav} />
