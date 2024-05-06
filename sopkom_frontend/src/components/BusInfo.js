@@ -23,25 +23,34 @@ const BusInfo = () => {
 	const [busData, setBusData] = useState([]);
     const [savedMessage, setSavedMessage] = useState("");
 
-const saveChanges = async () => {
-    try {
-        const response = await fetch(SERVER_URL + "/api/autobus/" + busData.autobusId, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(busData)
-        });
-        if (!response.ok) {
-            throw new Error("Failed to save changes");
-        }
-        setSavedMessage("Zmiany zostały zapisane pomyślnie!");
-    } catch (error) {
-//        setSavedMessage("Zmiany nie zostały zapisane.");
-        setSavedMessage("Nie można jeszcze aktualizować bazy autobusów");
+    const saveChanges = async () => {
+        try {
+            const requestBody = {
+                numerRejestracyjny: busData.numerRejestracyjny,
+                status: busData.status,
+                przebieg: parseFloat(busData.przebieg),
+                przegladWaznyDo: new Date(busData.przegladWaznyDo).toISOString()
+            };
 
-    }
-};
+            const response = await fetch(SERVER_URL + "/api/autobus/" + busData.autbousId, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            const responseData = await response.json();
+
+            if (!response.ok) {
+                throw new Error(responseData.message || "Failed to save changes");
+            }
+
+            setSavedMessage("Zmiany zostały zapisane pomyślnie!");
+        } catch (error) {
+            setSavedMessage("Nie można jeszcze aktualizować bazy autobusów: " + error.message);
+        }
+    };
 
 
 	const getBusData = async () => {
@@ -73,6 +82,26 @@ const saveChanges = async () => {
         }));
     };
 
+        const deleteBus = async () => {
+                try {
+                    const response = await fetch(SERVER_URL + "/api/autobus/" + busData.autbousId, {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    });
+                    if (!response.ok) {
+                        throw new Error("Failed to delete driver");
+                    }
+                    setTimeout(() => {
+                        window.location.href = '/bus';
+                    }, 200);
+
+                } catch (error) {
+                    setSavedMessage("Nie udało się usunąć pojazdu.");
+                }
+            };
+
   return (
             <div className="pt-40">
                 <div className="listDiv">
@@ -95,6 +124,7 @@ const saveChanges = async () => {
                                     <td><input className="infoInput" type="text" name="status" value={busData.status || ''} onChange={handleInputChange} /></td>
                                     <td><input className="infoInput" type="text" name="przegladWaznyDo" value={busData.przegladWaznyDo || ''} onChange={handleInputChange} /></td>
                                     <td><input className="infoInput" type="text" name="przebieg" value={busData.przebieg || ''} onChange={handleInputChange} /></td>
+                                    <td><button className="infoBtn" onClick={deleteBus} >Usuń</button></td>
                                 </tr>
                         </tbody>
                     </table>

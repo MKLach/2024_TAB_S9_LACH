@@ -32,10 +32,18 @@ const BusList = () => {
                     <h2>Autobusy:</h2>
                 <div className="listDiv">
 
-                    <table className="listFormat">
+
+                    <table className="tableFormat">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Numer rejestracyjny</th>
+                            </tr>
+                        </thead>
                         <tbody>
                             {busData.map((bus, index) => (
                                 <tr key={index}>
+                                    <td>{bus.autbousId}</td>
                                     <td><Link className="infoBtn" to={`/bus/info/${bus.autbousId}`}>{bus.numerRejestracyjny}</Link></td>
                                 </tr>
                             ))}

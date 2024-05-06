@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect , useState} from 'react';
 import {SERVER_URL} from './constant';
 import { Link } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 
 
 function extractLastPathComponent(url) {
@@ -23,24 +24,24 @@ const DriverInfo = () => {
 	const [driverData, setDriverData] = useState([]);
     const [savedMessage, setSavedMessage] = useState("");
 
-const saveChanges = async () => {
-    try {
-        const response = await fetch(SERVER_URL + "/api/kierowca/" + driverData.kierowcaId, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(driverData)
-        });
-        if (!response.ok) {
-            throw new Error("Failed to save changes");
-        }
-        setSavedMessage("Zmiany zostały zapisane pomyślnie!");
-    } catch (error) {
-        setSavedMessage("Zmiany nie zostały zapisane.");
+    const saveChanges = async () => {
+        try {
+            const response = await fetch(SERVER_URL + "/api/kierowca/" + driverData.kierowcaId, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(driverData)
+            });
+            if (!response.ok) {
+                throw new Error("Failed to save changes");
+            }
+            setSavedMessage("Zmiany zostały zapisane pomyślnie!");
+        } catch (error) {
+            setSavedMessage("Zmiany nie zostały zapisane.");
 
-    }
-};
+        }
+    };
 
 
 	const getDriverData = async () => {
@@ -71,6 +72,26 @@ const saveChanges = async () => {
         }));
     };
 
+    const deleteDriver = async () => {
+            try {
+                const response = await fetch(SERVER_URL + "/api/kierowca/" + driverData.kierowcaId, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error("Failed to delete driver");
+                }
+                setTimeout(() => {
+                    window.location.href = '/driver';
+                }, 200);
+
+            } catch (error) {
+                setSavedMessage("Nie udało się usunąć kierowcy.");
+            }
+        };
+
     return (
         <div className="pt-40">
            <div className="listDiv">
@@ -93,6 +114,7 @@ const saveChanges = async () => {
                         <td><input className="infoInput" type="text" name="nazwisko" value={driverData.nazwisko || ''} onChange={handleInputChange} /></td>
                         <td><input className="infoInput" type="text" name="prawoJazdyWazneDo" value={driverData.prawoJazdyWazneDo || ''} onChange={handleInputChange} /></td>
                         <td><input className="infoInput" type="text" name="pesel" value={driverData.pesel || ''} onChange={handleInputChange} /></td>
+                        <td><button className="infoBtn" onClick={deleteDriver} >Usuń</button></td>
                     </tr>
                 </tbody>
             </table>

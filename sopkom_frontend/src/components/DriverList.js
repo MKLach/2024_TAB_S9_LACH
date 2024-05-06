@@ -28,16 +28,24 @@ const DriverList = () => {
 
   return (
         <div className="pt-40">
-            <h2>Kierowcy:</h2>
-                <div className="listDiv">
-
-            <table className="listFormat">
+                    <h2>Kierowcy:</h2>
+            <div className="listDiv">
+            <table className="tableFormat">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Imię i Nazwisko</th>
+                    </tr>
+                </thead>
 
                 <tbody>
                     {driverData.map((driver, index) => (
+
                         <tr key={index}>
+                            <td>{driver.kierowcaId}</td>
                             <td><Link className="infoBtn" to={`/driver/info/${driver.kierowcaId}`}>{`${driver.imie} ${driver.nazwisko}`}</Link></td>
                         </tr>
+
                     ))}
                 </tbody>
             </table>
