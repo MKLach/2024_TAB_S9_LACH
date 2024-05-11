@@ -2,6 +2,7 @@ package com.mklachl.sopkom.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,22 @@ public class PrzystanekController {
 
     @Autowired
     PrzystanekRepository przystanekRepo;
+
+    @GetMapping(path = "template", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<?> template() {
+        PrzystanekDto dto = new PrzystanekDto();
+
+        dto.setPrzystanekId(Long.valueOf(1));
+        dto.setNazwa("Centralny");
+        dto.setKodPocztowy("00-950");
+        dto.setMiasto("Warszawa");
+        dto.setUlica("Jana Pawła II");
+        dto.setDlugoscGeograficzna("21.0122");
+        dto.setSzerokoscGeograficzna("52.2297");
+
+        // Zwrócenie przykładowego DTO w odpowiedzi HTTP
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
 
     @PostMapping("/save")
     public ResponseEntity<?> addPrzystanek(@RequestBody PrzystanekDto przystanekDto){

@@ -19,7 +19,7 @@ public class PrzystanekDto {
 
     private String szerokoscGeograficzna;
 
-    PrzystanekDto(){
+    public PrzystanekDto(){
 
     }
 
