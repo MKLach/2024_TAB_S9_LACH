@@ -24,7 +24,7 @@ public class PrzystanekServiceImpl implements PrzystanekService {
         przystanek.setDlugoscGeograficzna(przystanekDto.getDlugoscGeograficzna());
         przystanek.setSzerokoscGeograficzna(przystanekDto.getSzerokoscGeograficzna());
 
-        przystanekRepository.save(przystanek);
+        przystanek = przystanekRepository.save(przystanek);
         return przystanek;
     }
 
@@ -38,7 +38,7 @@ public class PrzystanekServiceImpl implements PrzystanekService {
         przystanek.setDlugoscGeograficzna(przystanekDto.getDlugoscGeograficzna());
         przystanek.setSzerokoscGeograficzna(przystanekDto.getSzerokoscGeograficzna());
 
-        przystanekRepository.save(przystanek);
+        przystanek = przystanekRepository.save(przystanek);
         return przystanek;
     }
 

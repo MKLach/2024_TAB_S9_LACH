@@ -1,11 +1,7 @@
 package com.mklachl.sopkom.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "linie")
@@ -18,6 +14,9 @@ public class Linia {
     @Column(name = "numer", nullable = false, length = 50)
     private String numer;
 
+    @OneToMany(mappedBy = "linia")
+    private List<PrzystanekWlini> przystankiWlini;
+
     // Getters
     public Long getLiniaId() {
         return liniaId;
@@ -25,6 +24,10 @@ public class Linia {
 
     public String getNumer() {
         return numer;
+    }
+
+    public List<PrzystanekWlini> getPrzystankiWlini() {
+        return przystankiWlini;
     }
 
     // Setters
@@ -35,5 +38,7 @@ public class Linia {
     public void setNumer(String numer) {
         this.numer = numer;
     }
+
+    public void setPrzystankiWlini(List<PrzystanekWlini> przystankiWlini) { this.przystankiWlini = przystankiWlini; }
 
 }

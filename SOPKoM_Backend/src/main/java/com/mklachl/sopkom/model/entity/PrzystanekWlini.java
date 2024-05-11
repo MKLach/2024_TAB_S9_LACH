@@ -1,13 +1,6 @@
 package com.mklachl.sopkom.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "przystanekwlini")
@@ -17,11 +10,11 @@ public class PrzystanekWlini {
     @Column(name = "przystanekwlini_id")
     private Long przystanekWliniId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "przystanek_id", referencedColumnName = "przystanek_id")
     private Przystanek przystanek;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "linia_id", referencedColumnName = "linia_id")
     private Linia linia;
 
