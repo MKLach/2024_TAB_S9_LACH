@@ -23,7 +23,7 @@ public class PrzystanekDto {
 
     }
 
-    PrzystanekDto(Przystanek przystanek){
+    public PrzystanekDto(Przystanek przystanek){
         this.przystanekId = przystanek.getPrzystanekId();
         this.przystanekOdwrotny = przystanek.getPrzystanekOdwrotny();
         this.nazwa = przystanek.getNazwa();
