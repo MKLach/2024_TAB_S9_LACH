@@ -4,10 +4,12 @@ import com.mklachl.sopkom.model.entity.Przystanek;
 import com.mklachl.sopkom.model.dto.PrzystanekDto;
 import com.mklachl.sopkom.repository.PrzystanekRepository;
 import com.mklachl.sopkom.services.PrzystanekService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class PrzystanekServiceImpl implements PrzystanekService {
     private PrzystanekRepository przystanekRepository;
 
