@@ -89,11 +89,18 @@ public class LiniaServiceImpl implements LiniaService {
       
     	var ist = liniaRepository.findById(liniaDto.getId());
     	
+    	
+    	
     	if(ist.isEmpty()) {
     		throw new LiniaNotFoundException(liniaDto.getId());
     	}
     	
     	Linia nowa = ist.get();
+    	
+    	if(nowa.getPrzystankiWlini() != null) {
+    		nowa.getPrzystankiWlini().clear();
+    		nowa = liniaRepository.save(nowa);
+    	}
     	
     	List<PrzystanekWlini> przystankiIn = new ArrayList<PrzystanekWlini>();
     	
