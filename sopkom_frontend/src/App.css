@@ -100,3 +100,8 @@ hover:route{
     text-align:center;
     width: 150px;
 }
+
+.addDiv{
+    float: right;
+    margin-right: 20px;
+}

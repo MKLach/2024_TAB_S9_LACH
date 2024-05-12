@@ -48,7 +48,7 @@ const BusInfo = () => {
 
             setSavedMessage("Zmiany zostały zapisane pomyślnie!");
         } catch (error) {
-            setSavedMessage("Nie można jeszcze aktualizować bazy autobusów: " + error.message);
+            setSavedMessage("Nie udało się zaktualizować bazy autobusów!");
         }
     };
 

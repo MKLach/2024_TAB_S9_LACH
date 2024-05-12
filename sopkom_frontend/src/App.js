@@ -2,6 +2,7 @@ import React, { useEffect , useState} from 'react';
 import {SERVER_URL} from './components/constant';
 import './App.css';
 import DriverList from './components/DriverList';
+import DriverAdd from './components/DriverAdd';
 import DriverInfo from './components/DriverInfo';
 import BusInfo from './components/BusInfo';
 import BusList from './components/BusList';
@@ -48,6 +49,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/driver" element={<DriverList />} />
+          <Route path="/driver/save" element={<DriverAdd />} />
           <Route path="/driver/info/:id" element={<DriverInfo />} />
           <Route path="/bus" element={<BusList />} />
           <Route path="/bus/info/:id" element={<BusInfo />} />

@@ -29,6 +29,9 @@ const DriverList = () => {
   return (
         <div className="pt-40">
                     <h2>Kierowcy:</h2>
+            <div className="addDiv">
+            <Link className="infoBtn" to={`/driver/save`}>Dodaj kierowcę</Link>
+            </div>
             <div className="listDiv">
             <table className="tableFormat">
                 <thead>
