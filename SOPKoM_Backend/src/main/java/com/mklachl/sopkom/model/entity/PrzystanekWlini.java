@@ -1,5 +1,8 @@
 package com.mklachl.sopkom.model.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -16,6 +19,7 @@ public class PrzystanekWlini {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "linia_id", referencedColumnName = "linia_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Linia linia;
 
     @Column(name = "kolejnosc", nullable = false)

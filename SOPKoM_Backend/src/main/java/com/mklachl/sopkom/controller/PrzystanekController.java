@@ -6,7 +6,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.microsoft.sqlserver.jdbc.SQLServerException;
+import com.mklachl.sopkom.model.dto.Message;
 import com.mklachl.sopkom.model.dto.PrzystanekDto;
+import com.mklachl.sopkom.model.dto.PrzystanekDtoFull;
 import com.mklachl.sopkom.model.entity.Przystanek;
 import com.mklachl.sopkom.repository.PrzystanekRepository;
 import com.mklachl.sopkom.services.PrzystanekService;
@@ -35,6 +38,9 @@ public class PrzystanekController {
         dto.setUlica("Jana Pawła II");
         dto.setDlugoscGeograficzna("21.0122");
         dto.setSzerokoscGeograficzna("52.2297");
+        
+        dto.setPrzystanekOdwrotny(Long.valueOf(12));
+        dto.setPrzystanekOdwrotnyNazwa("Przsytanek odwrotny test (nie wymagane)");
 
         // Zwrócenie przykładowego DTO w odpowiedzi HTTP
         return new ResponseEntity<>(dto, HttpStatus.OK);
@@ -60,8 +66,17 @@ public class PrzystanekController {
         if(przystanekRepo.findById(id).isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        przystanekRepo.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        
+        try {
+        	przystanekRepo.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        
+        
+        } catch (Exception e) {
+        	
+        	return new ResponseEntity<>(new SimpleMessage(e.getMessage()), HttpStatus.FORBIDDEN);
+		}
+        
     }
 
     @PatchMapping("/{id}")
@@ -79,8 +94,22 @@ public class PrzystanekController {
         przystanek.setUlica(przystanekDto.getUlica());
         przystanek.setDlugoscGeograficzna(przystanekDto.getDlugoscGeograficzna());
         przystanek.setSzerokoscGeograficzna(przystanekDto.getSzerokoscGeograficzna());
-        przystanek.setPrzystanekOdwrotny(przystanekDto.getPrzystanekOdwrotny());
+        
+        
+        if(przystanekDto.getPrzystanekOdwrotny() != null) {
+        	
+            var przystanekOdwrotny = przystanekRepo.findById(przystanekDto.getPrzystanekOdwrotny());   
+            
+            if(przystanekOdwrotny.isPresent()) {
+            	przystanek.setPrzystanekOdwrotny(przystanekOdwrotny.get());
 
+            } else {
+            	System.out.println("no przystanek odwrotny present!");
+            }
+            
+            
+        }
+        
         przystanek = przystanekRepo.save(przystanek);
         return new ResponseEntity<>(new PrzystanekDto(przystanek), HttpStatus.OK);
     }
@@ -93,4 +122,23 @@ public class PrzystanekController {
         });
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+    
+    @GetMapping("/full")
+    public ResponseEntity<?> getAllPrzystankiFull() {
+        List<PrzystanekDtoFull> list = new ArrayList<>();
+        przystanekRepo.findAll().forEach(przystanek -> {
+            list.add(new PrzystanekDtoFull(przystanek));
+        });
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+    
+    @GetMapping("/full/{id}")
+    public ResponseEntity<?> getPrzystanekFull(@PathVariable("id") Long id){
+        Optional<Przystanek> przystanek = przystanekService.findPrzystanekById(id);
+        if(przystanek.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(new PrzystanekDtoFull(przystanek.get()), HttpStatus.OK);
+    }
+    
 }

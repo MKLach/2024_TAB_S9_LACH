@@ -32,7 +32,23 @@ public class PrzystanekServiceImpl implements PrzystanekService {
 
     public Przystanek savePrzystanek(PrzystanekDto przystanekDto) {
         Przystanek przystanek = new Przystanek();
-        przystanek.setPrzystanekOdwrotny(przystanekDto.getPrzystanekOdwrotny());
+        
+        
+        if(przystanekDto.getPrzystanekOdwrotny() != null) {
+        	
+            var przystanekOdwrotny = przystanekRepository.findById(przystanekDto.getPrzystanekOdwrotny());   
+            
+            if(przystanekOdwrotny.isPresent()) {
+            	przystanek.setPrzystanekOdwrotny(przystanekOdwrotny.get());
+
+            } else {
+            	System.out.println("no przystanek odwrotny present!");
+            	
+            }
+            
+            
+        }
+        
         przystanek.setNazwa(przystanekDto.getNazwa());
         przystanek.setKodPocztowy(przystanekDto.getKodPocztowy());
         przystanek.setMiasto(przystanekDto.getMiasto());

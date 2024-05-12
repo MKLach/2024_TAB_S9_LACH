@@ -2,34 +2,33 @@ package com.mklachl.sopkom.model.dto;
 
 import com.mklachl.sopkom.model.entity.Przystanek;
 
-public class PrzystanekDto {
-    private Long przystanekId;
+public class PrzystanekDtoFull {
+	protected Long przystanekId;
 
-    private Long przystanekOdwrotnyId;
-    private String przystanekOdwrotnyNazwa;
+	protected PrzystanekDtoFull przystanekOdwrotny;
+    
 
-    private String nazwa;
+	protected String nazwa;
 
-    private String kodPocztowy;
+	protected String kodPocztowy;
 
-    private String miasto;
+	protected String miasto;
 
-    private String ulica;
+	protected String ulica;
 
-    private String dlugoscGeograficzna;
+	protected String dlugoscGeograficzna;
 
-    private String szerokoscGeograficzna;
+	protected String szerokoscGeograficzna;
 
-    public PrzystanekDto(){
+    public PrzystanekDtoFull(){
 
     }
 
-    public PrzystanekDto(Przystanek przystanek){
+    public PrzystanekDtoFull(Przystanek przystanek){
         this.przystanekId = przystanek.getPrzystanekId();
         
         if(przystanek.getPrzystanekOdwrotny() != null) {
-        	this.przystanekOdwrotnyId = przystanek.getPrzystanekOdwrotny().getPrzystanekId();
-            this.przystanekOdwrotnyNazwa = przystanek.getPrzystanekOdwrotny().getNazwa();
+        	this.przystanekOdwrotny = new PrzystanekDtoFull(przystanek.getPrzystanekOdwrotny());  
         }
         
         this.nazwa = przystanek.getNazwa();
@@ -45,8 +44,8 @@ public class PrzystanekDto {
         return przystanekId;
     }
 
-    public Long getPrzystanekOdwrotny() {
-        return przystanekOdwrotnyId;
+    public PrzystanekDtoFull getPrzystanekOdwrotny() {
+        return przystanekOdwrotny;
     }
 
     public String getNazwa() {
@@ -82,17 +81,11 @@ public class PrzystanekDto {
         this.przystanekId = przystanekId;
     }
 
-    public void setPrzystanekOdwrotny(Long przystanekOdwrotny) {
-        this.przystanekOdwrotnyId = przystanekOdwrotny;
+    public void setPrzystanekOdwrotny(PrzystanekDtoFull przystanekOdwrotny) {
+        this.przystanekOdwrotny = przystanekOdwrotny;
     }
     
-    public String getPrzystanekOdwrotnyNazwa() {
-		return przystanekOdwrotnyNazwa;
-	}
-
-	public void setPrzystanekOdwrotnyNazwa(String przystanekOdwrotnyNazwa) {
-		this.przystanekOdwrotnyNazwa = przystanekOdwrotnyNazwa;
-	}
+  
 
 	public void setNazwa(String nazwa) {
         this.nazwa = nazwa;

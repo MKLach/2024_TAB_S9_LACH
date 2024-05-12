@@ -3,7 +3,7 @@ package com.mklachl.sopkom.controller;
 public class SimpleMessage {
 
 	public String message;
-
+	
 	public SimpleMessage() {
 		super();
 	}

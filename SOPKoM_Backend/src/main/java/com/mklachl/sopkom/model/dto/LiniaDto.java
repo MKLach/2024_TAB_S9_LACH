@@ -4,10 +4,8 @@ import com.mklachl.sopkom.model.entity.Linia;
 import java.util.List;
 
 public class LiniaDto {
-    private Long id;
-    private String numer;
-
-    private List<PrzystanekDto> przystanki;
+    protected Long id;
+    protected String numer;
 
     public LiniaDto() {
 
@@ -35,12 +33,6 @@ public class LiniaDto {
         this.numer = numer;
     }
 
-    public List<PrzystanekDto> getPrzystanki() {
-        return przystanki;
-    }
-
-    public void setPrzystanki(List<PrzystanekDto> przystanki) {
-        this.przystanki = przystanki;
-    }
+    
 }
 
