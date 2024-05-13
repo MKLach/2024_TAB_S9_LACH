@@ -19,7 +19,11 @@ function extractLastPathComponent(url) {
 
 const BusLineEdit = () => {
   const [formData, setFormData] = useState({
-    miasta: []});
+    numer: '',
+    odwrotna: false,
+    przystanki: [{ przystanekId: '', kolejnosc: '' }]
+    
+  });
 
   const [LineData, setLineData] = useState([]);
   const [showInfo, setShowInfo] = useState(false);
@@ -31,9 +35,9 @@ const BusLineEdit = () => {
   useEffect(() => {
     getLineData();
     fetchBusStops();
-    handleAddNewStop();
-    handleAddNewStop();
-    handleAddNewStop();
+    //handleAddNewStop();
+   // handleAddNewStop();
+    //handleAddNewStop();
   }, []);
 
 	const getLineData = async () => {
@@ -44,13 +48,45 @@ const BusLineEdit = () => {
 				throw new Error("error on get 2");
 			}
 			const data = await response.json();
-			setLineData(data);
+			
+			//setLineData(data);
+			setFormData(data);
+			//for(let i = 0; i < data.przystanki.length; i++){
+				
+			//	handleAddNewStop();
+			//}
+	
 
 		} catch (error){
 
 
 		}
 	}
+	
+  const deleteBusLine = async () => {
+        try {
+            const response = await fetch(SERVER_URL + "/api/linia/" + listId, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            if (!response.ok) {
+                throw new Error("Failed to delete driver");
+            }
+            setTimeout(() => {
+                window.location.href = '/bus_line';
+            }, 100);
+
+        } catch (error) {
+            let errorMessage = error.message;
+            if (error.message.includes(errorMessage)) {
+                setSavedMessage("Nie można usunąć przystanku - występuje on w linii");
+            } else {
+                setSavedMessage("Nie udało się usunąć przystanku.");
+            }
+        }
+    };
 
   const fetchBusStops = async () => {
     try {
@@ -68,8 +104,8 @@ const BusLineEdit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(SERVER_URL + "/api/linia/save", {
-        method: 'POST',
+      const response = await fetch(SERVER_URL + "/api/linia/" + listId, {
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -81,7 +117,7 @@ const BusLineEdit = () => {
       }
 
       setTimeout(() => {
-        window.location.href = '/bus_stop';
+        window.location.href = '/bus_line';
       }, 100);
 
       setSavedMessage("Dodano przystanek");
@@ -91,90 +127,118 @@ const BusLineEdit = () => {
     }
   };
 
-  const handleChange = (e, index) => {
-    const { value } = e.target;
-    const newMiasta = [...formData.miasta];
-    newMiasta[index] = value;
-    setFormData({ ...formData, miasta: newMiasta });
+const handleChange = (e, index) => {
+    const { name, value } = e.target;
+    if (name === 'numer' || name === 'odwrotna') {
+      setFormData(prevState => ({
+        ...prevState,
+        [name]: value
+      }));
+    } else {
+      const newPrzystanki = [...formData.przystanki];
+      newPrzystanki[index][name] = value;
+      setFormData(prevState => ({
+        ...prevState,
+        przystanki: newPrzystanki
+      }));
+    }
   };
 
-  const handleAddNewStop = () => {
+ const handleAddNewStop = () => {
+    const kolejnosc = formData.przystanki.length + 1;
     setFormData(prevState => ({
       ...prevState,
-      miasta: [...prevState.miasta, ""]
+      przystanki: [...prevState.przystanki, { przystanekId: '', kolejnosc }]
+    }));
+  };
+  
+   const handleAddNewStopWithData = (kolejnosc, val ) => {
+    setFormData(prevState => ({
+      ...prevState,
+      przystanki: [...prevState.przystanki, { przystanekId: 'val', kolejnosc }]
     }));
   };
 
+
   const handleRemoveStop = (index) => {
-    if (formData.miasta.length <= 3) {
+    if (formData.przystanki.length <= 3) {
       return;
     }
-    const newMiasta = [...formData.miasta];
-    newMiasta.splice(index, 1);
-    setFormData({ ...formData, miasta: newMiasta });
+    const newPrzystanki = [...formData.przystanki];
+    newPrzystanki.splice(index, 1);
+    setFormData({ ...formData, przystanki: newPrzystanki });
   };
 
-  return (
+ return (
     <div className="pt-40">
       <p>{savedMessage}</p>
       <div className="addForm">
         <form className="addForm" onSubmit={handleSubmit}>
 
-        <table className="addFormat">
+          <table className="addFormat">
             <thead>
-                <tr>
-                    <th className="addWhat">Numer Linii:</th>
-                    <th>
-                        <input type="text"
-                            name="nazwa"
-                            className="addInput"
-                            value={LineData.numer}
-                               onChange={handleChange}
-                               required/>
-                    </th>
-                </tr>
-                <tr>
-                    <th className="addWhat"><label htmlFor="odwrotna">Odwrotna trasa:</label></th>
-                    <th>
-                        <input className="checkBox"
-                            type="checkbox"
-                            id="odwrotna"
-                            name="odwrotna"
-                            checked={formData.odwrotna}
-                            onChange={() => setFormData({...formData, odwrotna: !formData.odwrotna})}/>
-                    </th>
-                </tr>
+              <tr>
+                <th className="addWhat">Numer Linii:</th>
+                <th>
+                  <input
+                    type="text"
+                    name="numer"
+                    className="addInput"
+                    value={formData.numer}
+                    onChange={handleChange}
+                    required
+                  />
+                </th>
+              </tr>
+              <tr>
+               {/*  <th className="addWhat">
+                  <label htmlFor="odwrotna">Odwrotna trasa:</label>
+                </th>
+                <th>
+                  <input
+                    className="checkBox"
+                    type="checkbox"
+                    id="odwrotna"
+                    name="odwrotna"
+                    checked={formData.odwrotna}
+                    onChange={handleChange}
+                  />
+                </th>*/}
+              </tr>
             </thead>
             <tbody>
             </tbody>
-        </table>
+          </table>
+
           <table className="addFormat">
-          <thead>
-          <tr>
-          <th className="addWhat">Kolejność jazdy</th>
-          <th>Przystanek</th>
-          </tr>
-          </thead>
+            <thead>
+              <tr>
+                <th className="addWhat">Kolejność jazdy</th>
+                <th>Przystanek</th>
+              </tr>
+            </thead>
             <tbody>
-              {formData.miasta.map((miasto, index) => (
+              {formData.przystanki.map((przystanek, index) => (
                 <tr key={index}>
-                  <td className="addWhat">Przystanek {index + 1}:</td>
+                  <td className="addWhat">Przystanek {przystanek.kolejnosc}:</td>
                   <td>
                     <select
                       className="dropDownPrzystanek"
-                      value={miasto}
+                      value={przystanek.przystanekId}
                       onChange={(e) => handleChange(e, index)}
-                      required>
+                      name="przystanekId"
+                      required
+                    >
                       <option value="">Wybierz przystanek</option>
                       {busStops.map(stop => (
                         <option key={stop.przystanekId} value={stop.przystanekId}>
-                          {`${stop.przystanekId} - ${stop.miasto}, ${stop.ulica}`}
+                          {`${stop.nazwa}, ${stop.miasto}, ${stop.ulica}`}
                         </option>
                       ))}
                     </select>
                   </td>
                   <td>
-                    {(formData.miasta.length > 3) && (
+                    {(formData.przystanki.length > 3) && (
                       <button className="infoBtn" type="button" onClick={() => handleRemoveStop(index)}>Usuń</button>
                     )}
                   </td>
@@ -182,11 +246,13 @@ const BusLineEdit = () => {
               ))}
             </tbody>
           </table>
+
           <button className="infoBtn" type="button" onClick={handleAddNewStop}>Dodaj kolejny przystanek</button>
           <button className="infoBtn" type="submit">Aktualizuj linię</button>
         </form>
       </div>
-      <Link className="infoBtn" to={`/bus_line`}>Powrót</Link>
+      <button className="infoBtn" onClick={deleteBusLine}>Usuń linię</button>
+      <Link className="infoBtn" to={`/bus_line/info/${listId}`}>Powrót</Link>
     </div>
   );
 };

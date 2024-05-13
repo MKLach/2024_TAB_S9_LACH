@@ -6,6 +6,8 @@ public class PrzystanekDtoDlaLinia extends PrzystanekDtoFull {
   
 	private Short kolejnosc;
 
+	private String adres;
+	
     public PrzystanekDtoDlaLinia(){
 
     }
@@ -14,6 +16,7 @@ public class PrzystanekDtoDlaLinia extends PrzystanekDtoFull {
     	super(przystanekWlini.getPrzystanek());
     	
         this.kolejnosc = przystanekWlini.getKolejnosc();
+        this.adres = przystanekWlini.getPrzystanek().getMiasto() + ", " + przystanekWlini.getPrzystanek().getUlica();
     }
 
    
@@ -24,5 +27,15 @@ public class PrzystanekDtoDlaLinia extends PrzystanekDtoFull {
 	public void setKolejnosc(Short kolejnosc) {
 		this.kolejnosc = kolejnosc;
 	}
+
+	public String getAdres() {
+		return adres;
+	}
+
+	public void setAdres(String adres) {
+		this.adres = adres;
+	}
     
+	
+	
 }

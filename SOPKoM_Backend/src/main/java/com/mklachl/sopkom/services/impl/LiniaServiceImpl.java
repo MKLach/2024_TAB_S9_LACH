@@ -98,6 +98,9 @@ public class LiniaServiceImpl implements LiniaService {
     	Linia nowa = ist.get();
     	
     	if(nowa.getPrzystankiWlini() != null) {
+    	
+    		przystanekWLiniRepository.deleteAll(nowa.getPrzystankiWlini());
+    	
     		nowa.getPrzystankiWlini().clear();
     		nowa = liniaRepository.save(nowa);
     	}

@@ -132,7 +132,7 @@ const DriverInfo = () => {
             <button className="infoBtn" onClick={saveChanges} >Zapisz zmiany</button>
             <div>
             <Link className="infoBtn" to={`/bus_stop`}>Powrót do przystanków</Link>
-            <Link className="infoBtn" to={`/bus_line`}>Powrót do liń</Link>
+            <Link className="infoBtn" to={`/bus_line`}>Powrót do lini</Link>
             </div>
             </div>
         </div>

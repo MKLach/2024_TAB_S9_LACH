@@ -59,6 +59,18 @@ const BusLineInfo = () => {
     return (
         <div className="pt-40">
             <h2>Lista przystanków linii "{lineData.numer || ''}":</h2>
+            
+                  <input
+                    className="checkBox"
+                    type="checkbox"
+                    id="odwrotna"
+                    name="odwrotna"
+                    checked={lineData.odwracalna}
+                    disabled='true'
+                    
+                  />
+                  <label>  Odwracalna</label>
+                
             <div className="listDiv">
                 <table className="tableFormat">
                     <thead>
@@ -66,6 +78,8 @@ const BusLineInfo = () => {
                             <th>Kolejność</th>
                             <th>ID</th>
                             <th>Przystanek</th>
+                            <th>Adres</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -76,6 +90,7 @@ const BusLineInfo = () => {
                                     <td>{stop.kolejnosc}</td>
                                     <td>{stop.przystanekId}</td>
                                     <td><Link className="infoBtn" to={`/bus_stop/info/${stop.przystanekId}`}>{stop.nazwa}</Link></td>
+                                    <td>{stop.adres}</td>
                                 </tr>
                             ))}
                     </tbody>

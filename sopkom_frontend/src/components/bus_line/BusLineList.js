@@ -29,7 +29,7 @@ const BusLineList = () => {
 
   return (
             <div className="pt-40">
-                    <h2>Lista kursów:</h2>
+                    <h2>Lista Lini Autobusowych:</h2>
                 <div className="addDiv">
                     <Link className="infoBtn" to={`/bus_line/save`}>Dodaj linię</Link>
                 </div>
