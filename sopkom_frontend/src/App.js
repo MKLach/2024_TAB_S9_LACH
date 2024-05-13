@@ -16,6 +16,7 @@ import BusStopAdd from './components/bus_stop/BusStopAdd';
 import BusLineList from './components/bus_line/BusLineList';
 import BusLineInfo from './components/bus_line/BusLineInfo';
 import BusLineAdd from './components/bus_line/BusLineAdd';
+import BusLineEdit from './components/bus_line/BusLineEdit';
 
 import Navbar from './components/Navbar';
 import Dashboard from  './components/Dashboard';
@@ -71,6 +72,7 @@ function App() {
           <Route path="/bus_line" element={<BusLineList />} />
           <Route path="/bus_line/info/:id" element={<BusLineInfo />} />
           <Route path="/bus_line/save" element={<BusLineAdd />} />
+          <Route path="/bus_line/edit/:id" element={<BusLineEdit />} />
 
 
           <Route path="/bus" element={<BusList />} />

@@ -129,8 +129,11 @@ const DriverInfo = () => {
                 </tbody>
             </table>
             <div>
-            <Link className="infoBtn" to={`/bus_stop`}>Powrót</Link>
             <button className="infoBtn" onClick={saveChanges} >Zapisz zmiany</button>
+            <div>
+            <Link className="infoBtn" to={`/bus_stop`}>Powrót do przystanków</Link>
+            <Link className="infoBtn" to={`/bus_line`}>Powrót do liń</Link>
+            </div>
             </div>
         </div>
         </div>

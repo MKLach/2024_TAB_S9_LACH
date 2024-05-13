@@ -21,10 +21,9 @@ const BusLineInfo = () => {
     const [lineData, setLineData] = useState(null);
     const [busStopData, setBusStopData] = useState([]);
     const listId = extractLastPathComponent(window.location.pathname);
-    console.log(listId);
     const getLineData = async () => {
         try {
-            const response = await fetch(SERVER_URL + '/api/linia/' +  + extractLastPathComponent(window.location.pathname), { method: 'GET', credentials: 'include' });
+            const response = await fetch(SERVER_URL + '/api/linia/' + listId, { method: 'GET', credentials: 'include' });
             if (!response.ok) {
                 throw new Error('error on get');
             }
@@ -84,7 +83,7 @@ const BusLineInfo = () => {
             </div>
 
             <Link className="infoBtn" to={`/bus_line`}>Powrót</Link>
-            <Link className="infoBtn" to={`/bus_line`}>Edytuj linię</Link>
+            <Link className="infoBtn" to={`/bus_line/edit/${listId}`}>Edytuj linię</Link>
 
         </div>
     );

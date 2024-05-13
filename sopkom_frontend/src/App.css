@@ -145,3 +145,8 @@ hover:route{
     width: 500px;
     text-align: center;
 }
+
+.checkBox{
+    transform: scale(2);
+    margin-right: 10px;
+}

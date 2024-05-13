@@ -29,7 +29,7 @@ const BusStopAdd = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to add driver");
+        throw new Error("Failed to add bus stop");
       }
 
       setTimeout(() => {
