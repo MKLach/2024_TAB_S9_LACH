@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect , useState} from 'react';
-import {SERVER_URL} from './constant';
+import {SERVER_URL} from '../constant';
 import { Link } from "react-router-dom";
 import { useHistory } from 'react-router-dom';
 
@@ -85,7 +85,7 @@ const DriverInfo = () => {
                 }
                 setTimeout(() => {
                     window.location.href = '/driver';
-                }, 200);
+                }, 100);
 
             } catch (error) {
                 setSavedMessage("Nie udało się usunąć kierowcy.");

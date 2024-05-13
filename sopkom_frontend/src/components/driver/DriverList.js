@@ -1,6 +1,6 @@
 import React from 'react'
 import {useEffect , useState} from 'react';
-import {SERVER_URL} from './constant';
+import {SERVER_URL} from '../constant';
 import { Link } from "react-router-dom";
 
 const DriverList = () => {
@@ -30,7 +30,7 @@ const DriverList = () => {
         <div className="pt-40">
                     <h2>Kierowcy:</h2>
             <div className="addDiv">
-            <Link className="infoBtn" to={`/driver/save`}>Dodaj kierowcę</Link>
+                <Link className="infoBtn" to={`/driver/save`}>Dodaj kierowcę</Link>
             </div>
             <div className="listDiv">
             <table className="tableFormat">

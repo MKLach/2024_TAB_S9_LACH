@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect , useState} from 'react';
-import {SERVER_URL} from './constant';
+import {SERVER_URL} from '../constant';
 import { Link } from "react-router-dom";
 
 

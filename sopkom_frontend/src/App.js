@@ -1,11 +1,22 @@
 import React, { useEffect , useState} from 'react';
 import {SERVER_URL} from './components/constant';
 import './App.css';
-import DriverList from './components/DriverList';
-import DriverAdd from './components/DriverAdd';
-import DriverInfo from './components/DriverInfo';
-import BusInfo from './components/BusInfo';
-import BusList from './components/BusList';
+import DriverList from './components/driver/DriverList';
+import DriverAdd from './components/driver/DriverAdd';
+import DriverInfo from './components/driver/DriverInfo';
+
+import BusInfo from './components/bus/BusInfo';
+import BusAdd from './components/bus/BusAdd';
+import BusList from './components/bus/BusList';
+
+import BusStopList from './components/bus_stop/BusStopList';
+import BusStopInfo from './components/bus_stop/BusStopInfo';
+import BusStopAdd from './components/bus_stop/BusStopAdd';
+
+import BusLineList from './components/bus_line/BusLineList';
+import BusLineInfo from './components/bus_line/BusLineInfo';
+import BusLineAdd from './components/bus_line/BusLineAdd';
+
 import Navbar from './components/Navbar';
 import Dashboard from  './components/Dashboard';
 import UserPage from './components/UserPage';
@@ -42,6 +53,7 @@ function App() {
   useEffect(()=>{
     getUser();
   }, []);
+
   return (
     <Router>
       <div className="App">
@@ -51,8 +63,20 @@ function App() {
           <Route path="/driver" element={<DriverList />} />
           <Route path="/driver/save" element={<DriverAdd />} />
           <Route path="/driver/info/:id" element={<DriverInfo />} />
+
+          <Route path="/bus_stop" element={<BusStopList />} />
+          <Route path="/bus_stop/save" element={<BusStopAdd />} />
+          <Route path="/bus_stop/info/:id" element={<BusStopInfo />} />
+
+          <Route path="/bus_line" element={<BusLineList />} />
+          <Route path="/bus_line/info/:id" element={<BusLineInfo />} />
+          <Route path="/bus_line/save" element={<BusLineAdd />} />
+
+
           <Route path="/bus" element={<BusList />} />
+          <Route path="/bus/save" element={<BusAdd />} />
           <Route path="/bus/info/:id" element={<BusInfo />} />
+
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/me" element={<UserPage/>} />
           <Route path="*" element={<NotFound />} />

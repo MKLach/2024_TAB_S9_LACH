@@ -1,0 +1,140 @@
+import React from 'react'
+import { useEffect , useState} from 'react';
+import {SERVER_URL} from '../constant';
+import { Link } from "react-router-dom";
+
+
+function extractLastPathComponent(url) {
+    let index = 0;
+    let result = "";
+    for (let i = url.length - 1; i > 0; i--) {
+        if (url[i] === '/') {
+            index = i;
+            break;
+        }
+    }
+    for (let i = index; i < url.length; i++) {
+        result += url[i];
+    }
+    return result;
+}
+
+const DriverInfo = () => {
+	const [stopData, setStopData] = useState([]);
+    const [savedMessage, setSavedMessage] = useState("");
+
+    const saveChanges = async () => {
+        try {
+            const response = await fetch(SERVER_URL + "/api/przystanek/" + stopData.przystanekId, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(stopData)
+            });
+            if (!response.ok) {
+                throw new Error("Failed to save changes");
+            }
+            setSavedMessage("Zmiany zostały zapisane pomyślnie!");
+        } catch (error) {
+            setSavedMessage("Zmiany nie zostały zapisane.");
+
+        }
+    };
+
+
+	const getStopData = async () => {
+
+		try {
+			const response = await fetch(SERVER_URL + "/api/przystanek"+extractLastPathComponent(window.location.href), {method: "GET", credentials: "include"});
+			if(!response.ok){
+				throw new Error("error on get 2");
+			}
+			const data = await response.json();
+			setStopData(data);
+
+		} catch (error){
+
+
+		}
+	}
+
+    useEffect(() => {
+        getStopData();
+    }, []);
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setStopData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
+    const deleteStop = async () => {
+            try {
+                const response = await fetch(SERVER_URL + "/api/przystanek/" + stopData.przystanekId, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error("Failed to delete driver");
+                }
+                setTimeout(() => {
+                    window.location.href = '/bus_stop';
+                }, 100);
+
+            } catch (error) {
+                let errorMessage = error.message;
+                if (error.message.includes(errorMessage)) {
+                    setSavedMessage("Nie można usunąć przystanku - występuje on w linii");
+                } else {
+                    setSavedMessage("Nie udało się usunąć przystanku.");
+                }
+            }
+        };
+
+    return (
+        <div className="pt-40">
+           <div className="listDiv">
+            {savedMessage && <p>{savedMessage}</p>}
+
+            <table className="tableFormat">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nazwa</th>
+                        <th>Miasto</th>
+                        <th>Ulica</th>
+                        <th>Kod pocztowy</th>
+                        <th>Długość geogradiczna</th>
+                        <th>Szerokość geogradiczna</th>
+                        <th>Przystanek odwrotny</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{stopData.przystanekId}</td>
+                        <td><input className="infoInput" type="text" name="nazwa" value={stopData.nazwa || ''} onChange={handleInputChange} /></td>
+                        <td><input className="infoInput" type="text" name="miasto" value={stopData.miasto || ''} onChange={handleInputChange} /></td>
+                        <td><input className="infoInput" type="text" name="ulica" value={stopData.ulica || ''} onChange={handleInputChange} /></td>
+                        <td><input className="infoInput" type="text" name="kodPocztowy" value={stopData.kodPocztowy || ''} onChange={handleInputChange} /></td>
+                        <td><input className="infoInput" type="text" name="dlugoscGeograficzna" value={stopData.dlugoscGeograficzna || ''} onChange={handleInputChange} /></td>
+                        <td><input className="infoInput" type="text" name="szerokoscGeograficzna" value={stopData.szerokoscGeograficzna || ''} onChange={handleInputChange} /></td>
+                        <td><input className="infoInput" type="text" name="przystanekOdwrotnyNazwa" value={stopData.przystanekOdwrotnyNazwa || 'brak'} onChange={handleInputChange} /></td>
+                        <td><button className="infoBtn" onClick={deleteStop} >Usuń</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+            <Link className="infoBtn" to={`/bus_stop`}>Powrót</Link>
+            <button className="infoBtn" onClick={saveChanges} >Zapisz zmiany</button>
+            </div>
+        </div>
+        </div>
+    )
+}
+
+export default DriverInfo

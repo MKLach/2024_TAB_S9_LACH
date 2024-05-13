@@ -73,12 +73,9 @@ public class AutobusController {
 	
 	@PostMapping("/save")
 	public ResponseEntity<?> addAutobus(@RequestBody AutobusDto autobusDto){
-	
-		
-		
+
 		var autobus =  autobusService.saveAutobus(autobusDto);
-		
-	
+
 		return new ResponseEntity<>(new AutobusDto(autobus), HttpStatus.OK);
 		
 	}

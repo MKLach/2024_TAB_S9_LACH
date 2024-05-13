@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect , useState} from 'react';
-import {SERVER_URL} from './constant';
+import {SERVER_URL} from '../constant';
 import { Link } from "react-router-dom";
 
 
@@ -30,9 +30,11 @@ const BusList = () => {
   return (
             <div className="pt-40">
                     <h2>Autobusy:</h2>
+                <div className="addDiv">
+                    <Link className="infoBtn" to={`/bus/save`}>Dodaj autobus</Link>
+                </div>
+
                 <div className="listDiv">
-
-
                     <table className="tableFormat">
                         <thead>
                             <tr>
