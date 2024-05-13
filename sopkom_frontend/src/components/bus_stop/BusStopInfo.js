@@ -19,9 +19,10 @@ function extractLastPathComponent(url) {
     return result;
 }
 
-const DriverInfo = () => {
+const BusStopInfo = () => {
 	const [stopData, setStopData] = useState([]);
     const [savedMessage, setSavedMessage] = useState("");
+    const [availableStops, setAvailableStops] = useState([]);
 
     const saveChanges = async () => {
         try {
@@ -59,8 +60,22 @@ const DriverInfo = () => {
 		}
 	}
 
+    const getAvailableStops = async () => {
+        try {
+            const response = await fetch(SERVER_URL + "/api/przystanek", { method: "GET", credentials: "include" });
+            if (!response.ok) {
+                throw new Error("error on get available stops");
+            }
+            const data = await response.json();
+            setAvailableStops(data);
+        } catch (error) {
+            // handle error
+        }
+    };
+
     useEffect(() => {
         getStopData();
+        getAvailableStops();
     }, []);
 
     const handleInputChange = (e) => {
@@ -80,19 +95,14 @@ const DriverInfo = () => {
                     }
                 });
                 if (!response.ok) {
-                    throw new Error("Failed to delete driver");
+                    throw new Error("Failed to delete bus stop");
                 }
                 setTimeout(() => {
                     window.location.href = '/bus_stop';
                 }, 100);
 
             } catch (error) {
-                let errorMessage = error.message;
-                if (error.message.includes(errorMessage)) {
-                    setSavedMessage("Nie można usunąć przystanku - występuje on w linii");
-                } else {
-                    setSavedMessage("Nie udało się usunąć przystanku.");
-                }
+                setSavedMessage("Nie udało się usunąć przystanku.");
             }
         };
 
@@ -123,7 +133,17 @@ const DriverInfo = () => {
                         <td><input className="infoInput" type="text" name="kodPocztowy" value={stopData.kodPocztowy || ''} onChange={handleInputChange} /></td>
                         <td><input className="infoInput" type="text" name="dlugoscGeograficzna" value={stopData.dlugoscGeograficzna || ''} onChange={handleInputChange} /></td>
                         <td><input className="infoInput" type="text" name="szerokoscGeograficzna" value={stopData.szerokoscGeograficzna || ''} onChange={handleInputChange} /></td>
-                        <td><input className="infoInput" type="text" name="przystanekOdwrotnyNazwa" value={stopData.przystanekOdwrotnyNazwa || 'brak'} onChange={handleInputChange} /></td>
+                        <td>
+                            <select className="selectInput" name="przystanekOdwrotny" value={stopData.przystanekOdwrotny || 'brak'} onChange={handleInputChange}>
+                                <option value="null">Brak</option>
+                                {availableStops.map(stop => {
+                                    if (stop.przystanekId === stopData.przystanekId) {
+                                        return null;
+                                    }
+                                    return <option key={stop.przystanekId} value={stop.przystanekId}>{stop.przystanekId} - {stop.nazwa}</option>;
+                                })}
+                            </select>
+                        </td>
                         <td><button className="infoBtn" onClick={deleteStop} >Usuń</button></td>
                     </tr>
                 </tbody>
@@ -140,4 +160,4 @@ const DriverInfo = () => {
     )
 }
 
-export default DriverInfo
+export default BusStopInfo

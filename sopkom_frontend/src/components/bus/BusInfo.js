@@ -112,7 +112,7 @@ const BusInfo = () => {
                             <tr>
                                 <th>ID</th>
                                 <th>Numer rejestracyjny</th>
-                                <th>Status</th>
+                                <th>Czy jest sprawny?</th>
                                 <th>Ważność przeglądu</th>
                                 <th>Przebieg</th>
                             </tr>
@@ -121,7 +121,18 @@ const BusInfo = () => {
                                 <tr>
                                     <td>{busData.autbousId}</td>
                                     <td><input className="infoInput" type="text" name="numerRejestracyjny" value={busData.numerRejestracyjny || ''} onChange={handleInputChange} /></td>
-                                    <td><input className="infoInput" type="text" name="status" value={busData.status || ''} onChange={handleInputChange} /></td>
+                                    <td>
+                                        <input
+                                            className="checkBox"
+                                            type="checkbox"
+                                            name="status"
+                                            checked={busData.status === "OK"}
+                                                    onChange={(e) => {
+                                                        const value = e.target.checked ? "OK" : "uszkodzony";
+                                                        handleInputChange({ target: { name: "status", value }});
+                                                    }}
+                                        />
+                                    </td>
                                     <td><input className="infoInput" type="text" name="przegladWaznyDo" value={busData.przegladWaznyDo || ''} onChange={handleInputChange} /></td>
                                     <td><input className="infoInput" type="text" name="przebieg" value={busData.przebieg || ''} onChange={handleInputChange} /></td>
                                     <td><button className="infoBtn" onClick={deleteBus} >Usuń</button></td>

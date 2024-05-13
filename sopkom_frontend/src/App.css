@@ -102,6 +102,11 @@ hover:route{
     width: 200px;
 }
 
+.selectInput{
+    text-align:center;
+    width: 250px;
+}
+
 .addDiv{
     float: right;
     margin-right: 20px;

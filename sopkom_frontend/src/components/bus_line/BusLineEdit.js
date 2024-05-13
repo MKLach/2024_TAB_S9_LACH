@@ -35,9 +35,6 @@ const BusLineEdit = () => {
   useEffect(() => {
     getLineData();
     fetchBusStops();
-    //handleAddNewStop();
-   // handleAddNewStop();
-    //handleAddNewStop();
   }, []);
 
 	const getLineData = async () => {
@@ -120,7 +117,7 @@ const BusLineEdit = () => {
         window.location.href = '/bus_line';
       }, 100);
 
-      setSavedMessage("Dodano przystanek");
+      setSavedMessage("Zaktualizowano Linię");
 
     } catch (error) {
       setSavedMessage("Nie udało się dodać linii! " + error.message);
@@ -251,7 +248,9 @@ const handleChange = (e, index) => {
           <button className="infoBtn" type="submit">Aktualizuj linię</button>
         </form>
       </div>
-      <button className="infoBtn" onClick={deleteBusLine}>Usuń linię</button>
+        <div>
+            <button className="infoBtn" onClick={deleteBusLine}>Usuń linię</button>
+        </div>
       <Link className="infoBtn" to={`/bus_line/info/${listId}`}>Powrót</Link>
     </div>
   );

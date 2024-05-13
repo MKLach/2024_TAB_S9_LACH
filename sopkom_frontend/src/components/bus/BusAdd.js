@@ -83,15 +83,18 @@ const BusAdd = () => {
                 </td>
               </tr>
               <tr>
-                <td className="addWhat">Status:</td>
+                <td className="addWhat">Czy jest sprawny:</td>
                 <td>
-                  <input className="addInput"
-                    type="text"
-                    name="status"
-                    value={formData.status}
-                    onChange={handleChange}
-                    required
-                  />
+                    <input
+                        className="checkBox"
+                        type="checkbox"
+                        name="status"
+                        checked={formData.status === "OK"}
+                        onChange={(e) => {
+                            const value = e.target.checked ? "OK" : "uszkodzony";
+                            handleChange({ target: { name: "status", value }});
+                        }}
+                    />
                 </td>
               </tr>
               <tr>

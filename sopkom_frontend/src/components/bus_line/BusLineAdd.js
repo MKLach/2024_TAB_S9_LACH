@@ -16,8 +16,6 @@ const BusLineAdd = () => {
   useEffect(() => {
     fetchBusStops();
     handleAddNewStop();
-   // handleAddNewStop();
-   // handleAddNewStop();
   }, []);
 
   const fetchBusStops = async () => {
@@ -55,7 +53,7 @@ const BusLineAdd = () => {
       setSavedMessage("Dodano przystanek");
 
     } catch (error) {
-      setSavedMessage("Nie udało się dodać linii! " + error.message);
+      setSavedMessage("Nie udało się dodać linii! ");
     }
   };
 
