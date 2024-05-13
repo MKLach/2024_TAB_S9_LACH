@@ -158,7 +158,7 @@ const handleChange = (e, index) => {
 
 
   const handleRemoveStop = (index) => {
-    if (formData.przystanki.length <= 3) {
+    if (formData.przystanki.length <= 2) {
       return;
     }
     const newPrzystanki = [...formData.przystanki];
@@ -235,7 +235,7 @@ const handleChange = (e, index) => {
                     </select>
                   </td>
                   <td>
-                    {(formData.przystanki.length > 3) && (
+                    {(formData.przystanki.length > 2 && formData.przystanki.length-1 === index) && (
                       <button className="infoBtn" type="button" onClick={() => handleRemoveStop(index)}>Usuń</button>
                     )}
                   </td>

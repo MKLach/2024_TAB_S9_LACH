@@ -20,7 +20,9 @@ function extractLastPathComponent(url) {
 }
 
 const BusStopInfo = () => {
-	const [stopData, setStopData] = useState([]);
+	const [stopData, setStopData] = useState({
+	    nazwa: ''
+	});
     const [savedMessage, setSavedMessage] = useState("");
     const [availableStops, setAvailableStops] = useState([]);
 
@@ -106,6 +108,8 @@ const BusStopInfo = () => {
             }
         };
 
+
+
     return (
         <div className="pt-40">
            <div className="listDiv">
@@ -134,8 +138,8 @@ const BusStopInfo = () => {
                         <td><input className="infoInput" type="text" name="dlugoscGeograficzna" value={stopData.dlugoscGeograficzna || ''} onChange={handleInputChange} /></td>
                         <td><input className="infoInput" type="text" name="szerokoscGeograficzna" value={stopData.szerokoscGeograficzna || ''} onChange={handleInputChange} /></td>
                         <td>
-                            <select className="selectInput" name="przystanekOdwrotny" value={stopData.przystanekOdwrotny || 'brak'} onChange={handleInputChange}>
-                                <option value="null">Brak</option>
+                            <select disabled={stopData.nazwa.includes("ODW")} className="selectInput" name="przystanekOdwrotny" value={stopData.przystanekOdwrotny || 'brak'} onChange={handleInputChange}>
+                                <option value="-1">Brak</option>
                                 {availableStops.map(stop => {
                                     if (stop.przystanekId === stopData.przystanekId) {
                                         return null;

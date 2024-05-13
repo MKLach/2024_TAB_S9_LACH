@@ -10,7 +10,7 @@ const BusStopList = () => {
 	const getBusStopData = async () => {
 
 		try {
-			const response = await fetch(SERVER_URL + "/api/przystanek/full", {method: "GET", credentials: "include"});
+			const response = await fetch(SERVER_URL + "/api/przystanek", {method: "GET", credentials: "include"});
 			if(!response.ok){
 				throw new Error("error on get 2");
 			}

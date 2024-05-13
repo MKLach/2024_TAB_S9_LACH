@@ -94,16 +94,22 @@ public class PrzystanekController {
         
         
         if(przystanekDto.getPrzystanekOdwrotny() != null) {
-        	
-            var przystanekOdwrotny = przystanekRepo.findById(przystanekDto.getPrzystanekOdwrotny());   
-            
-            if(przystanekOdwrotny.isPresent()) {
-            	przystanek.setPrzystanekOdwrotny(przystanekOdwrotny.get());
 
-            } else {
-            	System.out.println("no przystanek odwrotny present!");
+            if(przystanekDto.getPrzystanekOdwrotny().longValue()==-1) {
+                przystanek.setPrzystanekOdwrotny(null);
+            }else{
+
+                var przystanekOdwrotny = przystanekRepo.findById(przystanekDto.getPrzystanekOdwrotny());
+
+                if(przystanekOdwrotny.isPresent()) {
+                    przystanek.setPrzystanekOdwrotny(przystanekOdwrotny.get());
+
+                } else {
+                    System.out.println("no przystanek odwrotny present!");
+                }
+
             }
-            
+
             
         }
         

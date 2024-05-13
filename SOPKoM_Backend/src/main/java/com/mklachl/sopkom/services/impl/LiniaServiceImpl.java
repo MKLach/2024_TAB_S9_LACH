@@ -131,6 +131,7 @@ public class LiniaServiceImpl implements LiniaService {
     	}
     	
     	nowa.setPrzystankiWlini(przystankiIn);
+        nowa.setNumer(liniaDto.getNumer());
     	
         return liniaRepository.save(nowa);
     }
