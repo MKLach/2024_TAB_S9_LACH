@@ -9,9 +9,14 @@ import BusInfo from './components/bus/BusInfo';
 import BusAdd from './components/bus/BusAdd';
 import BusList from './components/bus/BusList';
 
+import CourseAdd from './components/course/CourseAdd';
+import CourseList from './components/course/CourseList';
+import CourseEdit from './components/course/CourseEdit';
+
 import BusStopList from './components/bus_stop/BusStopList';
 import BusStopInfo from './components/bus_stop/BusStopInfo';
 import BusStopAdd from './components/bus_stop/BusStopAdd';
+import BusStopCourses from './components/bus_stop/BusStopCourses';
 
 import BusLineList from './components/bus_line/BusLineList';
 import BusLineInfo from './components/bus_line/BusLineInfo';
@@ -55,6 +60,8 @@ function App() {
     getUser();
   }, []);
 
+//          <Route path="/bus_stop/courses/:id" element={<BusStopCourses />} />
+
   return (
     <Router>
       <div className="App">
@@ -74,6 +81,9 @@ function App() {
           <Route path="/bus_line/save" element={<BusLineAdd />} />
           <Route path="/bus_line/edit/:id" element={<BusLineEdit />} />
 
+          <Route path="/course" element={<CourseList />} />
+          <Route path="/course/save" element={<CourseAdd />} />
+          <Route path="/course/edit/:id" element={<CourseEdit />} />
 
           <Route path="/bus" element={<BusList />} />
           <Route path="/bus/save" element={<BusAdd />} />

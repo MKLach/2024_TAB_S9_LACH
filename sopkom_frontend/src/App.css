@@ -151,7 +151,19 @@ hover:route{
     text-align: center;
 }
 
+.dropDownCourse{
+    width: 250px;
+    text-align: center;
+}
+
 .checkBox{
     transform: scale(2);
     margin-right: 10px;
+}
+
+.deleteCourse{
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    padding: 2%;
 }
