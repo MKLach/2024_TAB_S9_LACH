@@ -1,10 +1,10 @@
 package com.mklachl.sopkom.services;
 
+import com.mklachl.sopkom.model.dto.linia.LiniaDtoInput;
+import com.mklachl.sopkom.model.dto.linia.LiniaDtoOutput;
 import com.mklachl.sopkom.model.entity.Linia;
 import com.mklachl.sopkom.exceptions.LiniaNotFoundException;
 import com.mklachl.sopkom.exceptions.PrzystanekNotFoundException;
-import com.mklachl.sopkom.model.dto.LiniaDtoOutput;
-import com.mklachl.sopkom.model.dto.LiniaDtoInput;
 
 import java.util.Optional;
 

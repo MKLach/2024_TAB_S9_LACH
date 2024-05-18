@@ -1,4 +1,4 @@
-package com.mklachl.sopkom.model.dto;
+package com.mklachl.sopkom.model.dto.linia;
 
 import com.mklachl.sopkom.model.entity.Przystanek;
 import com.mklachl.sopkom.model.entity.PrzystanekWlini;

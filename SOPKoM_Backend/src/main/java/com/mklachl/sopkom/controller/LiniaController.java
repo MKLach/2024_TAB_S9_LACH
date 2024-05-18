@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mklachl.sopkom.exceptions.LiniaNotFoundException;
 import com.mklachl.sopkom.exceptions.PrzystanekNotFoundException;
-import com.mklachl.sopkom.model.dto.LiniaDtoInput;
-import com.mklachl.sopkom.model.dto.LiniaDtoOutput;
-import com.mklachl.sopkom.model.dto.PrzystanekDtoDlaLinia;
-import com.mklachl.sopkom.model.dto.PrzystanekDtoDlaLiniaInput;
+import com.mklachl.sopkom.model.dto.linia.LiniaDtoInput;
+import com.mklachl.sopkom.model.dto.linia.LiniaDtoOutput;
+import com.mklachl.sopkom.model.dto.linia.PrzystanekDtoDlaLinia;
+import com.mklachl.sopkom.model.dto.linia.PrzystanekDtoDlaLiniaInput;
 import com.mklachl.sopkom.model.entity.Linia;
 import com.mklachl.sopkom.repository.LiniaRepository;
 import com.mklachl.sopkom.services.LiniaService;
