@@ -112,19 +112,6 @@ const BusLineAdd = () => {
                 </th>
               </tr>
               <tr>
-               {/* <th className="addWhat">
-                  <label htmlFor="odwrotna">Odwrotna trasa:</label>
-                </th>
-                <th>
-                  <input
-                    className="checkBox"
-                    type="checkbox"
-                    id="odwrotna"
-                    name="odwrotna"
-                    checked={formData.odwrotna}
-                    onChange={handleChange}
-                  />
-                </th>*/}
               </tr>
             </thead>
             <tbody>

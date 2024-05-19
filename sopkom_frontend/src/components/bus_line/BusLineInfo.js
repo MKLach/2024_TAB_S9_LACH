@@ -21,6 +21,7 @@ const BusLineInfo = () => {
     const [lineData, setLineData] = useState(null);
     const [busStopData, setBusStopData] = useState([]);
     const listId = extractLastPathComponent(window.location.pathname);
+
     const getLineData = async () => {
         try {
             const response = await fetch(SERVER_URL + '/api/linia/' + listId, { method: 'GET', credentials: 'include' });
