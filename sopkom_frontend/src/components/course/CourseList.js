@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { SERVER_URL } from '../constant';
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 const CourseList = () => {
   const [lineData, setLineData] = useState([]);
   const [selectedLine, setSelectedLine] = useState('');
-  const [stopsData, setStopsData] = useState([]);
+  const [coursesData, setCouresData] = useState([]);
   const [courseId, setCourseId] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const getLineData = async () => {
     try {
@@ -16,6 +17,12 @@ const CourseList = () => {
       }
       const data = await response.json();
       setLineData(data);
+      if(searchParams.get("linia_id")){
+		
+		setSelectedLine(searchParams.get("linia_id"));
+		
+	  }
+      
     } catch (error) {
       console.error("Error fetching line data:", error);
     }
@@ -28,7 +35,7 @@ const CourseList = () => {
         throw new Error("Error fetching stops data");
       }
       const data = await response.json();
-      setStopsData(data);
+      setCouresData(data);
     } catch (error) {
       console.error("Error fetching stops data:", error);
     }
@@ -42,7 +49,7 @@ const CourseList = () => {
     if (selectedLine) {
       getStopsData(selectedLine);
     } else {
-      setStopsData([]);
+      setCouresData([]);
     }
   }, [selectedLine]);
 
@@ -90,7 +97,46 @@ const CourseList = () => {
       </div>
 
       <div className="listDiv">
-        {stopsData.length > 0 && (
+       
+        {coursesData.length > 0 && (
+         
+			 coursesData.map((course) =>(
+				<div>
+				   <p>{course.kursId} Kierunek - {course.kierunek == 0 && "Normalny"} {course.kierunek == 1 && "Odwrotny"}</p>
+				  <table key = {course.kursId} className="tableFormat">
+					   <thead>
+			              <tr>
+			                <th>Przystanek</th>
+			                <th>Godzina</th>
+			              </tr>
+			            </thead>
+				  		<tbody>
+						{
+ 							course.przystanki.sort((a,b) => {
+									if(course.kierunek == 0){
+										
+										return a.przystanekWLini.kolejnosc - b.przystanekWLini.kolejnosc;
+									} else {
+										
+										return b.przystanekWLini.kolejnosc - a.przystanekWLini.kolejnosc;
+									}
+								}
+							 ).map((stop) => (
+			                  <tr key={stop.przystanekwKursieId}>
+			                    <td>{stop.przystanekWLini.nazwa}</td>
+			                    <td>{formatTime(stop.godzinna)}</td>
+			                  </tr>
+			                ))
+			             }
+				  		</tbody>
+				  </table>
+				    <Link className="infoBtn" to={`/course/edit?kurs_id=${course.kursId}`}>Edytuj kurs</Link>
+				</div>
+			 )
+			 
+		 )
+         
+          /*
           <table className="tableFormat">
             <thead>
               <tr>
@@ -99,7 +145,8 @@ const CourseList = () => {
               </tr>
             </thead>
             <tbody>
-              {stopsData.map((course) =>
+              {coursesData.map((course) =>
+              
                 course.przystanki.map((stop) => (
                   <tr key={stop.przystanekwKursieId}>
                     <td>{stop.przystanekWLini.nazwa}</td>
@@ -109,12 +156,11 @@ const CourseList = () => {
               )}
             </tbody>
           </table>
+        */
+        
         )}
 
       </div>
-      {stopsData.length > 0 && (
-          <Link className="infoBtn" to={`/course/edit/${courseId}`}>Edytuj kurs</Link>
-      )}
     </div>
   )
 }
