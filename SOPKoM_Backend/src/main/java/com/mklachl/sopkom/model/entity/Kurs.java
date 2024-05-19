@@ -1,13 +1,7 @@
 package com.mklachl.sopkom.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "kursy")
@@ -31,6 +25,9 @@ public class Kurs {
     @Column(name = "typ_autobusu", nullable = false)
     private Short typAutobusu;
 
+    @OneToMany(mappedBy = "kurs")
+    private List<KursPrzystanekWlini> kursPrzystanekWlinii;
+
     // Getters
     public Long getKursId() {
         return kursId;
@@ -52,6 +49,8 @@ public class Kurs {
         return typAutobusu;
     }
 
+    public List<KursPrzystanekWlini> getKursPrzystanekWlinii() { return kursPrzystanekWlinii; }
+
     // Setters
     public void setKursId(Long kursId) {
         this.kursId = kursId;
@@ -72,4 +71,6 @@ public class Kurs {
     public void setTypAutobusu(Short typAutobusu) {
         this.typAutobusu = typAutobusu;
     }
+
+    public void setKursPrzystanekWlinii(List<KursPrzystanekWlini> kursPrzystanekWlinii) { this.kursPrzystanekWlinii = kursPrzystanekWlinii; }
 }

@@ -4,6 +4,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "przystanekwlini")
@@ -25,6 +26,9 @@ public class PrzystanekWlini {
     @Column(name = "kolejnosc", nullable = false)
     private Short kolejnosc;
 
+    @OneToMany(mappedBy = "przystanekWlini")
+    private List<KursPrzystanekWlini> kursPrzystanekWlinii;
+
     // Getters
     public Long getPrzystanekWliniId() {
         return przystanekWliniId;
@@ -42,6 +46,8 @@ public class PrzystanekWlini {
         return kolejnosc;
     }
 
+    public List<KursPrzystanekWlini> getKursPrzystanekWlinii() { return kursPrzystanekWlinii; }
+
     // Setters
     public void setPrzystanekWliniId(Long przystanekWliniId) {
         this.przystanekWliniId = przystanekWliniId;
@@ -58,4 +64,6 @@ public class PrzystanekWlini {
     public void setKolejnosc(Short kolejnosc) {
         this.kolejnosc = kolejnosc;
     }
+
+    public void setKursPrzystanekWlinii(List<KursPrzystanekWlini> kursPrzystanekWlinii) { this.kursPrzystanekWlinii = kursPrzystanekWlinii; }
 }
