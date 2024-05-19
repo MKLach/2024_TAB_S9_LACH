@@ -60,13 +60,6 @@ const CourseList = () => {
     return timeString.slice(0, 5);
   }
 
-  const editable = () => {
-    if(selectedLine.length > 0){
-        return courseId;
-    }
-    return false;
-  }
-
 
 //                <th>Adres</th>
 //                    <td>{stop.przystanekWLini.adres}</td>
@@ -119,7 +112,7 @@ const CourseList = () => {
         )}
 
       </div>
-      {editable() && (
+      {stopsData.length > 0 && (
           <Link className="infoBtn" to={`/course/edit/${courseId}`}>Edytuj kurs</Link>
       )}
     </div>

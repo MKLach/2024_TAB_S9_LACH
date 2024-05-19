@@ -18,16 +18,16 @@ function extractLastPathComponent(url) {
 }
 
 const CourseEdit = () => {
-    const [lineData, setLineData] = useState(null); // Set initial state to null
+    const [lineData, setLineData] = useState();
     const [selectedLine, setSelectedLine] = useState([]);
     const [harmonogramData, setHarmonogramData] = useState([]);
     const [stopsData, setStopsData] = useState([]);
-  const [savedMessage, setSavedMessage] = useState("");
+    const [savedMessage, setSavedMessage] = useState("");
     const courseId = extractLastPathComponent(window.location.pathname);
 
     const [formData, setFormData] = useState({
         linia: "",
-        kieruenk: "",
+        kierunek: "",
         przystanki: [{ przystanekId: "", godzinna: "" }]
     });
 
@@ -39,11 +39,27 @@ const CourseEdit = () => {
             }
             const data = await response.json();
             console.log("Line Data:", data); // Log the line data to check its structure
-            setLineData(data);
+            setFormData(data);
+            console.log("Form Data:", formData);
         } catch (error) {
             console.error("Error fetching line data:", error);
         }
     }
+
+
+
+  const getStopsData = async (lineId) => {
+    try {
+      const response = await fetch(`${SERVER_URL}/api/kurs/?linia_id=${lineId}`, { method: "GET", credentials: "include" });
+      if (!response.ok) {
+        throw new Error("Error fetching stops data");
+      }
+      const data = await response.json();
+      setStopsData(data);
+    } catch (error) {
+      console.error("Error fetching stops data:", error);
+    }
+  }
 
     const fetchHarmonogramData = async () => {
         try {
@@ -78,15 +94,25 @@ const CourseEdit = () => {
     }, []);
 
     const formatTime = (timeString) => {
-        return timeString.slice(0, 5);
+        return timeString ? timeString.slice(0, 5) : "";
     }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        const [key, index] = name.split('-');
+
+        if (key === 'godzinna') {
+            setFormData(prevFormData => {
+                const updatedPrzystanki = [...prevFormData.przystanki];
+                updatedPrzystanki[parseInt(index)].godzinna = value;
+                return { ...prevFormData, przystanki: updatedPrzystanki };
+            });
+        } else {
+            setFormData({ ...formData, [name]: value });
+        }
     };
 
-  const deleteBusLine = async () => {
+    const deleteCourse = async () => {
         try {
             const response = await fetch(SERVER_URL + "/api/kurs/" + courseId, {
                 method: "DELETE",
@@ -95,28 +121,47 @@ const CourseEdit = () => {
                 }
             });
             if (!response.ok) {
-                throw new Error("Failed to delete driver");
+                throw new Error("Failed to delete course");
             }
             setTimeout(() => {
                 window.location.href = '/course';
-            }, 100);
-
+            }, 500);
         } catch (error) {
             let errorMessage = error.message;
-                setSavedMessage("Nie udało się usunąć przystanku.");
+            setSavedMessage("Nie udało się usunąć kursu.");
         }
     };
 
+      const AddCourse = async () => {
+            try {
+                const response = await fetch(SERVER_URL + "/api/kurs/" + formData.kursId, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(formData)
+                });
+                console.log(response);
+                if (!response.ok) {
+                    throw new Error("Failed to save course");
+                }
+                setSavedMessage("Zmiany zostały zapisane.");
+            } catch (error) {
+                console.error("Error saving course:", error);
+                setSavedMessage("Nie udało się zapisać zmian.");
+            }
+        };
+
     return (
         <div className="pt-40">
-              <p>{savedMessage}</p>
+            <p>{savedMessage}</p>
             <div className="listDiv">
                 <table className="addFormat">
                     <tbody>
                         <tr>
                             <td className="addWhat">Linia:</td>
                             <td>
-                                <label>{lineData?.linia?.numer}</label>
+                                <label>{formData?.linia?.numer}</label>
                             </td>
                         </tr>
                         <tr>
@@ -175,15 +220,14 @@ const CourseEdit = () => {
                         </tr>
                     </thead>
                     <tbody>
-
-                        {lineData && lineData.przystanki && lineData.przystanki.map((stop) => (
+                        {formData.przystanki && formData.przystanki.map((stop, index) => (
                             <tr key={stop.przystanekwKursieId}>
-                                <td>{stop.przystanekWLini.nazwa}</td>
+                                <td>{stop.przystanekWLini?.nazwa}</td>
                                 <td>
                                     <input
                                         className="addInput"
                                         type="text"
-                                        name={`godzinna-${stop.przystanekId}`}
+                                        name={`godzinna-${index}`}
                                         value={formatTime(stop.godzinna)}
                                         onChange={handleChange}
                                         required
@@ -194,11 +238,11 @@ const CourseEdit = () => {
                     </tbody>
                 </table>
 
-                <button className="infoBtn" type="submit">Zapisz zmiany</button>
+                <button className="infoBtn" type="submit" onClick={AddCourse}>Zapisz zmiany</button>
 
                 <Link className="infoBtn" to={`/course`}>Powrót</Link>
                 <div className="deleteCourse">
-                    <button className="infoBtn" onClick={deleteBusLine}>Usuń kurs</button>
+                    <button className="infoBtn" onClick={deleteCourse}>Usuń kurs</button>
                 </div>
             </div>
         </div>
