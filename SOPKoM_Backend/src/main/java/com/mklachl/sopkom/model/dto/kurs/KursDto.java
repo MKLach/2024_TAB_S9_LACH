@@ -1,5 +1,6 @@
 package com.mklachl.sopkom.model.dto.kurs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mklachl.sopkom.model.dto.harmonogram.HarmonogramDto;
@@ -16,18 +17,23 @@ public class KursDto extends AbstractKursDto {
 	
 	boolean odwracalny;
 
-	private Short typAutobusu;
-	
+
 	public KursDto() {
 		
 	}
 
 	public KursDto(Kurs kurs) {
-		this.setKursId(kurs.getKursId());
+		super(kurs);
 		this.setLinia(new LiniaDto(kurs.getLinia()));
 		this.setHarmonogram(new HarmonogramDto(kurs.getHarmonogram()));
-		this.setKierunek(kurs.getKierunek());
-		this.setTypAutobusu(kurs.getTypAutobusu());
+		this.setOdwracalny(kurs.getLinia().odwracalna());
+		przystanki = new ArrayList<InputPrzystanekWKursieDto>();
+		
+		for(var k : kurs.getKursPrzystanekWlinii()) {
+			
+			przystanki.add(new InputPrzystanekWKursieDto(k));
+		}
+		
 	}
 
 	public List<InputPrzystanekWKursieDto> getPrzystanki() {
@@ -65,14 +71,5 @@ public class KursDto extends AbstractKursDto {
 		this.odwracalny = b;
 	}
 
-	public Short getTypAutobusu() {
-		return typAutobusu;
-	}
 
-	public void setTypAutobusu(Short typAutobusu) {
-		this.typAutobusu = typAutobusu;
-	}
-
-	
-	
 }

@@ -2,7 +2,16 @@ package com.mklachl.sopkom.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,12 +23,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mklachl.sopkom.model.dto.harmonogram.HarmonogramDto;
+import com.mklachl.sopkom.model.entity.Harmonogram;
+import com.mklachl.sopkom.repository.HarmonogramRepository;
+import com.mklachl.sopkom.services.HarmonogramService;
 
 @RestController
 @RequestMapping("api/harmonogram")
 public class HarmonogramController {
 
 	
+	// legacy
+	/*
 	public static List<HarmonogramDto> harmonograms = new ArrayList<HarmonogramDto>();
 	
 	static {
@@ -83,29 +97,43 @@ public class HarmonogramController {
         
 		
 	}
+	*/
+	@Autowired
+	HarmonogramService service;
 	
-	
+	@Autowired
+	HarmonogramRepository repository;
 	
     @PostMapping
     public ResponseEntity<HarmonogramDto> createHarmonogram(@RequestBody HarmonogramDto harmonogram) {
         //HarmonogramDTO createdHarmonogram = harmonogramService.createHarmonogram(harmonogram);
        
+    	
+    	
         return ResponseEntity.ok(harmonogram);
     }
 
     @GetMapping
     public ResponseEntity<List<HarmonogramDto>> getAllHarmonograms() {
       
-        return ResponseEntity.ok(harmonograms);
+    	var arr = new ArrayList<HarmonogramDto>();
+
+    	List<HarmonogramDto> dtoList = repository.findAll().stream()
+    			
+                 .map(harmonogram -> new HarmonogramDto(harmonogram))
+                 
+                 
+                 .collect(Collectors.toList());
+    	
+        return ResponseEntity.ok(dtoList);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HarmonogramDto> getHarmonogramById(@PathVariable(name = "id") short id) {
-        HarmonogramDto harmonogram = harmonograms.get(id-1);
-       
-        
+    public ResponseEntity<HarmonogramDto> getHarmonogramById(@PathVariable(name = "id") Short id) {
+      
+        var harmonogram = repository.findById(id).get();
         if (harmonogram != null) {
-            return ResponseEntity.ok(harmonogram);
+            return ResponseEntity.ok(new HarmonogramDto(harmonogram));
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -113,8 +141,8 @@ public class HarmonogramController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteHarmonogram(@PathVariable short id) {
-        harmonograms.remove(id-1);
+    public ResponseEntity<Void> deleteHarmonogram(@PathVariable Short id) {
+    	repository.deleteById(id);
         
         
         return ResponseEntity.ok().build();

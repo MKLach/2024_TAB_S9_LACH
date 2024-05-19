@@ -1,5 +1,6 @@
 package com.mklachl.sopkom.services;
 import com.mklachl.sopkom.model.dto.kurs.AbstractKursDto;
+import com.mklachl.sopkom.model.dto.kurs.InputKursDto;
 import com.mklachl.sopkom.model.dto.kurs.KursDto;
 import com.mklachl.sopkom.model.entity.Harmonogram;
 import com.mklachl.sopkom.model.entity.Kurs;
@@ -11,7 +12,9 @@ public interface KursService {
 
     Kurs saveKurs(Kurs kurs);
 
-    Kurs saveKurs(KursDto kursDto);
+    Kurs saveKurs(InputKursDto kursDto) throws Exception;
+    
+    Kurs updateKurs(InputKursDto kursDto) throws Exception;
 
     List<Kurs> findKursByLinia(Linia linia);
 
