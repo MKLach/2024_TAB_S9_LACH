@@ -219,7 +219,7 @@ public class KursController {
 		currIndex+= 1;
 		finale.setTyp_autobusu(inputKursDto.getTyp_autobusu());
 		
-		var przystanki =new ArrayList<InputPrzystanekWKursieDto>();
+		var przystanki = new ArrayList<InputPrzystanekWKursieDto>();
 		
 		for(int i = 0; i < inputKursDto.getPrzystanki().size(); i++) {
 			var in = inputKursDto.getPrzystanki().get(i);
