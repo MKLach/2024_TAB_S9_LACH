@@ -18,6 +18,9 @@ import BusStopInfo from './components/bus_stop/BusStopInfo';
 import BusStopAdd from './components/bus_stop/BusStopAdd';
 import BusStopCourses from './components/bus_stop/BusStopCourses';
 
+import BusStopTimeTableInfo from './components/rozklad/rozklad';
+
+
 import BusLineList from './components/bus_line/BusLineList';
 import BusLineInfo from './components/bus_line/BusLineInfo';
 import BusLineAdd from './components/bus_line/BusLineAdd';
@@ -75,7 +78,8 @@ function App() {
           <Route path="/bus_stop" element={<BusStopList />} />
           <Route path="/bus_stop/save" element={<BusStopAdd />} />
           <Route path="/bus_stop/info/:id" element={<BusStopInfo />} />
-
+		  <Route path="/bus_stop/timetable" element={<BusStopTimeTableInfo/>}/>
+			
           <Route path="/bus_line" element={<BusLineList />} />
           <Route path="/bus_line/info/:id" element={<BusLineInfo />} />
           <Route path="/bus_line/save" element={<BusLineAdd />} />
@@ -83,11 +87,13 @@ function App() {
 
           <Route path="/course" element={<CourseList />} />
           <Route path="/course/save" element={<CourseAdd />} />
-          <Route path="/course/edit/:id" element={<CourseEdit />} />
+          <Route path="/course/edit" element={<CourseEdit />} />
 
           <Route path="/bus" element={<BusList />} />
           <Route path="/bus/save" element={<BusAdd />} />
           <Route path="/bus/info/:id" element={<BusInfo />} />
+          
+          
 
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/me" element={<UserPage/>} />

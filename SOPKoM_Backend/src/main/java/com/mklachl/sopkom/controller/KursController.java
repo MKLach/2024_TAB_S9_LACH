@@ -1,9 +1,15 @@
 package com.mklachl.sopkom.controller;
 
 import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +30,12 @@ import com.mklachl.sopkom.model.dto.kurs.InputPrzystanekWKursieDto;
 import com.mklachl.sopkom.model.dto.kurs.KursDto;
 import com.mklachl.sopkom.model.dto.linia.LiniaDto;
 import com.mklachl.sopkom.model.dto.linia.PrzystanekDtoDlaLinia;
+import com.mklachl.sopkom.model.entity.Kurs;
 import com.mklachl.sopkom.model.entity.Linia;
+import com.mklachl.sopkom.repository.KursRepository;
 import com.mklachl.sopkom.repository.LiniaRepository;
 import com.mklachl.sopkom.repository.PrzystanekWliniRepository;
+import com.mklachl.sopkom.services.KursService;
 import com.mklachl.sopkom.services.LiniaService;
 
 @RestController
@@ -38,23 +47,6 @@ public class KursController {
 	long currIndex = Long.valueOf(1);
 	long currIndexPrzystanki = Long.valueOf(1);
 	
-	static KursDto getById(long id) {
-		
-		for(int i = 0; i < kursy.size(); i++) {
-			
-			if(id == kursy.get(i).getKursId().longValue()) {
-				return kursy.get(i);
-			} 
-		}
-		
-		return null;
-		
-	}
-	static void deleteById(long id) {
-		if(getById(id) != null) {
-			kursy.remove(getById(id));
-		}
-	}
 	
 	@Autowired
 	public LiniaService liniaService;
@@ -66,6 +58,13 @@ public class KursController {
 	public PrzystanekWliniRepository przystnekWliniRepository;
 	
 
+	@Autowired
+	public KursService kursService;
+	
+	@Autowired
+	public KursRepository kursRepo;
+	
+	
 	@GetMapping("/template/{id}")
     public ResponseEntity<?> getTemplateKurs(@PathVariable(name = "id") Long linia_id) {
 		
@@ -73,7 +72,7 @@ public class KursController {
 		
 		Linia lIn = liniaRepository.findById(linia_id).orElseThrow();
 		
-		dto.setHarmonogram(HarmonogramController.harmonograms.get(0));
+		dto.setHarmonogram(new HarmonogramDto());
 		
 		dto.setLinia(new LiniaDto(lIn));
 		
@@ -160,38 +159,46 @@ public class KursController {
     public ResponseEntity<?> getAllKursy(@RequestParam(name="linia_id", defaultValue = "-1") Long linia_id) {
 		
 		// if -1 then ret all
-		if(linia_id == -1) {
-			 return ResponseEntity.ok(kursy);
-		}
-		
-		Optional<Linia> op = liniaService.findLiniaById(linia_id);
-		
-		if(op.isEmpty()) {
-			 return ResponseEntity.notFound().build();
-		}
-		
-		
-		var others = new ArrayList<>(kursy);
-		
-		others.removeIf((k) -> {
+		System.out.println(linia_id);
+		List<Kurs> kursy = null;
+		var ret = new ArrayList<KursDto>();
+		if(linia_id.equals(-1l)) {
 			
-			return k.getLinia().getId() != linia_id;
-		});
+			kursy = kursRepo.findAll();
+			
+		} else {
+			Optional<Linia> op = liniaService.findLiniaById(linia_id);
+		
+			if(op.isEmpty()) {
+				 return ResponseEntity.notFound().build();
+			}
+			
+			kursy = kursService.findKursByLinia(op.get());
+		}
 		
 		
-        return ResponseEntity.ok(others);
+		for(var kurs : kursy) {
+		
+			ret.add(new KursDto(kurs));
+		}
+		
+	
+		
+        return ResponseEntity.ok(ret);
     }
 	
 	
 	@GetMapping("/{id}")
     public ResponseEntity<?> getKurs(@PathVariable(name="id") Long id) {
 		
-        return ResponseEntity.ok(getById(id));
+        return ResponseEntity.ok(new KursDto(kursRepo.findById(id).get()));
     }
 	
 	@PostMapping("/save")
 	public ResponseEntity<?> addKurs(@RequestBody InputKursDto inputKursDto) {
-		ObjectMapper mapper = new ObjectMapper();
+		
+		// ah yes, legacy
+		/*ObjectMapper mapper = new ObjectMapper();
 		
 		Optional<Linia> liniaIn = liniaService.findLiniaById(inputKursDto.getLiniaId());
 		
@@ -237,14 +244,25 @@ public class KursController {
 		
 		if(kursy.add(finale)) {
 			 return ResponseEntity.ok().body(inputKursDto);
+		}*/
+		
+		try {
+			kursService.saveKurs(inputKursDto);
+			
+			return ResponseEntity.ok().build();
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
 		}
 		
         return ResponseEntity.badRequest().build();
     }
 	
 	@PatchMapping("/{id}")
-	public ResponseEntity<?> updateKurs(@PathVariable(name="id") Long id, @RequestBody KursDto inputKursDto) {
+	public ResponseEntity<?> updateKurs(@PathVariable(name="id") Long id, @RequestBody InputKursDto inputKursDto) {
 		
+		/*
 		Optional<Linia> liniaIn = liniaService.findLiniaById(inputKursDto.getLiniaId());
 		
 		if(liniaIn.isEmpty()) {
@@ -295,16 +313,25 @@ public class KursController {
 		if(kursy.add(finale)) {
 			 return ResponseEntity.ok().body(inputKursDto);
 		}
+		8*/
 		
-        return ResponseEntity.badRequest().build();
+		try {
+			kursService.updateKurs(inputKursDto);
+		} catch (Exception e) {
+			ResponseEntity.notFound();
+			e.printStackTrace();
+		}
+		
+		
+		 return ResponseEntity.ok().body(inputKursDto);
     }
 	
 	@DeleteMapping("/{id}")
-    public ResponseEntity<?> deletKurs(@PathVariable(name="id") Long id) {
+    public ResponseEntity<?> deleteKurs(@PathVariable(name="id") Long id) {
 		
-		deleteById(id);
+		kursRepo.deleteById(id);
 		
-        return ResponseEntity.ok(getById(id));
+        return ResponseEntity.ok().build();
     }
 	
 	

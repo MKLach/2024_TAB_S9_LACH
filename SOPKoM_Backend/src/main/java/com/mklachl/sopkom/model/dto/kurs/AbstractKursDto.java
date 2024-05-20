@@ -1,6 +1,8 @@
 package com.mklachl.sopkom.model.dto.kurs;
 
-
+import com.mklachl.sopkom.model.dto.harmonogram.HarmonogramDto;
+import com.mklachl.sopkom.model.dto.linia.LiniaDto;
+import com.mklachl.sopkom.model.entity.Kurs;
 
 public abstract class AbstractKursDto {
 
@@ -12,9 +14,16 @@ public abstract class AbstractKursDto {
 	protected Short typ_autobusu;
 	
 	
+	public AbstractKursDto(Kurs kurs) {
+		this.setKursId(kurs.getKursId());
+		this.setKierunek(kurs.getKierunek());
+		this.setTyp_autobusu(kurs.getTypAutobusu());	
+	}
+	
 	public AbstractKursDto() {
 		
 	}
+	
 	
 	
 	public Long getKursId() {

@@ -1,5 +1,7 @@
 package com.mklachl.sopkom.model.dto.harmonogram;
 
+import com.mklachl.sopkom.model.entity.Harmonogram;
+
 public class HarmonogramDto {
     
     private short harmonogramId;
@@ -12,6 +14,23 @@ public class HarmonogramDto {
     private boolean sob;
     private boolean nie;
     private String dodatkoweInf;
+
+    public HarmonogramDto() {
+
+    }
+
+    public HarmonogramDto(Harmonogram harmonogram) {
+        this.harmonogramId = harmonogram.getHamonogramId();
+        this.nazwa = harmonogram.getNazwa();
+        this.pon = harmonogram.isPon();
+        this.wto = harmonogram.isWto();
+        this.sro = harmonogram.isSro();
+        this.czw = harmonogram.isCzw();
+        this.pia = harmonogram.isPia();
+        this.sob = harmonogram.isSob();
+        this.nie = harmonogram.isNie();
+        this.dodatkoweInf = harmonogram.getDodatkoweInf();
+    }
 
     // Getters and Setters
     public short getHarmonogramId() {

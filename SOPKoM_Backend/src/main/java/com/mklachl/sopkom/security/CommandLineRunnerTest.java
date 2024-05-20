@@ -8,9 +8,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mklachl.sopkom.model.dto.harmonogram.HarmonogramDto;
 import com.mklachl.sopkom.model.entity.Role;
 import com.mklachl.sopkom.model.entity.User;
+import com.mklachl.sopkom.repository.HarmonogramRepository;
 import com.mklachl.sopkom.repository.UserRepository;
+import com.mklachl.sopkom.services.HarmonogramService;
 import com.mklachl.sopkom.services.UserService;
 
 @Service
@@ -30,6 +33,11 @@ public class CommandLineRunnerTest implements CommandLineRunner {
     public static final String MANAGER_NAME = "manager";
     public static final String MANAGER_PASS = "manager";
     
+    @Autowired
+  	HarmonogramService heService;
+    
+    @Autowired
+  	HarmonogramRepository heRepo;
     
     @Override
     @Transactional
@@ -78,6 +86,64 @@ public class CommandLineRunnerTest implements CommandLineRunner {
         	
         }
         
-       
+        if(heRepo.count() < 3){
+        	
+	        {
+	      	  HarmonogramDto harmonogram = new HarmonogramDto();
+	
+	            // Set sample data
+	            harmonogram.setHarmonogramId((short) 1);
+	            harmonogram.setNazwa("Dni robocze");
+	            harmonogram.setPon(true);
+	            harmonogram.setWto(true);
+	            harmonogram.setSro(true);
+	            harmonogram.setCzw(true);
+	            harmonogram.setPia(true);
+	            harmonogram.setSob(false);
+	            harmonogram.setNie(false);
+	            harmonogram.setDodatkoweInf("Dni robocze tylko.");
+	
+	            heService.saveHarmonogram(harmonogram);
+	            
+	      }
+	      
+	      {
+	      	
+	      	  HarmonogramDto harmonogram = new HarmonogramDto();
+	
+	            // Set sample data
+	            harmonogram.setHarmonogramId((short) 2);
+	            harmonogram.setNazwa("Dni robocze i weekendy");
+	            harmonogram.setPon(true);
+	            harmonogram.setWto(true);
+	            harmonogram.setSro(true);
+	            harmonogram.setCzw(true);
+	            harmonogram.setPia(true);
+	            harmonogram.setSob(true);
+	            harmonogram.setNie(true);
+	            harmonogram.setDodatkoweInf("Cały tydzien.");
+	
+	            heService.saveHarmonogram(harmonogram);
+	      }
+	      
+	      {
+	      	
+	    	  HarmonogramDto harmonogram = new HarmonogramDto();
+	
+	          // Set sample data
+	          harmonogram.setHarmonogramId((short) 3);
+	          harmonogram.setNazwa("weekendy");
+	          harmonogram.setPon(false);
+	          harmonogram.setWto(false);
+	          harmonogram.setSro(false);
+	          harmonogram.setCzw(false);
+	          harmonogram.setPia(false);
+	          harmonogram.setSob(true);
+	          harmonogram.setNie(true);
+	          harmonogram.setDodatkoweInf("Tylko weekendy.");
+	
+	          heService.saveHarmonogram(harmonogram);
+	    }
+      }
     }
 }

@@ -124,4 +124,7 @@ public class Harmonogram {
     public void setDodatkoweInf(String dodatkoweInf) {
         this.dodatkoweInf = dodatkoweInf;
     }
+    
+    
+    
 }
