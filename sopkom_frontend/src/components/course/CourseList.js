@@ -102,7 +102,8 @@ const CourseList = () => {
          
 			 coursesData.map((course) =>(
 				<div>
-				   <p>{course.kursId} Kierunek - {course.kierunek == 0 && "Normalny"} {course.kierunek == 1 && "Odwrotny"}</p>
+				  <h1>{course.kursId} Kierunek - {course.kierunek == 0 && "Normalny"} {course.kierunek == 1 && "Odwrotny"}</h1>
+				  <p>{course.harmonogram.nazwa}</p>
 				  <table key = {course.kursId} className="tableFormat">
 					   <thead>
 			              <tr>
@@ -113,14 +114,14 @@ const CourseList = () => {
 				  		<tbody>
 						{
  							course.przystanki.sort((a,b) => {
-									if(course.kierunek == 0){
-										
-										return a.przystanekWLini.kolejnosc - b.przystanekWLini.kolejnosc;
-									} else {
-										
-										return b.przystanekWLini.kolejnosc - a.przystanekWLini.kolejnosc;
-									}
+								if(course.kierunek == 0){
+									
+									return a.przystanekWLini.kolejnosc - b.przystanekWLini.kolejnosc;
+								} else {
+									
+									return b.przystanekWLini.kolejnosc - a.przystanekWLini.kolejnosc;
 								}
+							}
 							 ).map((stop) => (
 			                  <tr key={stop.przystanekwKursieId}>
 			                    <td>{stop.przystanekWLini.nazwa}</td>

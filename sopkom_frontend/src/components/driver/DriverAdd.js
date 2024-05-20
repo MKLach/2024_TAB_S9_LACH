@@ -95,7 +95,7 @@ const DriverAdd = () => {
                         value={formData.prawoJazdyWazneDo}
                         onChange={handleChange}
                         required
-                        />
+                    />
                 </td>
               </tr>
             </tbody>

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.TreeSet;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,24 +18,53 @@ import com.mklachl.sopkom.model.entity.Przystanek;
 
 public class RozkladDto {
 	
+	public static class $ implements Comparable<$> {
+		public Time time;
+		public boolean odw;
+		
+		
+		
+		public $(Time time, boolean odw) {
+			super();
+			this.time = time;
+			this.odw = odw;
+		}
+		@Override
+		public int hashCode() {
+			return Objects.hash(odw, time);
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			$ other = ($) obj;
+			return odw == other.odw && Objects.equals(time, other.time);
+		}
+		
+		public int compareTo($ o) {
+			
+			return this.time.compareTo(o.time);
+		};
+		
+		
+	}
+	
 	
 	PrzystanekDto normalny;
-	
-	PrzystanekDto odwrotny;
 	
 	@JsonFormat(pattern = "dd.MM.yyyy", timezone = "Europe/Warsaw")
 	Date date;
 	
-	HashMap<String, TreeSet<Time>> rozklad = new HashMap<String, TreeSet<Time>>();
+	HashMap<String, TreeSet<$>> rozklad = new HashMap<String, TreeSet<$>>();
 	
 
 	public RozkladDto(Przystanek p, KursDto kursDto, Date date) {
 		normalny = new PrzystanekDto(p);
-		if(p.getPrzystanekOdwrotny() != null) {
-			odwrotny = new PrzystanekDto(p.getPrzystanekOdwrotny());
-		}
-		
-		
+	
 		
 	}
 	
@@ -43,24 +73,24 @@ public class RozkladDto {
 		
 	}
 
-	public HashMap<String, TreeSet<Time>> getRozklad() {
+	public HashMap<String, TreeSet<$>> getRozklad() {
 		return rozklad;
 	}
 
-	public void setRozklad(HashMap<String, TreeSet<Time>> rozklad) {
+	public void setRozklad(HashMap<String, TreeSet<$>> rozklad) {
 		this.rozklad = rozklad;
 	}
 	
 	
-	public RozkladDto addKurs(LiniaDto linia, Time godzinna) {
+	public RozkladDto addKurs(LiniaDto linia, Time godzinna, boolean odwrotna) {
 		
 		if(rozklad.containsKey(linia.getNumer())) {
 			
-			rozklad.get(linia.getNumer()).add(godzinna);
+			rozklad.get(linia.getNumer()).add(new $(godzinna, odwrotna));
 			
 		} else {
-			TreeSet<Time> list = new TreeSet<Time>();
-			list.add(godzinna);
+			TreeSet<$> list = new TreeSet<$>();
+			list.add(new $(godzinna, odwrotna));
 			rozklad.put(linia.getNumer(), list);
 			
 		}
@@ -77,14 +107,7 @@ public class RozkladDto {
 		this.normalny = normalny;
 	}
 
-	public PrzystanekDto getOdwrotny() {
-		return odwrotny;
-	}
 
-	public void setOdwrotny(PrzystanekDto odwrotny) {
-		this.odwrotny = odwrotny;
-	}
-	
 	public Date getDate() {
 		return date;
 	}
