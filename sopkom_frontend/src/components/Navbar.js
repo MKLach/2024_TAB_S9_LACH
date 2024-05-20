@@ -4,6 +4,7 @@ import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
 import { IoMdListBox, IoMdApps, IoMdHome } from 'react-icons/io';
 import { RiUserFill } from 'react-icons/ri';
 import { GiBusStop } from "react-icons/gi";
+import { GrSchedules } from "react-icons/gr";
 import { TbBusStop } from "react-icons/tb";
 import { FaBusAlt,FaRoute } from "react-icons/fa";
 
@@ -40,6 +41,7 @@ const Navbar = () => {
       <ul /**/className='hidden md:flex gap-2 rounded-xl bg-white m-2'>
         <NavItem icon={<FaRoute style={{ color: 'black' }} size={20} />} to="/course" />
         <NavItem icon={<TbBusStop style={{ color: 'black' }} size={20} />} to="/bus_line" />
+        <NavItem icon={<GrSchedules style={{ color: 'black' }} size={20} />} to="/bus_stop/timetable" />
         <NavItem icon={<GiBusStop style={{ color: 'black' }} size={20} />} to="/bus_stop" />
         <NavItem icon={<FaPersonMilitaryToPerson style={{ color: 'black' }} size={20} />} to="/driver" />
         <NavItem icon={<FaBusAlt style={{ color: 'black' }} size={20} />} to="/bus" />
@@ -54,6 +56,7 @@ const Navbar = () => {
       <ul className={nav ? 'fixed md:hidden left-0 top-0 w-[12%] h-full bg-[#e0fbfc] ease-in-out duration-500 z-10 flex content-center items-center flex-col' : 'ease-in-out w-[15%] duration-500 fixed top-0 bottom-0 left-[-100%] z-10'}>
         <NavItemMobile icon={<FaRoute style={{ color: 'black' }} size={24} />} to="/course" />
         <NavItemMobile icon={<TbBusStop style={{ color: 'black' }} size={24} />} to="/bus_line" />
+        <NavItemMobile icon={<GrSchedules style={{ color: 'black' }} size={24} />} to="/bus_stop/timetable" />
         <NavItemMobile icon={<GiBusStop style={{ color: 'black' }} size={24} />} to="/bus_stop" />
         <NavItemMobile icon={<FaPersonMilitaryToPerson style={{ color: 'black' }} size={24} />} to="/driver" />
         <NavItemMobile icon={<FaBusAlt style={{ color: 'black' }} size={24} />} to="/bus" />

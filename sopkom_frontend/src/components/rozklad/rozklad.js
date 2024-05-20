@@ -129,8 +129,11 @@ const BusStopTimeTableInfo = () => {
 
     return (
         <div className="pt-40">
-       
+
+           <div className="listDiv">
           <h1>Rozkład jazdy dla przystanku:</h1>
+           <div className="listScheduleFormat">
+
             <select
                   className="dropDownPrzystanek"
                   name="przystanek"
@@ -152,9 +155,9 @@ const BusStopTimeTableInfo = () => {
                 onChange={onDateChanged}
                 required
             />
-                    
+             </div>
             {busStopTimeTableData && today &&
-             <table border="1" style={{ borderCollapse: 'collapse', width: '100%' }}>
+             <table  className="tableFormat">
                 <thead>
                     <tr>
                         <th>Bus Line</th>
@@ -179,6 +182,7 @@ const BusStopTimeTableInfo = () => {
           	onClose= {() => setShowAlert(false)}
        		 />
       		)}
+        </div>
         </div>
         
     );
