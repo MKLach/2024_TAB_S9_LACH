@@ -86,6 +86,25 @@ public class CommandLineRunnerTest implements CommandLineRunner {
         	
         }
         
+        User dyspIn = userRepository.findByLogin("dyspozytor");
+        
+        if(dyspIn == null) {
+        	dyspIn = new User();
+        	dyspIn.setLogin("dyspozytor");
+        	dyspIn.setName("dyspozytor");
+        	dyspIn.setPassword("dyspozytor");
+        	
+        	Set<Role> adminRole = new HashSet<Role>();
+        	adminRole.add(Role.DISPATCHER);
+        	
+        	managerIn.setRoles(adminRole);
+        	
+        	userService.saveUser(dyspIn);
+        	
+        	System.out.println("Dispatcher account has been created!!!");
+        	
+        }
+        
         if(heRepo.count() < 3){
         	
 	        {
