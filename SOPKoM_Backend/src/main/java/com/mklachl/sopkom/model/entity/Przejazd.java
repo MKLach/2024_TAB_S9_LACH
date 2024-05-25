@@ -1,13 +1,8 @@
 package com.mklachl.sopkom.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.*;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "przejazdy")
@@ -38,6 +33,16 @@ public class Przejazd {
     @Column(name = "dlugosc_trasy", nullable = false)
     private float dlugoscTrasy;
 
+    @Column(name = "data_startu", nullable = true)
+    private Date dataStartu;
+
+    @Column(name = "data_konca", nullable = true)
+    private Date dataKonca;
+
+    @OneToMany(mappedBy = "przejazd")
+    private List<PrzejazdKursPrzystanekWlini> przejazdKursPrzystanekWlini;
+
+
     // Getters
     public Long getPrzejazdId() {
         return przejazdId;
@@ -67,6 +72,18 @@ public class Przejazd {
         return dlugoscTrasy;
     }
 
+    public Date getDataStartu() {
+        return dataStartu;
+    }
+
+    public Date getDataKonca() {
+        return dataKonca;
+    }
+
+    public List<PrzejazdKursPrzystanekWlini> getPrzejazdKursPrzystanekWlini() {
+        return przejazdKursPrzystanekWlini;
+    }
+
     // Setters
     public void setPrzejazdId(Long przejazdId) {
         this.przejazdId = przejazdId;
@@ -94,5 +111,17 @@ public class Przejazd {
 
     public void setDlugoscTrasy(float dlugoscTrasy) {
         this.dlugoscTrasy = dlugoscTrasy;
+    }
+
+    public void setDataStartu(Date dataStartu) {
+        this.dataStartu = dataStartu;
+    }
+
+    public void setDataKonca(Date dataKonca) {
+        this.dataKonca = dataKonca;
+    }
+
+    public void setPrzejazdKursPrzystanekWlini(List<PrzejazdKursPrzystanekWlini> przejazdKursPrzystanekWlini) {
+        this.przejazdKursPrzystanekWlini = przejazdKursPrzystanekWlini;
     }
 }
