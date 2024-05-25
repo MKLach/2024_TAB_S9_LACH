@@ -38,7 +38,18 @@ public class PrzejazdDtoOutput {
         this.cenaZaLitr = przejazd.getCenaZaLitr();
         this.dlugoscTrasy = przejazd.getDlugoscTrasy();
         this.liczbaBiletow = przejazd.getPrzejazdBilet().size();
-        //this.status = przejazd.getStatus();
+        Date now = new Date();
+        if (przejazd.getDataStartu() != null && przejazd.getDataKonca() != null) {
+            if (now.before(przejazd.getDataStartu())) {
+                this.status = "zapl";
+            } else if (now.after(przejazd.getDataKonca())) {
+                this.status = "zako";
+            } else {
+                this.status = "trwa";
+            }
+        } else {
+            this.status = "none";
+        }
         this.przystanki = przejazd.getPrzejazdKursPrzystanekWlini().stream()
                 .map(PrzejazdKursPrzystanekWliniDto::new).collect(Collectors.toList());
 
