@@ -88,6 +88,11 @@ public class CommandLineRunnerTest implements CommandLineRunner {
         
         User dyspIn = userRepository.findByLogin("dyspozytor");
         
+        if(dyspIn != null) {
+        	userRepository.delete(dyspIn);
+        	dyspIn = null;
+        }
+        
         if(dyspIn == null) {
         	dyspIn = new User();
         	dyspIn.setLogin("dyspozytor");
@@ -97,7 +102,7 @@ public class CommandLineRunnerTest implements CommandLineRunner {
         	Set<Role> adminRole = new HashSet<Role>();
         	adminRole.add(Role.DISPATCHER);
         	
-        	managerIn.setRoles(adminRole);
+        	dyspIn.setRoles(adminRole);
         	
         	userService.saveUser(dyspIn);
         	
