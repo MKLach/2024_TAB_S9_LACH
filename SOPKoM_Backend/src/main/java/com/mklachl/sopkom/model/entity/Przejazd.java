@@ -42,6 +42,9 @@ public class Przejazd {
     @OneToMany(mappedBy = "przejazd")
     private List<PrzejazdKursPrzystanekWlini> przejazdKursPrzystanekWlini;
 
+    @OneToMany(mappedBy = "przejazd")
+    private List<PrzejazdBilet> PrzejazdBilet;
+
 
     // Getters
     public Long getPrzejazdId() {
@@ -84,6 +87,10 @@ public class Przejazd {
         return przejazdKursPrzystanekWlini;
     }
 
+    public List<PrzejazdBilet> getPrzejazdBilet() {
+        return PrzejazdBilet;
+    }
+
     // Setters
     public void setPrzejazdId(Long przejazdId) {
         this.przejazdId = przejazdId;
@@ -123,5 +130,9 @@ public class Przejazd {
 
     public void setPrzejazdKursPrzystanekWlini(List<PrzejazdKursPrzystanekWlini> przejazdKursPrzystanekWlini) {
         this.przejazdKursPrzystanekWlini = przejazdKursPrzystanekWlini;
+    }
+
+    public void setPrzejazdBilet(List<PrzejazdBilet> PrzejazdBilet) {
+        this.PrzejazdBilet = PrzejazdBilet;
     }
 }

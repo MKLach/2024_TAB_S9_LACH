@@ -1,6 +1,9 @@
 package com.mklachl.sopkom.model.entity;
 
 import jakarta.persistence.*;
+
+import java.util.List;
+
 @Entity
 @Table(name = "bilety")
 public class Bilet {
@@ -8,7 +11,7 @@ public class Bilet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bilet_id")
-    private Long biletId;
+    private Short biletId;
 
     @Column(name = "cena", nullable = false)
     private float cena;
@@ -16,12 +19,15 @@ public class Bilet {
     @Column(name = "nazwa", nullable = false, length = 30)
     private String nazwa;
 
+    @OneToMany(mappedBy = "bilet")
+    private List<PrzejazdBilet> PrzejazdBilet;
+
     // Getters and Setters
-    public Long getBiletId() {
+    public Short getBiletId() {
         return biletId;
     }
 
-    public void setBiletId(Long biletId) {
+    public void setBiletId(Short biletId) {
         this.biletId = biletId;
     }
 
@@ -39,5 +45,13 @@ public class Bilet {
 
     public void setNazwa(String nazwa) {
         this.nazwa = nazwa;
+    }
+
+    public List<PrzejazdBilet> getPrzejazdBilet() {
+        return PrzejazdBilet;
+    }
+
+    public void setPrzejazdBilet(List<PrzejazdBilet> PrzejazdBilet) {
+        this.PrzejazdBilet = PrzejazdBilet;
     }
 }

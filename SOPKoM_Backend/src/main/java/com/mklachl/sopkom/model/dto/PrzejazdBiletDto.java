@@ -5,7 +5,7 @@ import com.mklachl.sopkom.model.entity.PrzejazdBilet;
 public class PrzejazdBiletDto {
     private Long przejazdBiletId;
     private Long przejazdId;
-    private Long biletId;
+    private Short biletId;
     private float cenaBiletu;
 
     public PrzejazdBiletDto() {}
@@ -34,11 +34,11 @@ public class PrzejazdBiletDto {
         this.przejazdId = przejazdId;
     }
 
-    public Long getBiletId() {
+    public Short getBiletId() {
         return biletId;
     }
 
-    public void setBiletId(Long biletId) {
+    public void setBiletId(Short biletId) {
         this.biletId = biletId;
     }
 

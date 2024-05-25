@@ -3,7 +3,7 @@ package com.mklachl.sopkom.model.dto;
 import com.mklachl.sopkom.model.entity.Bilet;
 
 public class BiletDto {
-    private Long biletId;
+    private Short biletId;
     private float cena;
     private String nazwa;
 
@@ -16,11 +16,11 @@ public class BiletDto {
     }
 
     // Getters and Setters
-    public Long getBiletId() {
+    public Short getBiletId() {
         return biletId;
     }
 
-    public void setBiletId(Long biletId) {
+    public void setBiletId(Short biletId) {
         this.biletId = biletId;
     }
 
