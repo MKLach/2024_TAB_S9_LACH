@@ -51,6 +51,15 @@ hover:route{
   }
 }
 
+.underListFormat{
+    min-width: 30%;
+    margin: 2%;
+}
+
+.underListFormat tr {
+    border-bottom: solid 1px;
+}
+
 .tableFormat {
     margin: 2%;
     border-collapse: collapse;
