@@ -26,7 +26,7 @@ public class PrzejazdKursPrzystanekWlini {
     @JoinColumn(name = "kursprzystanekwlini_id", referencedColumnName = "kursprzystankiwlini_id")
     private KursPrzystanekWlini kursPrzystanekWlini;
 
-    @Column(name = "realnagodzinna", nullable = false)
+    @Column(name = "realnagodzinna")
     private Date realnaGodzinna;
 
     // Getters

@@ -2,6 +2,7 @@ package com.mklachl.sopkom.raporty.rozkład;
 
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.TreeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mklachl.sopkom.model.dto.DateWrapperDto;
 import com.mklachl.sopkom.model.dto.harmonogram.HarmonogramDto;
 import com.mklachl.sopkom.model.dto.kurs.KursDto;
 import com.mklachl.sopkom.model.dto.linia.LiniaDto;
@@ -19,7 +21,7 @@ import com.mklachl.sopkom.repository.KursPrzystanekWliniRepository;
 import com.mklachl.sopkom.repository.KursRepository;
 
 @Service
-public class RozkladHelper {
+public class DateHelper {
 	
 	public static TreeSet<Date> tempDniSwiete = new TreeSet<>();
 	
@@ -51,8 +53,40 @@ public class RozkladHelper {
 		
 	}
 	
+	 public static Date setTimeComponents(Date date, int hours, int minutes, int seconds) {
+	        Calendar calendar = Calendar.getInstance();
+	        calendar.setTime(date);
+	        calendar.set(Calendar.HOUR_OF_DAY, hours);
+	        calendar.set(Calendar.MINUTE, minutes);
+	        calendar.set(Calendar.SECOND, seconds);
+	        calendar.set(Calendar.MILLISECOND, 0); // Optional: reset milliseconds to zero
+	        return calendar.getTime();
+	    }
+	
+	 public static Date copyTimeComponents(Date source, Date target) {
+	        Calendar sourceCalendar = Calendar.getInstance();
+	        sourceCalendar.setTime(source);
+
+	        Calendar targetCalendar = Calendar.getInstance();
+	        targetCalendar.setTime(target);
+
+	        targetCalendar.set(Calendar.HOUR_OF_DAY, sourceCalendar.get(Calendar.HOUR_OF_DAY));
+	        targetCalendar.set(Calendar.MINUTE, sourceCalendar.get(Calendar.MINUTE));
+	        targetCalendar.set(Calendar.SECOND, sourceCalendar.get(Calendar.SECOND));
+	        targetCalendar.set(Calendar.MILLISECOND, sourceCalendar.get(Calendar.MILLISECOND)); // Optional: include milliseconds
+
+	        return targetCalendar.getTime();
+	    }
+	 
+	public static Date addMinutesToDate(Date date, int minutes) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MINUTE, minutes);
+        return calendar.getTime();
+    }
+	
 	 // Helper method to add days to a date
-    private static Date addDays(Date date, int days) {
+    public static Date addDays(Date date, int days) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(Calendar.DAY_OF_MONTH, days);
@@ -173,6 +207,33 @@ public class RozkladHelper {
 		}
 		
 		return data;
+		
+	}
+	
+	public static List<Date> getAllDatesForHarmonogram(Harmonogram harm){
+		
+		
+		
+		return getAllDatesForHarmonogram(harm, 30);
+		
+	}
+	
+	public static List<Date> getAllDatesForHarmonogram(Harmonogram harm, int max){
+		
+		List<Date> lista = new ArrayList<>();
+		
+		
+		for(Date date = new Date(); lista.size() < max; date = addDays(date, 1)) {
+			
+			if(harmonogramZalicza(date, harm)) {
+				lista.add(date);
+			}
+			
+			
+			
+		}
+		
+		return lista;
 		
 	}
 	

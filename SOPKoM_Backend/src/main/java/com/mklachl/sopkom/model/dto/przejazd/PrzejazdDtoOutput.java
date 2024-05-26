@@ -1,9 +1,13 @@
 package com.mklachl.sopkom.model.dto.przejazd;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mklachl.sopkom.model.dto.PrzejazdKursPrzystanekWliniDto;
 import com.mklachl.sopkom.model.entity.Przejazd;
 import com.mklachl.sopkom.model.entity.PrzejazdKursPrzystanekWlini;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,8 +15,14 @@ public class PrzejazdDtoOutput {
     private Long przejazdId;
     private Long kursId;
     private String liniaNumer;
+    @JsonFormat(pattern="EE MMM d y H:m:s ZZZ", locale = "en-US")
     private Date dataStartu;
+    @JsonFormat(pattern="EE MMM d y H:m:s ZZZ", locale = "en-US")
     private Date dataKonca;
+    @JsonFormat(pattern="EE MMM d y H:m:s ZZZ", locale = "en-US")
+    private Date data;
+    
+    
     private String kierowcaImieNazwisko;
     private String autobusNazwa;
     private String autobusNumerRejestracyjny;
@@ -21,6 +31,8 @@ public class PrzejazdDtoOutput {
     private float dlugoscTrasy;
     private int liczbaBiletow;
     private String status;
+    private short kierunek;
+    
     private List<PrzejazdKursPrzystanekWliniDto> przystanki;
 
     public PrzejazdDtoOutput() {}
@@ -38,7 +50,9 @@ public class PrzejazdDtoOutput {
         this.cenaZaLitr = przejazd.getCenaZaLitr();
         this.dlugoscTrasy = przejazd.getDlugoscTrasy();
         this.liczbaBiletow = przejazd.getPrzejazdBilet().size();
+        this.kierunek = przejazd.getKurs().getKierunek().shortValue();
         Date now = new Date();
+        
         if (przejazd.getDataStartu() != null && przejazd.getDataKonca() != null) {
             if (now.before(przejazd.getDataStartu())) {
                 this.status = "zapl";
@@ -50,8 +64,34 @@ public class PrzejazdDtoOutput {
         } else {
             this.status = "none";
         }
+        
+       
+        
+        
+        this.data = przejazd.getData();
+        System.out.println(data);
         this.przystanki = przejazd.getPrzejazdKursPrzystanekWlini().stream()
                 .map(PrzejazdKursPrzystanekWliniDto::new).collect(Collectors.toList());
+        
+        this.status = "Zaplanowany";
+        
+        int count = 0;
+        
+        for (Iterator<PrzejazdKursPrzystanekWliniDto> iterator = przystanki.iterator(); iterator.hasNext();) {
+			PrzejazdKursPrzystanekWliniDto przejazdKursPrzystanekWliniDto = (PrzejazdKursPrzystanekWliniDto) iterator
+					.next();
+			if(przejazdKursPrzystanekWliniDto.getRealnaGodzinna() != null) {
+				count+=1;
+				 this.status = "W trakcie";
+			}
+			
+			
+		}
+        if(count == przystanki.size()) {
+        	 this.status = "Zakończony";
+        }
+        
+        System.out.println(przystanki.size());
 
     }
 
@@ -152,6 +192,40 @@ public class PrzejazdDtoOutput {
         this.liczbaBiletow = liczbaBiletow;
     }
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public List<PrzejazdKursPrzystanekWliniDto> getPrzystanki() {
+		return przystanki;
+	}
+
+	public void setPrzystanki(List<PrzejazdKursPrzystanekWliniDto> przystanki) {
+		this.przystanki = przystanki;
+	}
+
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
+
+	public short getKierunek() {
+		return kierunek;
+	}
+
+	public void setKierunek(short kierunek) {
+		this.kierunek = kierunek;
+	}
+
+	
+    
     /*public String getStatus() {
         return status;
     }

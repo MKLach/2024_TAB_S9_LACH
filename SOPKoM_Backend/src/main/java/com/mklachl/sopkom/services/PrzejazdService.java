@@ -1,5 +1,6 @@
 package com.mklachl.sopkom.services;
 
+import com.mklachl.sopkom.model.dto.przejazd.PrzejazdDtoInput;
 import com.mklachl.sopkom.model.entity.Autobus;
 import com.mklachl.sopkom.model.entity.Kierowca;
 import com.mklachl.sopkom.model.entity.Kurs;
@@ -14,7 +15,7 @@ public interface PrzejazdService {
 
     Przejazd savePrzejazd(Przejazd przejazd);
 
-    //Przejazd savePrzejazd(PrzejazdDto przejazdDto);
+    Przejazd savePrzejazd(PrzejazdDtoInput przejazdDto);
 
     List<Przejazd> findPrzejazdByKierowca(Kierowca kierowca);
 

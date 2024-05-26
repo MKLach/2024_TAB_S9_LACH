@@ -2,10 +2,15 @@ package com.mklachl.sopkom.model.dto.przejazd;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class PrzejazdDtoInput {
     private Long kursId;
     private Long kierowcaId;
     private Long autobusId;
+    
+    
+    @JsonFormat(pattern = "dd.MM.yyyy")
     private Date dataPrzejazdu;
 
     public PrzejazdDtoInput() {}
@@ -42,4 +47,12 @@ public class PrzejazdDtoInput {
     public void setDataPrzejazdu(Date dataPrzejazdu) {
         this.dataPrzejazdu = dataPrzejazdu;
     }
+
+	@Override
+	public String toString() {
+		return "PrzejazdDtoInput [kursId=" + kursId + ", kierowcaId=" + kierowcaId + ", autobusId=" + autobusId
+				+ ", dataPrzejazdu=" + dataPrzejazdu + "]";
+	}
+    
+    
 }

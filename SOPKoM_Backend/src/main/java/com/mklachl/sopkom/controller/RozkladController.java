@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mklachl.sopkom.model.dto.PrzystanekDto;
 import com.mklachl.sopkom.model.dto.rozklad.RozkladDto;
 import com.mklachl.sopkom.model.entity.Przystanek;
-import com.mklachl.sopkom.raporty.rozkład.RozkladHelper;
+import com.mklachl.sopkom.raporty.rozkład.DateHelper;
 import com.mklachl.sopkom.repository.PrzystanekRepository;
 
 @RestController
@@ -25,7 +25,7 @@ public class RozkladController {
 	public PrzystanekRepository repo;
 	
 	@Autowired
-	public RozkladHelper rozkladHelper;
+	public DateHelper rozkladHelper;
 	
 	@GetMapping()
 	public ResponseEntity<?> test(@RequestParam(name="id") Long id, @RequestParam(name="date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date){

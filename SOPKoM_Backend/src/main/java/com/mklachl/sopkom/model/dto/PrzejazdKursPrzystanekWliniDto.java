@@ -1,12 +1,15 @@
 package com.mklachl.sopkom.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mklachl.sopkom.model.entity.PrzejazdKursPrzystanekWlini;
 import java.util.Date;
 
 public class PrzejazdKursPrzystanekWliniDto {
     private Long przejazdKursPrzystanekWliniId;
     private int kolejnosc;
+    @JsonFormat(pattern="dd-MM-yyyy'T'HH:mm:ss -02:00")
     private Date przewidywanaGodzinna;
+    @JsonFormat(pattern="EE MMM d y H:m:s ZZZ", locale = "en-US")
     private Date realnaGodzinna;
     private String nazwa;
     private Long przystanekId;

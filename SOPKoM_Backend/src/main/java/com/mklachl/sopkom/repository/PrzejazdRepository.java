@@ -49,8 +49,14 @@ public interface PrzejazdRepository extends CrudRepository<Przejazd, Long> {
 
     List<Przejazd> findAllByDataKoncaAfter(Date dataKonca);
 
+    List<Przejazd> findAllByData(Date data);
+    
+ 
     @Query(value = "SELECT * FROM przejazdy p WHERE p.kurs_id = :kursId AND (p.data_startu = :dataPrzejazdu or p.data_konca = :dataPrzejazdu)", nativeQuery = true)
     List<Przejazd> findAllByKursAndData(@Param("kurs") Kurs kurs, @Param("dataPrzejazdu") Date dataPrzejazdu);
+
+    @Query(value = "SELECT * FROM przejazdy p WHERE p.kurs_id = :kursId AND (p.data_startu = :dataPrzejazdu or p.data_konca = :dataPrzejazdu)", nativeQuery = true)
+    List<Przejazd> findAllByData(@Param("kurs") Kurs kurs, @Param("dataPrzejazdu") Date dataPrzejazdu);
 
     List<Przejazd> findAll();
 

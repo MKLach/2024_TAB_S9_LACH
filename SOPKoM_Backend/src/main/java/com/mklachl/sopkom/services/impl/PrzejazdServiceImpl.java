@@ -2,10 +2,19 @@ package com.mklachl.sopkom.services.impl;
 
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+
+import com.mklachl.sopkom.model.dto.przejazd.PrzejazdDtoInput;
 import com.mklachl.sopkom.model.entity.Autobus;
 import com.mklachl.sopkom.model.entity.Kierowca;
 import com.mklachl.sopkom.model.entity.Kurs;
+import com.mklachl.sopkom.model.entity.KursPrzystanekWlini;
 import com.mklachl.sopkom.model.entity.Przejazd;
+import com.mklachl.sopkom.model.entity.PrzejazdKursPrzystanekWlini;
+import com.mklachl.sopkom.raporty.rozkład.DateHelper;
+import com.mklachl.sopkom.repository.AutobusRepository;
+import com.mklachl.sopkom.repository.KierowcaRepository;
+import com.mklachl.sopkom.repository.KursRepository;
+import com.mklachl.sopkom.repository.PrzejazdKursPrzystanekWliniRepository;
 import com.mklachl.sopkom.repository.PrzejazdRepository;
 import com.mklachl.sopkom.services.PrzejazdService;
 
@@ -16,13 +25,28 @@ import java.util.Optional;
 
 @Service
 public class PrzejazdServiceImpl implements PrzejazdService {
+	
+	private KierowcaRepository kierowcaRepository;
+	private AutobusRepository autobusRepository;
+	private KursRepository kursRepository;
+	
     private PrzejazdRepository przejazdRepository;
+    private PrzejazdKursPrzystanekWliniRepository pkpwlRepository;
+ 
 
-    public PrzejazdServiceImpl(PrzejazdRepository przejazdRepository) {
-        this.przejazdRepository = przejazdRepository;
-    }
+    public PrzejazdServiceImpl(KierowcaRepository kierowcaRepository, AutobusRepository autobusRepository,
+			KursRepository kursRepository, PrzejazdRepository przejazdRepository, PrzejazdKursPrzystanekWliniRepository pkpwlRepository) {
+		
+		this.kierowcaRepository = kierowcaRepository;
+		this.autobusRepository = autobusRepository;
+		this.kursRepository = kursRepository;
+		this.przejazdRepository = przejazdRepository;
+		this.pkpwlRepository = pkpwlRepository;
+	}
 
-    @Override
+
+
+	@Override
     public Przejazd savePrzejazd(Przejazd przejazdDto) {
         Przejazd przejazd = new Przejazd();
 
@@ -41,6 +65,8 @@ public class PrzejazdServiceImpl implements PrzejazdService {
         return przejazd;
     }
 
+ 
+    
     /*public Przejazd savePrzejazd(PrzejazdDto przejazdDto) {
         Przejazd przejazd = new Przejazd();
 
@@ -118,5 +144,92 @@ public class PrzejazdServiceImpl implements PrzejazdService {
 
     @Override
     public List<Przejazd> findPrzejazdyByKursAndData(Kurs kurs, Date data){ return przejazdRepository.findAllByKursAndData(kurs, data); }
+
+	@Override
+	public Przejazd savePrzejazd(PrzejazdDtoInput przejazdDto) {
+		
+		Przejazd przejazd = new Przejazd();
+		
+		przejazd.setKierowca(kierowcaRepository.findById(przejazdDto.getKierowcaId()).get());
+		przejazd.setAutobus(autobusRepository.findById(przejazdDto.getAutobusId()).get());
+		
+		Kurs kurs = kursRepository.findById(przejazdDto.getKursId()).get();
+		
+		przejazd.setKurs(kurs);
+		
+		przejazd.setData(przejazdDto.getDataPrzejazdu());
+		
+		
+		
+		var list = new ArrayList<PrzejazdKursPrzystanekWlini>();
+		
+		var list2 = kurs.getKursPrzystanekWlinii();
+		
+		if(kurs.getKierunek().shortValue() == 0) {
+			
+			Date startRaw = DateHelper.copyTimeComponents(
+					kurs.getKursPrzystanekWlinii().get(0).getGodzinna(), 
+					przejazdDto.getDataPrzejazdu());
+			
+			przejazd.setDataStartu( DateHelper.addMinutesToDate(startRaw, -30));
+					
+			
+			Date endRaw = DateHelper.copyTimeComponents(
+					kurs.getKursPrzystanekWlinii().get(list2.size()-1).getGodzinna(),
+					przejazdDto.getDataPrzejazdu());
+			
+			endRaw = DateHelper.addMinutesToDate(endRaw, 30);
+			
+			if(endRaw.before(startRaw)) {
+				endRaw = DateHelper.addDays(endRaw, 1);
+			}
+			
+			przejazd.setDataKonca(endRaw);
+			
+		} else {
+			Date startRaw = DateHelper.copyTimeComponents(
+					kurs.getKursPrzystanekWlinii().get(list2.size()-1).getGodzinna(), 
+					przejazdDto.getDataPrzejazdu());
+			
+			przejazd.setDataStartu( DateHelper.addMinutesToDate(startRaw, -30));
+					
+			
+			Date endRaw = DateHelper.copyTimeComponents(
+					kurs.getKursPrzystanekWlinii().get(0).getGodzinna(),
+					przejazdDto.getDataPrzejazdu());
+			
+			endRaw = DateHelper.addMinutesToDate(endRaw, 30);
+			
+			if(endRaw.before(startRaw)) {
+				endRaw = DateHelper.addDays(endRaw, 1);
+			}
+			
+			przejazd.setDataKonca(endRaw);
+			
+			przejazd.setDataKonca(DateHelper.addMinutesToDate(endRaw, 30));
+		}
+		
+		przejazdRepository.save(przejazd);
+		
+		for(int i = 0; i < list2.size(); i++) {
+			
+			KursPrzystanekWlini kpwl = list2.get(i);
+			PrzejazdKursPrzystanekWlini pkpwl = new PrzejazdKursPrzystanekWlini();
+			pkpwl.setKursPrzystanekWlini(kpwl);
+			pkpwl.setRealnaGodzinna(null);
+			pkpwl.setPrzejazd(przejazd);
+			
+			pkpwl = pkpwlRepository.save(pkpwl);
+			list.add(pkpwl);
+			
+		}
+		
+		przejazd.setPrzejazdKursPrzystanekWlini(list);
+		przejazdRepository.save(przejazd);
+		
+		
+		return przejazd;
+	}
+
 
 }

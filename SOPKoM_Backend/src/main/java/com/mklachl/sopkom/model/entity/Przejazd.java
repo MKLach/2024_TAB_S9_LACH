@@ -39,6 +39,11 @@ public class Przejazd {
     @Column(name = "data_konca", nullable = true)
     private Date dataKonca;
 
+    @Column(name = "data", nullable = true)
+    @Temporal(TemporalType.DATE)
+    private Date data;
+
+    
     @OneToMany(mappedBy = "przejazd")
     private List<PrzejazdKursPrzystanekWlini> przejazdKursPrzystanekWlini;
 
@@ -135,4 +140,14 @@ public class Przejazd {
     public void setPrzejazdBilet(List<PrzejazdBilet> PrzejazdBilet) {
         this.PrzejazdBilet = PrzejazdBilet;
     }
+
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
+    
+    
 }

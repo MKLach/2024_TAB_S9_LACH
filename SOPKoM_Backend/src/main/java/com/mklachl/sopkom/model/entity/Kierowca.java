@@ -1,6 +1,8 @@
 package com.mklachl.sopkom.model.entity;
 
 import java.util.Date;
+import java.util.Objects;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -86,4 +88,26 @@ public class Kierowca {
     public void setUser(User user) {
         this.user = user;
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(imie, kierowcaId, nazwisko, pesel, prawoJazdyWazneDo, user);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Kierowca other = (Kierowca) obj;
+		return Objects.equals(imie, other. imie) && Objects.equals(kierowcaId, other.kierowcaId)
+				&& Objects.equals(nazwisko, other.nazwisko) && Objects.equals(pesel, other.pesel)
+				&& Objects.equals(prawoJazdyWazneDo, other.prawoJazdyWazneDo);
+	}
+    
+    
+    
 }
