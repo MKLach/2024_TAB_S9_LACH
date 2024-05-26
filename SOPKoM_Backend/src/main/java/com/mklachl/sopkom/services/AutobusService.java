@@ -2,6 +2,7 @@ package com.mklachl.sopkom.services;
 
 import com.mklachl.sopkom.model.entity.Autobus;
 import com.mklachl.sopkom.model.dto.AutobusDto;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -28,6 +29,7 @@ public interface AutobusService {
     List<Autobus> findAutobusByPrzebiegLessThan(float przebieg);
 
     List<Autobus> findAutobusByPrzebieg(float przebieg);
-    
-    
+
+    List<Autobus> findAutobusByAvailable(Date startTime, Date endTime);
+
 }

@@ -11,6 +11,7 @@ import com.mklachl.sopkom.model.entity.User;
 import com.mklachl.sopkom.repository.KierowcaRepository;
 import com.mklachl.sopkom.services.KierowcaService;
 import com.mklachl.sopkom.services.UserService;
+import org.springframework.data.repository.query.Param;
 
 public class KierowcaServiceImpl implements KierowcaService {
     private KierowcaRepository kierowcaRepository;
@@ -80,4 +81,7 @@ public class KierowcaServiceImpl implements KierowcaService {
     public Optional<Kierowca> findKierowcaById(Long id){
         return kierowcaRepository.findById(id);
     }
+
+    @Override
+    public List<Kierowca> findKierowcaByAvailability(Date startTime, Date endTime){ return kierowcaRepository.findAllByAvailability(startTime, endTime); }
 }

@@ -80,4 +80,8 @@ public class AutobusServiceImpl implements AutobusService {
     public List<Autobus> findAutobusByPrzebieg(float przebieg){
         return autobusRepository.findAllByPrzebieg(przebieg);
     }
+
+    @Override
+    public List<Autobus> findAutobusByAvailable(Date startTime, Date endTime){ return autobusRepository.findAllByAvailable(startTime, endTime); }
+
 }

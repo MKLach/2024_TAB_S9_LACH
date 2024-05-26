@@ -3,6 +3,7 @@ package com.mklachl.sopkom.services;
 import com.mklachl.sopkom.model.entity.Kierowca;
 import com.mklachl.sopkom.model.dto.KierowcaDto;
 import com.mklachl.sopkom.model.entity.User;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -25,5 +26,7 @@ public interface KierowcaService {
     List<Kierowca> findKierowcaByPrawoJazdyWazneDoAfter(Date date);
 
     Optional<Kierowca> findKierowcaById(Long id);
+
+    List<Kierowca> findKierowcaByAvailability(Date startTime, Date endTime);
 
 }

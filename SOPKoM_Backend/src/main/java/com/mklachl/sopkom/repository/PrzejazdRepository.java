@@ -4,7 +4,9 @@ import com.mklachl.sopkom.model.entity.Autobus;
 import com.mklachl.sopkom.model.entity.Kierowca;
 import com.mklachl.sopkom.model.entity.Kurs;
 import com.mklachl.sopkom.model.entity.Przejazd;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -46,6 +48,9 @@ public interface PrzejazdRepository extends CrudRepository<Przejazd, Long> {
     List<Przejazd> findAllByDataKoncaBefore(Date dataKonca);
 
     List<Przejazd> findAllByDataKoncaAfter(Date dataKonca);
+
+    @Query(value = "SELECT * FROM przejazdy p WHERE p.kurs_id = :kursId AND (p.data_startu = :dataPrzejazdu or p.data_konca = :dataPrzejazdu)", nativeQuery = true)
+    List<Przejazd> findAllByKursAndData(@Param("kurs") Kurs kurs, @Param("dataPrzejazdu") Date dataPrzejazdu);
 
     List<Przejazd> findAll();
 

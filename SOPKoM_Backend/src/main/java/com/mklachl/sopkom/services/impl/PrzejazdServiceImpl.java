@@ -1,5 +1,6 @@
 package com.mklachl.sopkom.services.impl;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import com.mklachl.sopkom.model.entity.Autobus;
 import com.mklachl.sopkom.model.entity.Kierowca;
@@ -116,8 +117,6 @@ public class PrzejazdServiceImpl implements PrzejazdService {
     public Optional<Przejazd> findPrzejazdById(long id){return przejazdRepository.findById(id);}
 
     @Override
-    public List<Przejazd> findPrzejazdByData(Date data){
-        List<Przejazd> list = new ArrayList<>();
-        return list;
-    }
+    public List<Przejazd> findPrzejazdyByKursAndData(Kurs kurs, Date data){ return przejazdRepository.findAllByKursAndData(kurs, data); }
+
 }

@@ -52,7 +52,7 @@ public interface PrzejazdService {
 
     List<Przejazd> findPrzejazdByDataKoncaAfter(Date dataKonca);
 
-    List<Przejazd> findPrzejazdByData(Date data);
+    List<Przejazd> findPrzejazdyByKursAndData(Kurs kurs, Date data);
 
     Optional<Przejazd> findPrzejazdById(long id);
 
