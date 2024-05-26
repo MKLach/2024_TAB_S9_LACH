@@ -24,6 +24,7 @@ dependencies {
 	runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'com.itextpdf:itextpdf:5.5.13.3'
 }
 
 tasks.named('test') {
