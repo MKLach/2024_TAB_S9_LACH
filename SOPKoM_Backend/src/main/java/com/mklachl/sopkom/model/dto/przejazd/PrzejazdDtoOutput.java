@@ -53,23 +53,8 @@ public class PrzejazdDtoOutput {
         this.kierunek = przejazd.getKurs().getKierunek().shortValue();
         Date now = new Date();
         
-        if (przejazd.getDataStartu() != null && przejazd.getDataKonca() != null) {
-            if (now.before(przejazd.getDataStartu())) {
-                this.status = "zapl";
-            } else if (now.after(przejazd.getDataKonca())) {
-                this.status = "zako";
-            } else {
-                this.status = "trwa";
-            }
-        } else {
-            this.status = "none";
-        }
-        
-       
-        
-        
         this.data = przejazd.getData();
-        System.out.println(data);
+       
         this.przystanki = przejazd.getPrzejazdKursPrzystanekWlini().stream()
                 .map(PrzejazdKursPrzystanekWliniDto::new).collect(Collectors.toList());
         
@@ -90,6 +75,19 @@ public class PrzejazdDtoOutput {
         if(count == przystanki.size()) {
         	 this.status = "Zakończony";
         }
+        
+        
+        if (now.after(przejazd.getDataKonca())){
+    		  
+			if( status.equals("Zaplanowany")) {
+				this.status = "Nie odbył się";
+			} else if (status.equals("W trakcie")) {
+				this.status = "Spóźniony";
+			}
+	       
+        } 
+        
+        
         
         System.out.println(przystanki.size());
 

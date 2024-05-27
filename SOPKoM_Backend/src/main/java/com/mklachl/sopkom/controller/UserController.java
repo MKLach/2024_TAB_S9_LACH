@@ -13,7 +13,7 @@ import com.mklachl.sopkom.services.UserService;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin
+@CrossOrigin(origins = {"*"}, maxAge = 3600)
 public class UserController {
 
 	@Autowired

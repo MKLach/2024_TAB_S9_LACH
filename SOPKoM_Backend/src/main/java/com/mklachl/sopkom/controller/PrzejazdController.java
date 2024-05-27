@@ -25,6 +25,7 @@ import com.mklachl.sopkom.model.dto.przejazd.PrzejazdDtoInput;
 import com.mklachl.sopkom.model.dto.przejazd.PrzejazdDtoOutput;
 import com.mklachl.sopkom.model.entity.Harmonogram;
 import com.mklachl.sopkom.model.entity.Kurs;
+import com.mklachl.sopkom.model.entity.Przejazd;
 import com.mklachl.sopkom.raporty.rozkład.DateHelper;
 import com.mklachl.sopkom.repository.AutobusRepository;
 import com.mklachl.sopkom.repository.HarmonogramRepository;
@@ -90,6 +91,27 @@ public class PrzejazdController {
 			przejazdRepository.deleteById(przejazdid);
 			
 			return ResponseEntity.ok("deleted");
+			
+		} catch (Exception e) {
+			
+			return ResponseEntity.notFound().build();
+		}
+	
+	}
+	
+	@GetMapping()
+	public ResponseEntity<?> getPrzejazdy(@RequestParam(name="kurs_id", required = false) Long kursId){
+		try {
+			List<Przejazd> przejazdy = null;
+			
+			if(kursId == null) {
+				przejazdy = przejazdRepository.findAll();
+			} else {
+				
+				przejazdy = przejazdRepository.findAllByKurs(kursRepository.findById(kursId).orElseThrow());
+			}
+			
+			return ResponseEntity.ok(przejazdy.stream().map(PrzejazdDtoOutput::new).collect(Collectors.toList()));
 			
 		} catch (Exception e) {
 			

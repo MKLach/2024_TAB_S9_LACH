@@ -69,7 +69,9 @@ public class SecurityConfig {
             
                 .cors(t -> t.configurationSource(corsConfiguration()))
                 
-                .csrf(AbstractHttpConfigurer::disable)
+                //.csrf(AbstractHttpConfigurer::disable)
+                
+                .csrf((csrf) -> csrf.disable())
                 .build();
     }
 
@@ -81,7 +83,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfiguration(){
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(frontendURL));
+        configuration.setAllowedOrigins(List.of(frontendURL, "http://192.168.100.109:3000", "http://localhost:3000"));
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
