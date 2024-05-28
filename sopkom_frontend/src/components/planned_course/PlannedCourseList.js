@@ -25,75 +25,285 @@ function DayTime(dateTimeStr) {
     return back;
 }
 
-const PlannedCourseList = () => {
-	const [courseData, setCourseData] = useState([{
-                                                   "przejazd_id": 4,
-                                                   "kursid": 6,
-                                                   "linia": {
-                                                     "numer": "M500"
-                                                   },
-                                                   "data_startu": "04-09-2020T10:13:40 -02:00",
-                                                   "data_konca": "11-01-2018T12:55:54 -01:00",
-                                                   "kierowca": {
-                                                     "imienazwisko": "Imie1 Kierowca1"
-                                                   },
-                                                   "autobus": {
-                                                     "nazwa": "Autobus0",
-                                                     "numer_rejestracyjny": "SK 11231"
-                                                   },
-                                                   "spalanie": 11.4435,
-                                                   "cena_za_litr": 6.5,
-                                                   "dlugosc_trasy": 20.1709,
-                                                   "liczba_biletow": 71,
-                                                   "status": "zapl",
-                                                   "przystanki": [
-                                                     {
-                                                       "przejazdkursprzystanekid": 1,
-                                                       "kolejnosc": 1,
-                                                       "przewidywana_godzinna": "28-07-2023T03:25:19 -02:00",
-                                                       "realna_godzinna": "27-01-2022T04:00:57 -01:00",
-                                                       "nazwa": "Snowville, Pooles Lane",
-                                                       "przystanekid": 4
-                                                     },
-                                                     {
-                                                       "przejazdkursprzystanekid": 4,
-                                                       "kolejnosc": 2,
-                                                       "przewidywana_godzinna": "14-01-2017T02:31:01 -01:00",
-                                                       "realna_godzinna": "18-08-2017T11:19:18 -02:00",
-                                                       "nazwa": "Kylertown, Dobbin Street",
-                                                       "przystanekid": 9
-                                                     },
-                                                     {
-                                                       "przejazdkursprzystanekid": 9,
-                                                       "kolejnosc": 3,
-                                                       "przewidywana_godzinna": "22-09-2017T08:19:43 -02:00",
-                                                       "realna_godzinna": "16-11-2021T03:11:09 -01:00",
-                                                       "nazwa": "Marshall, Brooklyn Avenue",
-                                                       "przystanekid": 2
-                                                     },
-                                                     {
-                                                       "przejazdkursprzystanekid": 7,
-                                                       "kolejnosc": 4,
-                                                       "przewidywana_godzinna": "20-02-2014T03:48:34 -01:00",
-                                                       "realna_godzinna": "28-03-2024T11:52:55 -01:00",
-                                                       "nazwa": "Lynn, Gardner Avenue",
-                                                       "przystanekid": 8
-                                                     },
-                                                     {
-                                                       "przejazdkursprzystanekid": 1,
-                                                       "kolejnosc": 5,
-                                                       "przewidywana_godzinna": "09-12-2018T03:30:06 -01:00",
-                                                       "realna_godzinna": "06-06-2015T06:40:21 -02:00",
-                                                       "nazwa": "Celeryville, Olive Street",
-                                                       "przystanekid": 6
-                                                     }
-                                                   ]
-                                                 }]);
+function formatDateTime(dateTimeStr) {
+console.log(dateTimeStr)
+	if(!dateTimeStr){
+		return { hour: "--:--", date: "--.--.----" };
+	}
+	
+	const dateIn = new Date(dateTimeStr);
+	
+    return dateIn.toLocaleTimeString().slice(0,5) + " "+ dateIn.toLocaleDateString() ;
+}
 
+
+
+const PlannedCourseList = () => {
+	const [courseData, setCourseData] = useState(null);
+	/*const [courseData, setCourseData] = useState([
+    {
+        "przejazdId": 5,
+        "kursId": 1,
+        "liniaNumer": "M500",
+        "dataStartu": "Mon May 27 2024 10:2:0 +0000",
+        "dataKonca": "Mon May 27 2024 13:30:0 +0000",
+        "data": "Sun May 26 2024 22:0:0 +0000",
+        "kierowcaImieNazwisko": "Jan Nowak",
+        "autobusNazwa": "SKHAKL",
+        "autobusNumerRejestracyjny": "SKHAKL",
+        "spalanie": 0.0,
+        "cenaZaLitr": 0.0,
+        "dlugoscTrasy": 0.0,
+        "liczbaBiletow": 0,
+        "status": "Zaplanowany",
+        "kierunek": 0,
+        "przystanki": [
+            {
+                "przejazdKursPrzystanekWliniId": 1,
+                "kolejnosc": 1,
+                "przewidywanaGodzinna": "12:32:00",
+                "realnaGodzinna": null,
+                "nazwa": "Centralny",
+                "przystanekId": 1
+            },
+            {
+                "przejazdKursPrzystanekWliniId": 2,
+                "kolejnosc": 2,
+                "przewidywanaGodzinna": "13:41:00",
+                "realnaGodzinna": null,
+                "nazwa": "Testowy1",
+                "przystanekId": 3
+            },
+            {
+                "przejazdKursPrzystanekWliniId": 3,
+                "kolejnosc": 3,
+                "przewidywanaGodzinna": "14:02:00",
+                "realnaGodzinna": null,
+                "nazwa": "Wolny",
+                "przystanekId": 4
+            },
+            {
+                "przejazdKursPrzystanekWliniId": 4,
+                "kolejnosc": 4,
+                "przewidywanaGodzinna": "15:00:00",
+                "realnaGodzinna": null,
+                "nazwa": "124 NOR",
+                "przystanekId": 10
+            }
+        ]
+    },
+    {
+        "przejazdId": 6,
+        "kursId": 7,
+        "liniaNumer": "LM500",
+        "dataStartu": "Mon May 27 2024 8:32:0 +0000",
+        "dataKonca": "Mon May 27 2024 21:34:0 +0000",
+        "data": "Sun May 26 2024 22:0:0 +0000",
+        "kierowcaImieNazwisko": "Aleksander Makowski",
+        "autobusNazwa": "SK55557",
+        "autobusNumerRejestracyjny": "SK55557",
+        "spalanie": 0.0,
+        "cenaZaLitr": 0.0,
+        "dlugoscTrasy": 0.0,
+        "liczbaBiletow": 0,
+        "status": "Zaplanowany",
+        "kierunek": 0,
+        "przystanki": [
+            {
+                "przejazdKursPrzystanekWliniId": 5,
+                "kolejnosc": 1,
+                "przewidywanaGodzinna": "11:02:00",
+                "realnaGodzinna": null,
+                "nazwa": "123 NOR",
+                "przystanekId": 8
+            },
+            {
+                "przejazdKursPrzystanekWliniId": 6,
+                "kolejnosc": 2,
+                "przewidywanaGodzinna": "11:03:00",
+                "realnaGodzinna": null,
+                "nazwa": "Centralny",
+                "przystanekId": 1
+            },
+            {
+                "przejazdKursPrzystanekWliniId": 7,
+                "kolejnosc": 3,
+                "przewidywanaGodzinna": "22:05:00",
+                "realnaGodzinna": null,
+                "nazwa": "124 NOR",
+                "przystanekId": 10
+            },
+            {
+                "przejazdKursPrzystanekWliniId": 8,
+                "kolejnosc": 4,
+                "przewidywanaGodzinna": "23:04:00",
+                "realnaGodzinna": null,
+                "nazwa": "Wolny",
+                "przystanekId": 4
+            }
+        ]
+    },
+    {
+        "przejazdId": 7,
+        "kursId": 3,
+        "liniaNumer": "LM500",
+        "dataStartu": "Sun May 26 2024 9:36:0 +0000",
+        "dataKonca": "Sun May 26 2024 13:33:0 +0000",
+        "data": "Sat May 25 2024 22:0:0 +0000",
+        "kierowcaImieNazwisko": "Jan Nowak",
+        "autobusNazwa": "SKHAKL",
+        "autobusNumerRejestracyjny": "SKHAKL",
+        "spalanie": 0.0,
+        "cenaZaLitr": 0.0,
+        "dlugoscTrasy": 0.0,
+        "liczbaBiletow": 0,
+        "status": "Zakończony",
+        "kierunek": 1,
+        "przystanki": [
+            {
+                "przejazdKursPrzystanekWliniId": 9,
+                "kolejnosc": 1,
+                "przewidywanaGodzinna": "15:03:00",
+                "realnaGodzinna": "Sun May 26 2024 13:6:59 +0000",
+                "nazwa": "123 NOR",
+                "przystanekId": 8
+            },
+            {
+                "przejazdKursPrzystanekWliniId": 10,
+                "kolejnosc": 2,
+                "przewidywanaGodzinna": "14:04:00",
+                "realnaGodzinna": "Sun May 26 2024 12:6:59 +0000",
+                "nazwa": "Centralny",
+                "przystanekId": 1
+            },
+            {
+                "przejazdKursPrzystanekWliniId": 11,
+                "kolejnosc": 3,
+                "przewidywanaGodzinna": "13:05:00",
+                "realnaGodzinna": "Sun May 26 2024 11:6:59 +0000",
+                "nazwa": "124 NOR",
+                "przystanekId": 10
+            },
+            {
+                "przejazdKursPrzystanekWliniId": 12,
+                "kolejnosc": 4,
+                "przewidywanaGodzinna": "12:06:00",
+                "realnaGodzinna": "Sun May 26 2024 10:6:59 +0000",
+                "nazwa": "Wolny",
+                "przystanekId": 4
+            }
+        ]
+    },
+    {
+        "przejazdId": 10,
+        "kursId": 1,
+        "liniaNumer": "M500",
+        "dataStartu": "Tue May 28 2024 10:2:0 +0000",
+        "dataKonca": "Tue May 28 2024 13:30:0 +0000",
+        "data": "Mon May 27 2024 22:0:0 +0000",
+        "kierowcaImieNazwisko": "Jan Nowak",
+        "autobusNazwa": "SKHAKL",
+        "autobusNumerRejestracyjny": "SKHAKL",
+        "spalanie": 0.0,
+        "cenaZaLitr": 0.0,
+        "dlugoscTrasy": 0.0,
+        "liczbaBiletow": 0,
+        "status": "Zaplanowany",
+        "kierunek": 0,
+        "przystanki": [
+            {
+                "przejazdKursPrzystanekWliniId": 21,
+                "kolejnosc": 1,
+                "przewidywanaGodzinna": "12:32:00",
+                "realnaGodzinna": null,
+                "nazwa": "Centralny",
+                "przystanekId": 1
+            },
+            {
+                "przejazdKursPrzystanekWliniId": 22,
+                "kolejnosc": 2,
+                "przewidywanaGodzinna": "13:41:00",
+                "realnaGodzinna": null,
+                "nazwa": "Testowy1",
+                "przystanekId": 3
+            },
+            {
+                "przejazdKursPrzystanekWliniId": 23,
+                "kolejnosc": 3,
+                "przewidywanaGodzinna": "14:02:00",
+                "realnaGodzinna": null,
+                "nazwa": "Wolny",
+                "przystanekId": 4
+            },
+            {
+                "przejazdKursPrzystanekWliniId": 24,
+                "kolejnosc": 4,
+                "przewidywanaGodzinna": "15:00:00",
+                "realnaGodzinna": null,
+                "nazwa": "124 NOR",
+                "przystanekId": 10
+            }
+        ]
+    },
+    {
+        "przejazdId": 11,
+        "kursId": 1,
+        "liniaNumer": "M500",
+        "dataStartu": "Wed May 29 2024 10:2:0 +0000",
+        "dataKonca": "Wed May 29 2024 13:30:0 +0000",
+        "data": "Tue May 28 2024 22:0:0 +0000",
+        "kierowcaImieNazwisko": "Jan Nowak",
+        "autobusNazwa": "SKHAKL",
+        "autobusNumerRejestracyjny": "SKHAKL",
+        "spalanie": 0.0,
+        "cenaZaLitr": 0.0,
+        "dlugoscTrasy": 0.0,
+        "liczbaBiletow": 0,
+        "status": "Zaplanowany",
+        "kierunek": 0,
+        "przystanki": [
+            {
+                "przejazdKursPrzystanekWliniId": 25,
+                "kolejnosc": 1,
+                "przewidywanaGodzinna": "12:32:00",
+                "realnaGodzinna": null,
+                "nazwa": "Centralny",
+                "przystanekId": 1
+            },
+            {
+                "przejazdKursPrzystanekWliniId": 26,
+                "kolejnosc": 2,
+                "przewidywanaGodzinna": "13:41:00",
+                "realnaGodzinna": null,
+                "nazwa": "Testowy1",
+                "przystanekId": 3
+            },
+            {
+                "przejazdKursPrzystanekWliniId": 27,
+                "kolejnosc": 3,
+                "przewidywanaGodzinna": "14:02:00",
+                "realnaGodzinna": null,
+                "nazwa": "Wolny",
+                "przystanekId": 4
+            },
+            {
+                "przejazdKursPrzystanekWliniId": 28,
+                "kolejnosc": 4,
+                "przewidywanaGodzinna": "15:00:00",
+                "realnaGodzinna": null,
+                "nazwa": "124 NOR",
+                "przystanekId": 10
+            }
+        ]
+    }
+]);
+
+	
+	*/
 	const getCourseData = async () => {
 
 		try {
-			const response = await fetch(SERVER_URL + "/api/kursy/", {method: "GET", credentials: "include"});
+			const response = await fetch(SERVER_URL + "/api/przejazd", {method: "GET", credentials: "include"});
 			if(!response.ok){
 				throw new Error("error on get 2");
 			}
@@ -107,14 +317,14 @@ const PlannedCourseList = () => {
 	}
 
 	 useEffect(()=>{
-//		getCourseData();
+		getCourseData();
 	}, []);
 
   return (
         <div className="pt-40">
-                    <h2>Lista zaplanowanyuch kursów:</h2>
+                    <h2>Lista Przejazdów:</h2>
             <div className="addDiv">
-                <Link className="infoBtn" to={`/planned_course/save`}>Zaplanuj kurs</Link>
+                <Link className="infoBtn" to={`/planned_course/save`}>Zaplanuj przejazd</Link>
             </div>
             <div className="listDiv">
             <table className="tableFormat">
@@ -123,6 +333,9 @@ const PlannedCourseList = () => {
                         <th>Lp.</th>
                         <th>Kurs</th>
                         <th>Data</th>
+                        <th>Kierowca</th>
+                        <th>Autobus</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
 
@@ -130,11 +343,13 @@ const PlannedCourseList = () => {
                     {Array.isArray(courseData) && courseData.map((course) => (
 
                         <tr>
-                            <td>{course.przejazd_id}</td>
-                            <td><Link className="infoBtn" to={`/planned_course/info/${course.przejazd_id}`}>{`${course.linia.numer}`}</Link></td>
-                            <td>{DayTime(course.data_startu)}</td>
+                            <td>{course.przejazdId}</td>
+                            <td><Link className="infoBtn" to={`/planned_course/info/${course.przejazdId}`}>{`${course.liniaNumer}`}</Link></td>
+                            <td>{formatDateTime(course.dataStartu)}</td>
+                            <td>{course.kierowcaImieNazwisko}</td>
+                            <td>{course.autobusNazwa}</td>
+                            <td>{course.status}</td>
                         </tr>
-
                     ))}
                 </tbody>
             </table>

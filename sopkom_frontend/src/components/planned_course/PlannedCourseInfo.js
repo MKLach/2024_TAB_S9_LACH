@@ -21,8 +21,14 @@ function extractLastPathComponent(url) {
 }
 
 function formatDateTime(dateTimeStr) {
-
-    const [datePart, timePart] = dateTimeStr.split('T');
+console.log(dateTimeStr)
+	if(!dateTimeStr){
+		return { hour: "--:--", date: "--.--.----" };
+	}
+	
+	const dateIn = new Date(dateTimeStr);
+	
+   /* const [datePart, timePart] = dateTimeStr.split('T');
     const [day, month, year] = datePart.split('-');
     const time = timePart.split(' ')[0];
 
@@ -35,9 +41,40 @@ function formatDateTime(dateTimeStr) {
     }
 
     const formattedTime = date.toLocaleTimeString();
-    const formattedDate = date.toLocaleDateString();
+    const formattedDate = date.toLocaleDateString();*/
 
-    return { hour: formattedTime, date: formattedDate };
+    return { hour: dateIn.toLocaleTimeString().slice(0,5), date: dateIn.toLocaleDateString() };
+}
+
+function formatTime(dateTimeStr) {
+
+	
+    return { hour: dateTimeStr.slice(0,5) };
+}
+
+function parseCustomDate(dateString) {
+    // Split the date string into components
+    const parts = dateString.split(/[-T: ]/);
+
+    // Extract timezone offset
+    const timezoneOffset = dateString.match(/[-+]\d{2}:\d{2}$/)[0];
+
+    // Create a new Date object
+    const parsedDate = new Date(
+        parts[2], // Year
+        parts[1] - 1, // Month (Note: Months are zero-based in JavaScript)
+        parts[0], // Day
+        parts[3], // Hour
+        parts[4], // Minute
+        parts[5] // Second
+    );
+
+    // Adjust for timezone offset
+    const timezoneOffsetInMinutes = parseInt(timezoneOffset.slice(1, 3)) * 60 + parseInt(timezoneOffset.slice(4));
+    const utcMilliseconds = parsedDate.getTime();// + (parsedDate.getTimezoneOffset() * 60000);
+    const parsedDateWithOffset = new Date(utcMilliseconds + (timezoneOffset.startsWith('-') ? 1 : -1) * timezoneOffsetInMinutes * 60000);
+
+    return parsedDateWithOffset.toDateString();
 }
 
 function DayTime(dateTimeStr) {
@@ -65,65 +102,56 @@ function DayTime(dateTimeStr) {
 const PlannedCourseInfo = () => {
 	const [courseData, setCourseData] = useState(
       {
-        "przejazd_id": 2,
-        "kursid": 1,
-        "data_startu": "05-07-2022T03:13:05 -02:00",
-        "data_konca": "24-12-2016T07:38:53 -01:00",
-        "kierowca": {
-          "imienazwisko": "Imie1 Kierowca1"
-        },
-        "autobus": {
-          "nazwa": "Autobus0",
-          "numer_rejestracyjny": "SK 11231"
-        },
-        "spalanie": 13.4703,
-        "cena_za_litr": 6.5,
-        "dlugosc_trasy": 25.6875,
-        "liczba_biletow": 76,
-        "status": "zapl",
-        "przystanki": [
-          {
-            "przejazdkursprzystanekid": 4,
+    "przejazdId": 5,
+    "kursId": 1,
+    "liniaNumer": "M500",
+    "dataStartu": "27-05-2024T10:02:00 -02:00",
+    "dataKonca": "27-05-2024T13:30:00 -02:00",
+    "data": "27-05-2024",
+    "kierowcaImieNazwisko": "Jan Nowak",
+    "autobusNazwa": "SKHAKL",
+    "autobusNumerRejestracyjny": "SKHAKL",
+    "spalanie": 0.0,
+    "cenaZaLitr": 0.0,
+    "dlugoscTrasy": 0.0,
+    "liczbaBiletow": 0,
+    "status": "zapl",
+    "kierunek": 0,
+    "przystanki": [
+        {
+            "przejazdKursPrzystanekWliniId": 1,
             "kolejnosc": 1,
-            "przewidywana_godzinna": "13-03-2015T03:00:08 -01:00",
-            "realna_godzinna": "17-03-2020T05:55:26 -01:00",
-            "nazwa": "Enlow, Kimball Street",
-            "przystanekid": 9
-          },
-          {
-            "przejazdkursprzystanekid": 6,
+            "przewidywanaGodzinna": "12:32:00",
+            "realnaGodzinna": null,
+            "nazwa": "Centralny",
+            "przystanekId": 1
+        },
+        {
+            "przejazdKursPrzystanekWliniId": 2,
             "kolejnosc": 2,
-            "przewidywana_godzinna": "16-01-2018T05:52:19 -01:00",
-            "realna_godzinna": "23-03-2019T01:20:57 -01:00",
-            "nazwa": "Fingerville, Middagh Street",
-            "przystanekid": 6
-          },
-          {
-            "przejazdkursprzystanekid": 10,
+            "przewidywanaGodzinna": "13:41:00",
+            "realnaGodzinna": null,
+            "nazwa": "Testowy1",
+            "przystanekId": 3
+        },
+        {
+            "przejazdKursPrzystanekWliniId": 3,
             "kolejnosc": 3,
-            "przewidywana_godzinna": "11-12-2014T01:37:32 -01:00",
-            "realna_godzinna": "01-07-2016T09:59:42 -02:00",
-            "nazwa": "Bodega, Melba Court",
-            "przystanekid": 5
-          },
-          {
-            "przejazdkursprzystanekid": 7,
+            "przewidywanaGodzinna": "14:02:00",
+            "realnaGodzinna": null,
+            "nazwa": "Wolny",
+            "przystanekId": 4
+        },
+        {
+            "przejazdKursPrzystanekWliniId": 4,
             "kolejnosc": 4,
-            "przewidywana_godzinna": "18-07-2022T08:44:04 -02:00",
-            "realna_godzinna": "27-01-2024T05:39:05 -01:00",
-            "nazwa": "Ona, Irving Avenue",
-            "przystanekid": 5
-          },
-          {
-            "przejazdkursprzystanekid": 9,
-            "kolejnosc": 5,
-            "przewidywana_godzinna": "30-10-2014T12:28:34 -01:00",
-            "realna_godzinna": "01-02-2015T04:52:52 -01:00",
-            "nazwa": "Hoehne, Bridgewater Street",
-            "przystanekid": 7
-          }
-        ]
-      }
+            "przewidywanaGodzinna": "15:00:00",
+            "realnaGodzinna": null,
+            "nazwa": "124 NOR",
+            "przystanekId": 10
+        }
+    ]
+}
     );
     const [savedMessage, setSavedMessage] = useState("");
 
@@ -131,7 +159,7 @@ const PlannedCourseInfo = () => {
 	const getCourseData = async () => {
 
 		try {
-			const response = await fetch(SERVER_URL + "/api/nic"+extractLastPathComponent(window.location.href), {method: "GET", credentials: "include"});
+			const response = await fetch(SERVER_URL + "/api/przejazd"+extractLastPathComponent(window.location.href), {method: "GET", credentials: "include"});
 			if(!response.ok){
 				throw new Error("error on get 2");
 			}
@@ -145,14 +173,14 @@ const PlannedCourseInfo = () => {
 	}
 
 	 useEffect(()=>{
-		//getCourseData();
+		getCourseData();
 		console.log(courseData);
 	}, []);
 
     //Trza zmienić API
     const deleteCourse = async () => {
             try {
-                const response = await fetch(SERVER_URL + "/api/nic/" + courseData.przejazd_id, {
+                const response = await fetch(SERVER_URL + "/api/przejazd/" + courseData.przejazdId, {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json"
@@ -173,44 +201,68 @@ const PlannedCourseInfo = () => {
     return (
         <div className="pt-40">
 
-        <h1>Szczegóły kursu:</h1>
+        <h1>Szczegóły Przejazdu:</h1>
 
            <div className="listDiv">
             {savedMessage && <p>{savedMessage}</p>}
 
                 <table className="underListFormat">
                     <tbody>
-                        <tr>
-                            <th>Zaplanowany start:</th>
-                            <td>{DayTime(courseData.data_startu)}</td>
+                    	 <tr>
+                            <th>Numer Linii:</th>
+                            <td>{courseData.liniaNumer}</td>
+                        </tr>
+                         <tr>
+                            <th>Kierunek:</th>
+                            <td>{courseData.kierunek ? "Odwrotny" : "Normalny"}</td>
                         </tr>
                         <tr>
+                            <th>Zaplanowany na:</th>
+                            <td>{new Date(courseData.data).toLocaleDateString()}</td>
+                        </tr>
+                         <tr>
+                            <th>Rezerwacje od:</th>
+                            <td>{
+							    formatDateTime(courseData.dataStartu).hour + ", "+
+							    formatDateTime(courseData.dataStartu).date 	 
+							}</td>
+                        </tr>
+                         <tr>
+                            <th>Rezerwacje do:</th>
+                            <td>{
+							    formatDateTime(courseData.dataKonca).hour + ", "+
+							    formatDateTime(courseData.dataKonca).date 	 
+							}</td>
+                        </tr>
+                        
+                        <tr>
                             <th>Kierowca:</th>
-                            <td>{courseData.kierowca.imienazwisko}</td>
+                            <td>{courseData.kierowcaImieNazwisko}</td>
                         </tr>
                         <tr>
                             <th>Autobus:</th>
-                            <td>{courseData.autobus.nazwa}</td>
+                            <td>{courseData.autobusNazwa}</td>
                         </tr>
                         <tr>
                             <th>Numer rejestracyjny:</th>
-                            <td>{courseData.autobus.numer_rejestracyjny}</td>
+                            <td>{courseData.autobusNumerRejestracyjny}</td>
                         </tr>
                         <tr>
                             <th>Spalanie:</th>
-                            <td>{courseData.spalanie} l/km</td>
+                            <td>{courseData.spalanie ? courseData.spalanie + "l/km" : "brak" } </td>
                         </tr>
+                        
                         <tr>
                             <th>Cena za litr:</th>
-                            <td>{courseData.cena_za_litr} zł</td>
+                            <td>{courseData.cenaZaLitr ? courseData.cenaZaLitr + " zł": "brak"} </td>
                         </tr>
                         <tr>
                             <th>Długość trasy:</th>
-                            <td>{courseData.dlugosc_trasy} km</td>
+                            <td>{courseData.dlugoscTrasy ? courseData.dlugoscTrasy + " km" : "brak"}</td>
                         </tr>
                         <tr>
                             <th>Liczba biletów:</th>
-                            <td>{courseData.liczba_biletow}</td>
+                            <td>{courseData.liczbaBiletow ? courseData.liczbaBiletow : "brak"}</td>
                         </tr>
                         <tr>
                             <th>Status:</th>
@@ -223,28 +275,37 @@ const PlannedCourseInfo = () => {
                 <thead>
                     <tr>
                         <th rowspan="2">Przystanek</th>
-                        <th colSpan="2">Zaplanowany przyjazd</th>
+                        <th colSpan="1">Zaplanowany</th>
                         <th colSpan="2">Rzeczywisty przyjazd</th>
                     </tr>
                     <tr>
                         <th>Godzina</th>
-                        <th>Data</th>
+
                         <th>Godzina</th>
                         <th>Data</th>
                     </tr>
                 </thead>
                 <tbody>
                     {courseData.przystanki && courseData.przystanki
-                    .sort((a, b) => a.kolejnosc - b.kolejnosc)
+                    .sort((a, b) => {
+						if(courseData.kierunek == 0){
+							
+							return a.kolejnosc - b.kolejnosc;
+						} else {
+							
+							return b.kolejnosc - a.kolejnosc;
+						}
+					})
                     .map((stop, stopIndex) => {
-                        const plannedArrival = formatDateTime(stop.przewidywana_godzinna);
-                        const actualArrival = formatDateTime(stop.realna_godzinna);
+                        const plannedArrival = formatTime(stop.przewidywanaGodzinna);
+                        const actualArrival = formatDateTime(stop.realnaGodzinna);
                         return (
                             <tr key={stopIndex}>
-                                <td>{stop.kolejnosc}</td>
+                                <td>{stopIndex+1}</td>
                                 <td>{plannedArrival.hour}</td>
-                                <td>{plannedArrival.date}</td>
+                                
                                 <td>{actualArrival.hour}</td>
+                                
                                 <td>{actualArrival.date}</td>
                             </tr>
                         );
@@ -252,7 +313,7 @@ const PlannedCourseInfo = () => {
                 </tbody>
             </table>
 
-            {courseData.status === "zapl" && (
+            {courseData.status === "Zaplanowany" && (
                                 <button className="infoBtn" onClick={deleteCourse}>Usuń kurs</button>
             )}
 

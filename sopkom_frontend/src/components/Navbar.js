@@ -39,6 +39,7 @@ const Navbar = ({ userRole }) => {
       { icon: <IoMdHome style={{ color: 'black' }} size={20} />, to: "/" },
       { icon: <RiUserFill style={{ color: 'black' }} size={20} />, to: "/me" },
       { icon: <IoLogOut style={{ color: 'black' }} size={20} />, to: `${SERVER_URL}/logout` }
+      
     ];
 
     const adminManagerItems = [
@@ -53,7 +54,8 @@ const Navbar = ({ userRole }) => {
     ];
 
     const dispatcherItems = [
-      { icon: <GrSchedules style={{ color: 'black' }} size={20} />, to: "/planned_course" }
+      { icon: <GrSchedules style={{ color: 'black' }} size={20} />, to: "/planned_course" },
+      { icon: <FaRoute style={{ color: 'black' }} size={20} />, to: "/course" },
     ];
 
     if (userRole === 'ADMIN' || userRole === 'MANAGER') {

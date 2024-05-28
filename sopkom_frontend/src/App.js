@@ -36,7 +36,7 @@ function App() {
     try {
       const response = await fetch(
         SERVER_URL + '/user',
-        { method: 'GET', redirect: "follow", credentials: 'include' }
+        { method: 'GET', redirect: "follow", credentials: 'include', origin:"*" }
       );
       if (response.redirected) {
         console.log(response.url);
