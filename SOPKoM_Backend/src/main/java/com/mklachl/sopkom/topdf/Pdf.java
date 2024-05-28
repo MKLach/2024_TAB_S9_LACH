@@ -31,6 +31,8 @@ import java.util.stream.Stream;
 public class Pdf{
 	
 	static BaseFont BASE_FONT_PL;
+	static File directoryBase;
+	static File rozkladyDirectory;
 	static {
 		
 		try {
@@ -43,6 +45,15 @@ public class Pdf{
 			e.printStackTrace();
 		}
 		
+		directoryBase = new File("raporty");
+		if(!directoryBase.exists()) {
+			directoryBase.mkdir();
+		}
+		
+		rozkladyDirectory = new File(directoryBase, "rozklady");
+		if(!rozkladyDirectory.exists()) {
+			rozkladyDirectory.mkdir();
+		}
 	}
 	
     private void addTableHeader(PdfPTable table) {
@@ -226,7 +237,7 @@ public class Pdf{
     
     public File genRozklad(Long id)  throws Exception{
     	String przystanekName = "nazwa";
-    	File result = new File("rozklad_jazdy_"+przystanekName+".pdf");
+    	File result = new File(rozkladyDirectory, "rozklad_jazdy_"+przystanekName+".pdf");
 
         //Long id = (long)1;
 
