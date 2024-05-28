@@ -262,7 +262,7 @@ const CourseAdd = () => {
             </table>
           )}
 
-          <button className="infoBtn" type="submit">Dodaj linię</button>
+          <button className="infoBtn" type="submit">Dodaj Kurs</button>
          
           <Link className="infoBtn" to={`/course`}>Powrót</Link>
         </div>

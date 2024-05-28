@@ -77,7 +77,6 @@ const CourseList = () => {
       <div className="addDiv">
         <Link className="infoBtn" to={`/course/save`}>Dodaj kurs</Link>
       </div>
-
       <div className="listDiv">
         <table className="addFormat">
           <tbody>

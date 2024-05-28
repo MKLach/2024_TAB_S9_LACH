@@ -8,7 +8,8 @@ const BusStopTimeTableInfo = () => {
 	
 	const [showAlert, setShowAlert] = useState(false);
 	const [busStops, setBusStops] = useState([]);
-	const [today, setToday] = useState(new Date());
+	const [today, setToday] = useState(null);
+		;
 	const [rtoday, setRToday] = useState(new Date());
 	
     const [savedMessage, setSavedMessage] = useState("");
@@ -51,6 +52,10 @@ const BusStopTimeTableInfo = () => {
 			handleShowAlert("brak wybranego przystanku!");
 			return;
 		}
+		
+		if(!today){
+			return;
+		}
 	  
 	    try {
 	      const response = await fetch(SERVER_URL + "/api/rozklad?id=" + przyid + "&date="+ today, { method: "GET", credentials: "include" });
@@ -71,7 +76,11 @@ const BusStopTimeTableInfo = () => {
 		() => {
 			
 			if(!searchParams.get("date")){
-				setToday(new Date());
+				let date = new Date();
+				console.log("setting");
+				setToday(date.getFullYear().toString() + '-' + (date.getMonth() + 1).toString().padStart(2, 0) +
+    '-' + date.getDate().toString().padStart(2, 0));
+				
 			} else {
 				setToday(searchParams.get("date"));
 			}
@@ -129,8 +138,11 @@ const BusStopTimeTableInfo = () => {
 
     return (
         <div className="pt-40">
-       
+
+           <div className="listDiv">
           <h1>Rozkład jazdy dla przystanku:</h1>
+           <div className="listScheduleFormat">
+
             <select
                   className="dropDownPrzystanek"
                   name="przystanek"
@@ -152,13 +164,13 @@ const BusStopTimeTableInfo = () => {
                 onChange={onDateChanged}
                 required
             />
-                    
+             </div>
             {busStopTimeTableData && today &&
-             <table border="1" style={{ borderCollapse: 'collapse', width: '100%' }}>
+             <table  className="tableFormat">
                 <thead>
                     <tr>
-                        <th>Bus Line</th>
-                        <th>Timetable</th>
+                        <th>Linia</th>
+                        <th>Rozkład</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -179,6 +191,7 @@ const BusStopTimeTableInfo = () => {
           	onClose= {() => setShowAlert(false)}
        		 />
       		)}
+        </div>
         </div>
         
     );

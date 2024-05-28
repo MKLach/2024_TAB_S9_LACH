@@ -62,6 +62,8 @@ const BusStopInfo = () => {
 		}
 	}
 
+
+
     const getAvailableStops = async () => {
         try {
             const response = await fetch(SERVER_URL + "/api/przystanek", { method: "GET", credentials: "include" });
@@ -107,6 +109,81 @@ const BusStopInfo = () => {
                 setSavedMessage("Nie udało się usunąć przystanku.");
             }
         };
+
+	const downloadPdf= async () => {
+		/*try {
+	        const response = await fetch(SERVER_URL + "/api/raporty/rozklad?id=" + stopData.przystanekId, {
+	            method: "GET",
+	            headers: {
+	                "Content-Type": "application/pdf"
+	            },
+	            credentials: "include"
+	            
+	        });
+	        
+	        
+	        if (!response.ok) {
+	            throw new Error("Failed to load file");
+	        }
+	        
+	        let blob = response.blob()
+	        
+	        const url = window.URL.createObjectURL(
+		      new Blob([blob]),
+		    );
+		    const link = document.createElement('a');
+		    link.href = url;
+		    link.setAttribute(
+		      'download',
+		      `FileName.pdf`,
+		    );
+		
+		    // Append to html link element page
+		    document.body.appendChild(link);
+		
+		    // Start download
+		    link.click();
+		
+		    // Clean up and remove the link
+		    link.parentNode.removeChild(link);
+	        
+	        setSavedMessage("Zmiany zostały zapisane pomyślnie!");
+	    } catch (error) {
+	        setSavedMessage(error.message);
+			return;
+	    }*/
+	    
+	    fetch(SERVER_URL + "/api/raporty/rozklad?id=" + stopData.przystanekId, {
+		    method: 'GET',
+		    headers: {
+		      'Content-Type': 'application/pdf',
+		    },
+		  })
+		  .then((response) => response.blob())
+		  .then((blob) => {
+		    // Create blob link to download
+		    const url = window.URL.createObjectURL(
+		      new Blob([blob]),
+		    );
+		    const link = document.createElement('a');
+		    link.href = url;
+		    link.setAttribute(
+		      'download',
+		       stopData.nazwa +  ` - rozklad ` + new Date().toLocaleDateString() + `.pdf`,
+		    );
+		
+		    // Append to html link element page
+		    document.body.appendChild(link);
+		
+		    // Start download
+		    link.click();
+		
+		    // Clean up and remove the link
+		    link.parentNode.removeChild(link);
+		  });
+		
+	
+	}
 
 
 
@@ -155,6 +232,7 @@ const BusStopInfo = () => {
             <div>
             <button className="infoBtn" onClick={saveChanges} >Zapisz zmiany</button>
             <div>
+            {  <Link className="infoBtn" onClick={downloadPdf}>Pobierz Rozkład</Link>}
             <Link className="infoBtn" to={`/bus_stop`}>Powrót do przystanków</Link>
             <Link className="infoBtn" to={`/bus_line`}>Powrót do lini</Link>
             </div>

@@ -37,7 +37,8 @@ const BusInfo = () => {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(requestBody)
+                body: JSON.stringify(requestBody),
+                credentials: "include"
             });
 
             const responseData = await response.json();
