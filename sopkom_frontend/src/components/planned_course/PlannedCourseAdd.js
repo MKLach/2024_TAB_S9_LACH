@@ -113,7 +113,7 @@ const PlannedCourseAdd = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: parseInt(value) });
-    
+    JSON.stringify(formData)
   };
   
   const handleChangeData = (e) => {

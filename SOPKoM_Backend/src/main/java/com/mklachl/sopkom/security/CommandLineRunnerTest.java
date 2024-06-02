@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mklachl.sopkom.model.dto.harmonogram.HarmonogramDto;
+import com.mklachl.sopkom.model.entity.Bilet;
 import com.mklachl.sopkom.model.entity.Role;
 import com.mklachl.sopkom.model.entity.User;
+import com.mklachl.sopkom.repository.BiletRepository;
 import com.mklachl.sopkom.repository.HarmonogramRepository;
 import com.mklachl.sopkom.repository.UserRepository;
 import com.mklachl.sopkom.services.HarmonogramService;
@@ -24,6 +26,9 @@ public class CommandLineRunnerTest implements CommandLineRunner {
     
     @Autowired
   	UserService userService;
+    
+    @Autowired
+    BiletRepository biletRepo;
     
     public static final String ADMIN_LOGIN = "admin";
     public static final String ADMIN_NAME = "admin";
@@ -169,5 +174,7 @@ public class CommandLineRunnerTest implements CommandLineRunner {
 	          heService.saveHarmonogram(harmonogram);
 	    }
       }
+        //System.out.println(biletRepo.findById((short)0));
+        
     }
 }

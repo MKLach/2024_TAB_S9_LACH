@@ -3,25 +3,33 @@ package com.mklachl.sopkom.services.impl;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import com.mklachl.sopkom.exceptions.LiniaNotFoundException;
 import com.mklachl.sopkom.model.dto.przejazd.PrzejazdDtoInput;
+import com.mklachl.sopkom.model.dto.przejazd.PrzejazdDtoUpdate;
 import com.mklachl.sopkom.model.entity.Autobus;
 import com.mklachl.sopkom.model.entity.Kierowca;
 import com.mklachl.sopkom.model.entity.Kurs;
 import com.mklachl.sopkom.model.entity.KursPrzystanekWlini;
 import com.mklachl.sopkom.model.entity.Przejazd;
+import com.mklachl.sopkom.model.entity.PrzejazdBilet;
 import com.mklachl.sopkom.model.entity.PrzejazdKursPrzystanekWlini;
 import com.mklachl.sopkom.raporty.rozkład.DateHelper;
 import com.mklachl.sopkom.repository.AutobusRepository;
+import com.mklachl.sopkom.repository.BiletRepository;
 import com.mklachl.sopkom.repository.KierowcaRepository;
 import com.mklachl.sopkom.repository.KursRepository;
+import com.mklachl.sopkom.repository.PrzejazdBiletRepository;
 import com.mklachl.sopkom.repository.PrzejazdKursPrzystanekWliniRepository;
 import com.mklachl.sopkom.repository.PrzejazdRepository;
 import com.mklachl.sopkom.services.PrzejazdService;
+
+import jakarta.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 @Service
 public class PrzejazdServiceImpl implements PrzejazdService {
@@ -32,16 +40,26 @@ public class PrzejazdServiceImpl implements PrzejazdService {
 	
     private PrzejazdRepository przejazdRepository;
     private PrzejazdKursPrzystanekWliniRepository pkpwlRepository;
+
+    private PrzejazdBiletRepository pbr;
+    private BiletRepository br;
+    
+    
+    
  
 
-    public PrzejazdServiceImpl(KierowcaRepository kierowcaRepository, AutobusRepository autobusRepository,
-			KursRepository kursRepository, PrzejazdRepository przejazdRepository, PrzejazdKursPrzystanekWliniRepository pkpwlRepository) {
-		
+
+	public PrzejazdServiceImpl(KierowcaRepository kierowcaRepository, AutobusRepository autobusRepository,
+			KursRepository kursRepository, PrzejazdRepository przejazdRepository,
+			PrzejazdKursPrzystanekWliniRepository pkpwlRepository, PrzejazdBiletRepository pbr, BiletRepository br) {
+		super();
 		this.kierowcaRepository = kierowcaRepository;
 		this.autobusRepository = autobusRepository;
 		this.kursRepository = kursRepository;
 		this.przejazdRepository = przejazdRepository;
 		this.pkpwlRepository = pkpwlRepository;
+		this.pbr = pbr;
+		this.br = br;
 	}
 
 
@@ -231,5 +249,63 @@ public class PrzejazdServiceImpl implements PrzejazdService {
 		return przejazd;
 	}
 
+
+
+	@Override
+	@Transactional(rollbackOn = {LiniaNotFoundException.class})
+	public Przejazd updatePrzejazd(PrzejazdDtoUpdate przejazdDto) throws Exception {
+		
+		Przejazd p = this.findPrzejazdById(przejazdDto.getPrzejazdId()).orElseThrow(new Supplier<LiniaNotFoundException>() {
+
+			@Override
+			public LiniaNotFoundException get() {
+				
+				return new LiniaNotFoundException(przejazdDto.getPrzejazdId());
+			}
+		});
+		
+		p.setSpalanie((float)przejazdDto.getSpalanie());
+		p.setCenaZaLitr((float)przejazdDto.getCenaZaLitr());
+		p.setDlugoscTrasy((float)przejazdDto.getDlugoszTrasy());
+		
+		for(int i = 0; i < przejazdDto.getPrzystanki().size(); i++) {
+			var temp = przejazdDto.getPrzystanki().get(i);
+			var main = pkpwlRepository.findById(temp.getId()).orElseThrow(() -> new LiniaNotFoundException(temp.getId()));
+			
+			main.setRealnaGodzinna(temp.getDate());
+			
+			pkpwlRepository.save(main);
+		}
+		
+		var list = new ArrayList<PrzejazdBilet>();
+		
+		for(int i= 0; i < przejazdDto.getLiczbaBiletowNormalnych(); i++) {
+			PrzejazdBilet pb = new PrzejazdBilet();
+			pb.setBilet(this.br.findById((short)0).get());
+			pb.setCenaBiletu(this.br.findById((short)0).get().getCena());
+			pb.setPrzejazd(p);
+			
+			pb = pbr.save(pb);
+			
+			list.add(pb);
+		}
+		
+		for(int i= 0; i < przejazdDto.getLiczbaBiletowUlgowych(); i++) {
+			PrzejazdBilet pb = new PrzejazdBilet();
+			pb.setBilet(this.br.findById((short)1).get());
+			pb.setCenaBiletu(this.br.findById((short)1).get().getCena());
+			pb.setPrzejazd(p);
+			
+			pb = pbr.save(pb);
+			
+			list.add(pb);
+		}
+		
+		p.setPrzejazdBilet(list);
+		
+		return przejazdRepository.save(p);
+	}
+
+	
 
 }
