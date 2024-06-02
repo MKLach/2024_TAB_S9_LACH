@@ -1,5 +1,6 @@
 package com.mklachl.sopkom.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mklachl.sopkom.model.entity.Incydent;
 import java.util.Date;
 
@@ -7,16 +8,23 @@ public class IncydentDto {
 
     private Long incydentId;
     private String typ;
+    
+    @JsonFormat(pattern = "dd.MM.yyyy")
     private Date date;
+    
     private Long autobusId;
     private Long kierowcaId;
     private Long przejazdId;
     private String dodatkoweInformacje;
+    
+    private String krotko;
+    
     private float koszty;
 
     public IncydentDto() {}
 
     public IncydentDto(Incydent incydent) {
+    	this.krotko = incydent.getKrotko();
         this.incydentId = incydent.getIncydentId();
         this.typ = incydent.getTyp();
         this.date = incydent.getDate();
@@ -29,7 +37,15 @@ public class IncydentDto {
 
     // Getters and Setters
 
-    public Long getIncydentId() {
+    public String getKrotko() {
+		return krotko;
+	}
+
+	public void setKrotko(String krotko) {
+		this.krotko = krotko;
+	}
+
+	public Long getIncydentId() {
         return incydentId;
     }
 

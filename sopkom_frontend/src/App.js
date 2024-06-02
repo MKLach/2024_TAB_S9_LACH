@@ -13,6 +13,7 @@ import CourseEdit from './components/course/CourseEdit';
 import PlannedCourseList from './components/planned_course/PlannedCourseList';
 import PlannedCourseAdd from './components/planned_course/PlannedCourseAdd';
 import PlannedCourseInfo from './components/planned_course/PlannedCourseInfo';
+import PlannedCourseAdd_with_data from './components/planned_course/PlannedCourseAdd_with_data';
 import BusStopList from './components/bus_stop/BusStopList';
 import BusStopInfo from './components/bus_stop/BusStopInfo';
 import BusStopAdd from './components/bus_stop/BusStopAdd';
@@ -80,6 +81,7 @@ function App() {
           <Route path="/course/edit" element={<CourseEdit />} />
           <Route path="/planned_course" element={<PlannedCourseList />} />
           <Route path="/planned_course/save" element={<PlannedCourseAdd />} />
+          <Route path="/planned_course/with_data" element={<PlannedCourseAdd_with_data />} />
           <Route path="/planned_course/info/:id" element={<PlannedCourseInfo />} />
           <Route path="/bus" element={<BusList />} />
           <Route path="/bus/save" element={<BusAdd />} />

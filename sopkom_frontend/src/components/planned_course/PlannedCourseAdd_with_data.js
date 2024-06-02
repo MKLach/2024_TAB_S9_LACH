@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { SERVER_URL } from '../constant';
+import { useSearchParams, useNavigate  } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-
-const PlannedCourseAdd = () => {
+const PlannedCourseAdd_with_data = () => {
   const [formData, setFormData] = useState({
     kursId: "",
     kierowcaId: "",
@@ -11,10 +11,12 @@ const PlannedCourseAdd = () => {
     dataPrzejazdu: "",
   });
 
-  const [coursesData, setCouresData] = useState([]);
+  const [course, setCourse] = useState(null);
   const [driverData, setDriverData] = useState([]);
   const [busData, setBusData] = useState([]);
   const [savedMessage, setSavedMessage] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+ 
   
   const [coursesDataDates, setCouresDataDates] = useState([
 	  "dd.MM.yyyy"
@@ -51,16 +53,18 @@ const PlannedCourseAdd = () => {
     }
   };
 
-  const getCourseData = async () => {
+  const getCourseData = async (kurs_id) => {
     try {
-      const response = await fetch(SERVER_URL + "/api/kurs/", { method: "GET", credentials: "include" });
+      const response = await fetch(SERVER_URL + "/api/kurs/" + kurs_id, { method: "GET", credentials: "include" });
       if (!response.ok) {
-        throw new Error("error on get 2");
+        throw new Error("error on get kurs");
       }
       const data = await response.json();
-      setCouresData(data);
+      setCourse(data);
     } catch (error) {
-      console.error(error);
+      console.error("kurs err: " + error);
+      
+      
     }
   }
   const getDates = async() => {
@@ -138,33 +142,34 @@ const PlannedCourseAdd = () => {
   };
 
   useEffect(() => {
-    getCourseData();
-    getBusData();
-  }, []);
-  
-  
-  useEffect(() => {
 	  formData.dataPrzejazdu = null
 	  formData.autobusId = null
 	  formData.kierowcaId = null
-	  getDates();
-	  if(formData.kursId){
-		document.getElementById('date_sel').selectedIndex = 0;
-		if(formData.dataPrzejazdu){
-			document.getElementById('drv_sel').selectedIndex = 0;
-	  		document.getElementById('bus_sel').selectedIndex = 0;
 	  
-		}
-	  
+	  console.log(searchParams.get("data"));
+	  console.log(searchParams.get("kurs_id"));
+			
+	  if(!searchParams.get("data") || !searchParams.get("kurs_id")){
+				
+		//console.log(searchParams.get("data"));
+		setTimeout(() => {
+        	window.location.href = '/planned_course_unplanned';
+      	}, 100);
+				
+	  } else{
+		  
+		  getCourseData(searchParams.get("kurs_id"));
+		  
+		  
+		  
+		  
 	  }
+	  
+	  formData.dataPrzejazdu = searchParams.get("data")
+	
 	 
-  }, [formData.kursId])
+  }, [])
   
-  useEffect(() => {
-	  getDriverData();
-	  getBusData();
-  }, [formData.dataPrzejazdu])
-
   return (
     <div className="pt-40">
       <p>{savedMessage}</p>
@@ -173,33 +178,13 @@ const PlannedCourseAdd = () => {
         <form className="addForm" onSubmit={handleSubmit}>
           <table className="addFormat">
             <tbody>
-              <tr>
-                <td className="addWhat">Kurs: </td>
-                <td>
-                  <select
-                    name="kursId"
-                    className="dropDownCourse"
-                    value={formData.kursId}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option key = "-1" value="">Wybierz kurs</option>
-                    {Array.isArray(coursesData) && coursesData.map((course) => (
-                      <option key={course.kursId} value={course.kursId}>
-                        {
-							
-							course.kierunek ? course.linia.numer + " " + course.przystanki[course.przystanki.length-1].godzinna + " "
-							+ " ODW" : course.linia.numer + " " + course.przystanki[0].godzinna + " "
-							
-							
-							
-						}
-                      </option>
-                    ))}
-                  </select>
-                </td>
-              </tr>
-              
+              { course && <tr>
+              	 Kurs: {course.kierunek ? course.linia.numer + " " + course.przystanki[course.przystanki.length-1].godzinna + " "
+							+ " ODW" : course.linia.numer + " " + course.przystanki[0].godzinna + " "}
+               
+               
+              	</tr>
+              }
               
              
              { formData.kursId && coursesDataDates.length > 0 &&
@@ -217,7 +202,7 @@ const PlannedCourseAdd = () => {
                 </td>
                */ }
                 
-                <td className="addWhat">Data przejazdu:</td>
+                <td className="addWhat">Data przejazdu: {searchParams.get("data")}</td>
                 <td>
                   <select
                     id = "date_sel"
@@ -296,4 +281,4 @@ const PlannedCourseAdd = () => {
   );
 };
 
-export default PlannedCourseAdd;
+export default PlannedCourseAdd_with_data;

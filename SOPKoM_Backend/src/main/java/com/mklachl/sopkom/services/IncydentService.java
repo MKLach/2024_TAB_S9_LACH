@@ -1,5 +1,6 @@
 package com.mklachl.sopkom.services;
 
+import com.mklachl.sopkom.exceptions.IncydentException;
 import com.mklachl.sopkom.model.dto.IncydentDto;
 import com.mklachl.sopkom.model.entity.Autobus;
 import com.mklachl.sopkom.model.entity.Incydent;
@@ -16,8 +17,10 @@ public interface IncydentService {
 
     Incydent saveIncydent(Incydent incydent);
 
-    Incydent saveIncydent(IncydentDto incydentDto);
-
+    Incydent saveIncydent(IncydentDto incydentDto) throws IncydentException;
+    
+    Incydent updateIncydent(long id, IncydentDto updatedIncydentDto) throws IncydentException;
+    
     Optional<Incydent> findIncydentById(long id);
 
     List<Incydent> findIncydentByTyp(String typ);

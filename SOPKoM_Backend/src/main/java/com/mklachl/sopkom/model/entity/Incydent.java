@@ -31,7 +31,10 @@ public class Incydent {
     @JoinColumn(name = "przejazd_id", referencedColumnName = "przejazd_id")
     private Przejazd przejazd;
 
-    @Column(name = "dodatkowe_informacje", length = 200)
+    @Column(name = "krotko", length = 60)
+    private String krotko;
+    
+    @Column(name = "dodatkowe_informacje", length = 800)
     private String dodatkoweInformacje;
 
     @Column(name = "koszty")
@@ -102,4 +105,14 @@ public class Incydent {
     public void setKoszty(float koszty) {
         this.koszty = koszty;
     }
+
+	public String getKrotko() {
+		return krotko;
+	}
+
+	public void setKrotko(String krotko) {
+		this.krotko = krotko;
+	}
+    
+    
 }
