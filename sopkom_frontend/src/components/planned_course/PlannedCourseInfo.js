@@ -100,59 +100,7 @@ function DayTime(dateTimeStr) {
 }
 
 const PlannedCourseInfo = () => {
-	const [courseData, setCourseData] = useState(
-      {
-    "przejazdId": 5,
-    "kursId": 1,
-    "liniaNumer": "M500",
-    "dataStartu": "27-05-2024T10:02:00 -02:00",
-    "dataKonca": "27-05-2024T13:30:00 -02:00",
-    "data": "27-05-2024",
-    "kierowcaImieNazwisko": "Jan Nowak",
-    "autobusNazwa": "SKHAKL",
-    "autobusNumerRejestracyjny": "SKHAKL",
-    "spalanie": 0.0,
-    "cenaZaLitr": 0.0,
-    "dlugoscTrasy": 0.0,
-    "liczbaBiletow": 0,
-    "status": "zapl",
-    "kierunek": 0,
-    "przystanki": [
-        {
-            "przejazdKursPrzystanekWliniId": 1,
-            "kolejnosc": 1,
-            "przewidywanaGodzinna": "12:32:00",
-            "realnaGodzinna": null,
-            "nazwa": "Centralny",
-            "przystanekId": 1
-        },
-        {
-            "przejazdKursPrzystanekWliniId": 2,
-            "kolejnosc": 2,
-            "przewidywanaGodzinna": "13:41:00",
-            "realnaGodzinna": null,
-            "nazwa": "Testowy1",
-            "przystanekId": 3
-        },
-        {
-            "przejazdKursPrzystanekWliniId": 3,
-            "kolejnosc": 3,
-            "przewidywanaGodzinna": "14:02:00",
-            "realnaGodzinna": null,
-            "nazwa": "Wolny",
-            "przystanekId": 4
-        },
-        {
-            "przejazdKursPrzystanekWliniId": 4,
-            "kolejnosc": 4,
-            "przewidywanaGodzinna": "15:00:00",
-            "realnaGodzinna": null,
-            "nazwa": "124 NOR",
-            "przystanekId": 10
-        }
-    ]
-}
-    );
+	const [courseData, setCourseData] = useState([]);
     const [savedMessage, setSavedMessage] = useState("");
 
     //Trza zmienić API

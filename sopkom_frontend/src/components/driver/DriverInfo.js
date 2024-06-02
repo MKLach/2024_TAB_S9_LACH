@@ -34,7 +34,7 @@ const DriverInfo = () => {
                 body: JSON.stringify(driverData)
             });
             if (!response.ok) {
-                throw new Error("Failed to save changes");
+                throw new Error("Failed to save changes")
             }
             setSavedMessage("Zmiany zostały zapisane pomyślnie!");
         } catch (error) {

@@ -4,6 +4,9 @@ import './App.css';
 import DriverList from './components/driver/DriverList';
 import DriverAdd from './components/driver/DriverAdd';
 import DriverInfo from './components/driver/DriverInfo';
+import IncidentInfo from './components/incident/IncidentInfo';
+import IncidentAdd from './components/incident/IncidentAdd';
+import IncidentList from './components/incident/IncidentList';
 import BusInfo from './components/bus/BusInfo';
 import BusAdd from './components/bus/BusAdd';
 import BusList from './components/bus/BusList';
@@ -83,6 +86,9 @@ function App() {
           <Route path="/planned_course/save" element={<PlannedCourseAdd />} />
           <Route path="/planned_course/with_data" element={<PlannedCourseAdd_with_data />} />
           <Route path="/planned_course/info/:id" element={<PlannedCourseInfo />} />
+          <Route path="/incident" element={<IncidentList />} />
+          <Route path="/incident/save" element={<IncidentAdd />} />
+          <Route path="/incident/info/:id" element={<IncidentInfo />} />
           <Route path="/bus" element={<BusList />} />
           <Route path="/bus/save" element={<BusAdd />} />
           <Route path="/bus/info/:id" element={<BusInfo />} />

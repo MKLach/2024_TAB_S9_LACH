@@ -130,9 +130,22 @@ hover:route{
     width: 250px;
 }
 
+.columnDiv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
 .addDiv{
-    float: right;
-    margin-right: 20px;
+    margin-left: auto;
+}
+
+.dropDiv{
+    display: flex;
+    justify-content: space-between;
+    width: 35%;
+    padding: 20px;
 }
 
 .addForm{
@@ -167,6 +180,29 @@ hover:route{
 .addInput {
     text-align: center;
     width: 250px;
+}
+
+.textAreaInput {
+    text-align: right;
+    font-size: large;
+    width: 200px;
+    min-height: 100px;
+    height: auto;
+    resize: vertical;
+    overflow: auto;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.textAreaInput::-webkit-scrollbar {
+    display: none;
+}
+
+.textAreaInput {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 .dropDownPrzystanek{

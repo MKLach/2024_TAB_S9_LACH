@@ -5,6 +5,7 @@ import { IoMdListBox, IoMdHome } from 'react-icons/io';
 import { RiUserFill } from 'react-icons/ri';
 import { GiBusStop } from "react-icons/gi";
 import { GrSchedules, GrPlan } from "react-icons/gr";
+import { LuShieldAlert } from "react-icons/lu";
 import { TbBusStop } from "react-icons/tb";
 import { FaBusAlt, FaRoute } from "react-icons/fa";
 import { FaPersonMilitaryToPerson } from "react-icons/fa6";
@@ -50,6 +51,7 @@ const Navbar = ({ userRole }) => {
       { icon: <GiBusStop style={{ color: 'black' }} size={20} />, to: "/bus_stop" },
       { icon: <FaPersonMilitaryToPerson style={{ color: 'black' }} size={20} />, to: "/driver" },
       { icon: <FaBusAlt style={{ color: 'black' }} size={20} />, to: "/bus" },
+      { icon: <LuShieldAlert style={{ color: 'black' }} size={20} />, to: "/incident" },
       { icon: <IoMdListBox style={{ color: 'black' }} size={20} />, to: "/dashboard" }
     ];
 

@@ -67,10 +67,6 @@ const CourseList = () => {
     return timeString.slice(0, 5);
   }
 
-
-//                <th>Adres</th>
-//                    <td>{stop.przystanekWLini.adres}</td>
-
   return (
     <div className="pt-40">
       <h2>Kursy:</h2>
