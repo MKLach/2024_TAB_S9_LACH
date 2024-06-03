@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { SERVER_URL } from '../constant';
 import { Link, useSearchParams } from "react-router-dom";
 
-const CourseList = () => {
+const CourseList = ({ userRole }) => {
   const [lineData, setLineData] = useState([]);
   const [selectedLine, setSelectedLine] = useState('');
   const [coursesData, setCouresData] = useState([]);
   const [courseId, setCourseId] = useState(0);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const getLineData = async () => {
     try {
@@ -17,16 +17,13 @@ const CourseList = () => {
       }
       const data = await response.json();
       setLineData(data);
-      if(searchParams.get("linia_id")){
-		
-		setSelectedLine(searchParams.get("linia_id"));
-		
-	  }
-      
+      if (searchParams.get("linia_id")) {
+        setSelectedLine(searchParams.get("linia_id"));
+      }
     } catch (error) {
       console.error("Error fetching line data:", error);
     }
-  }
+  };
 
   const getStopsData = async (lineId) => {
     try {
@@ -39,7 +36,7 @@ const CourseList = () => {
     } catch (error) {
       console.error("Error fetching stops data:", error);
     }
-  }
+  };
 
   useEffect(() => {
     getLineData();
@@ -54,24 +51,26 @@ const CourseList = () => {
   }, [selectedLine]);
 
   const handleLineChange = (e) => {
-        if (e.target.value != ""){
-            setSelectedLine(e.target.value);
-            setCourseId(e.target.value);
-        }else{
-            setSelectedLine('');
-            setCourseId('');
-        }
-  }
+    if (e.target.value !== "") {
+      setSelectedLine(e.target.value);
+      setCourseId(e.target.value);
+    } else {
+      setSelectedLine('');
+      setCourseId('');
+    }
+  };
 
   const formatTime = (timeString) => {
     return timeString.slice(0, 5);
-  }
+  };
 
   return (
     <div className="pt-40">
       <h2>Kursy:</h2>
       <div className="addDiv">
-        <Link className="infoBtn" to={`/course/save`}>Dodaj kurs</Link>
+        {userRole !== 'DISPATCHER' && (
+          <Link className="infoBtn" to={`/course/save`}>Dodaj kurs</Link>
+        )}
       </div>
       <div className="listDiv">
         <table className="addFormat">
@@ -92,73 +91,40 @@ const CourseList = () => {
       </div>
 
       <div className="listDiv">
-       
         {coursesData.length > 0 && (
-         
-			 coursesData.map((course) =>(
-				<div>
-				  <h1>{course.kursId} Kierunek - {course.kierunek == 0 && "Normalny"} {course.kierunek == 1 && "Odwrotny"}</h1>
-				  <p>{course.harmonogram.nazwa}</p>
-				  <table key = {course.kursId} className="tableFormat">
-					   <thead>
-			              <tr>
-			                <th>Przystanek</th>
-			                <th>Godzina</th>
-			              </tr>
-			            </thead>
-				  		<tbody>
-						{
- 							course.przystanki.sort((a,b) => {
-								if(course.kierunek == 0){
-									
-									return a.przystanekWLini.kolejnosc - b.przystanekWLini.kolejnosc;
-								} else {
-									
-									return b.przystanekWLini.kolejnosc - a.przystanekWLini.kolejnosc;
-								}
-							}
-							 ).map((stop) => (
-			                  <tr key={stop.przystanekwKursieId}>
-			                    <td>{stop.przystanekWLini.nazwa}</td>
-			                    <td>{formatTime(stop.godzinna)}</td>
-			                  </tr>
-			                ))
-			             }
-				  		</tbody>
-				  </table>
-				    <Link className="infoBtn" to={`/course/edit?kurs_id=${course.kursId}`}>Edytuj kurs</Link>
-				</div>
-			 )
-			 
-		 )
-         
-          /*
-          <table className="tableFormat">
-            <thead>
-              <tr>
-                <th>Nazwa przystanku</th>
-                <th>Godzina</th>
-              </tr>
-            </thead>
-            <tbody>
-              {coursesData.map((course) =>
-              
-                course.przystanki.map((stop) => (
-                  <tr key={stop.przystanekwKursieId}>
-                    <td>{stop.przystanekWLini.nazwa}</td>
-                    <td>{formatTime(stop.godzinna)}</td>
+          coursesData.map((course) => (
+            <div key={course.kursId}>
+              <h1>{course.kursId} Kierunek - {course.kierunek === 0 ? "Normalny" : "Odwrotny"}</h1>
+              <p>{course.harmonogram.nazwa}</p>
+              <table className="tableFormat">
+                <thead>
+                  <tr>
+                    <th>Przystanek</th>
+                    <th>Godzina</th>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        */
-        
+                </thead>
+                <tbody>
+                  {course.przystanki.sort((a, b) => {
+                    if (course.kierunek === 0) {
+                      return a.przystanekWLini.kolejnosc - b.przystanekWLini.kolejnosc;
+                    } else {
+                      return b.przystanekWLini.kolejnosc - a.przystanekWLini.kolejnosc;
+                    }
+                  }).map((stop) => (
+                    <tr key={stop.przystanekwKursieId}>
+                      <td>{stop.przystanekWLini.nazwa}</td>
+                      <td>{formatTime(stop.godzinna)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <Link className="infoBtn" to={`/course/edit?kurs_id=${course.kursId}`}>Edytuj kurs</Link>
+            </div>
+          ))
         )}
-
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default CourseList;

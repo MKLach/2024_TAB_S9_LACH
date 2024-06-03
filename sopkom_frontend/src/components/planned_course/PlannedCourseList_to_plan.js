@@ -82,24 +82,40 @@ const PlannedCourseList_to_plan = () => {
         setSelectedLine(e.target.value);
     };
 
-   
     const filterCourses = () => {
         let filtered = courseData;
 
         if (selectedLine) {
-            console.log(filtered = filtered.filter(course => course.liniaNumer === selectedLine));
+            filtered = filtered.filter(course => course.liniaNumer === selectedLine);
         }
 
         console.log('Filtered data:', filtered);
         setFilteredData(filtered);
     };
 
+    const getRowClass = (dateStartu) => {
+        const today = new Date();
+        const startDate = new Date(dateStartu);
+        const timeDiff = startDate - today;
+        const daysDiff = timeDiff / (1000 * 3600 * 24);
+
+        if (daysDiff < 0) {
+            return '';
+        } else if (daysDiff < 1) {
+            return 'red-row';
+        } else if (daysDiff <= 5) {
+            return 'yellow-row';
+        } else {
+            return '';
+        }
+    };
+
     return (
         <div className="pt-40">
             <h2>Lista Przejazdów:</h2>
             <div className="columnDiv">
-              
-                <div className="dropDiv">
+
+                <div className="dropDivShort">
                     <p>Filtry</p>
                     <select className="dropDownCourse" value={selectedLine} onChange={handleLineChange}>
                         <option value="">Wybierz linię</option>
@@ -124,11 +140,10 @@ const PlannedCourseList_to_plan = () => {
 
                     <tbody>
                         {Array.isArray(filteredData) && filteredData.map((course, index) => (
-                            <tr key={index}>
+                            <tr key={index} className={getRowClass(course.dataStartu)}>
                                 <td>{index + 1}</td>
                                 <td><Link className="infoBtn" to={`/planned_course/with_data?kurs_id=${course.kursId}&data=${formatDateTime2(course.data)}`}>{course.liniaNumer}</Link></td>
                                 <td>{formatDateTime(course.dataStartu)}</td>
-
                                 <td>{course.status}</td>
                             </tr>
                         ))}

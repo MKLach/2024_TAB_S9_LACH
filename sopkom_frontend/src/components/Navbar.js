@@ -7,6 +7,7 @@ import { GiBusStop } from "react-icons/gi";
 import { GrSchedules, GrPlan } from "react-icons/gr";
 import { LuShieldAlert } from "react-icons/lu";
 import { TbBusStop } from "react-icons/tb";
+import { PiNotePencil } from "react-icons/pi";
 import { FaBusAlt, FaRoute } from "react-icons/fa";
 import { FaPersonMilitaryToPerson } from "react-icons/fa6";
 import { IoLogOut } from 'react-icons/io5';
@@ -47,6 +48,7 @@ const Navbar = ({ userRole }) => {
       { icon: <FaRoute style={{ color: 'black' }} size={20} />, to: "/course" },
       { icon: <TbBusStop style={{ color: 'black' }} size={20} />, to: "/bus_line" },
       { icon: <GrPlan style={{ color: 'black' }} size={20} />, to: "/bus_stop/timetable" },
+      { icon: <PiNotePencil  style={{ color: 'black' }} size={20} />, to: "/planned_course_to_plan" },
       { icon: <GrSchedules style={{ color: 'black' }} size={20} />, to: "/planned_course" },
       { icon: <GiBusStop style={{ color: 'black' }} size={20} />, to: "/bus_stop" },
       { icon: <FaPersonMilitaryToPerson style={{ color: 'black' }} size={20} />, to: "/driver" },
@@ -56,8 +58,13 @@ const Navbar = ({ userRole }) => {
     ];
 
     const dispatcherItems = [
-      { icon: <GrSchedules style={{ color: 'black' }} size={20} />, to: "/planned_course" },
       { icon: <FaRoute style={{ color: 'black' }} size={20} />, to: "/course" },
+      { icon: <TbBusStop style={{ color: 'black' }} size={20} />, to: "/bus_line" },
+      { icon: <PiNotePencil  style={{ color: 'black' }} size={20} />, to: "/planned_course_to_plan" },
+      { icon: <GrSchedules style={{ color: 'black' }} size={20} />, to: "/planned_course" },
+      { icon: <GiBusStop style={{ color: 'black' }} size={20} />, to: "/bus_stop" },
+      { icon: <FaPersonMilitaryToPerson style={{ color: 'black' }} size={20} />, to: "/driver" },
+      { icon: <FaBusAlt style={{ color: 'black' }} size={20} />, to: "/bus" },
     ];
 
     if (userRole === 'ADMIN' || userRole === 'MANAGER') {

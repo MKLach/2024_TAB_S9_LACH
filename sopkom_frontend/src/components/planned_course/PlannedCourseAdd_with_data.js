@@ -134,7 +134,7 @@ const PlannedCourseAdd_with_data = () => {
 				
 		//console.log(searchParams.get("data"));
 		setTimeout(() => {
-        	//window.location.href = '/planned_course_to_plan';
+        	window.location.href = '/planned_course_to_plan';
       	}, 100);
 				
 	  } else{

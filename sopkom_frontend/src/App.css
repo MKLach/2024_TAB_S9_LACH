@@ -153,6 +153,13 @@ hover:route{
     padding: 20px;
 }
 
+.dropDivShort{
+    display: flex;
+    justify-content: space-between;
+    width: 20%;
+    padding: 20px;
+}
+
 .addForm{
     display: flex;
     flex-direction: column;
@@ -232,3 +239,11 @@ hover:route{
     padding: 2%;
 }
 
+.red-row {
+    background-color: red;
+    font-weight: 800;
+}
+
+.yellow-row {
+    background-color: yellow;
+}

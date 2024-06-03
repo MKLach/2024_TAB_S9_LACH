@@ -69,21 +69,21 @@ function App() {
         <Navbar userRole={userRole} />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/driver" element={<DriverList />} />
+          <Route path="/driver" element={<DriverList userRole={userRole} />} />
           <Route path="/driver/save" element={<DriverAdd />} />
           <Route path="/driver/info/:id" element={<DriverInfo />} />
-          <Route path="/bus_stop" element={<BusStopList />} />
+          <Route path="/bus_stop" element={<BusStopList BusList userRole={userRole}/>} />
           <Route path="/bus_stop/save" element={<BusStopAdd />} />
           <Route path="/bus_stop/info/:id" element={<BusStopInfo />} />
           <Route path="/bus_stop/timetable" element={<BusStopTimeTableInfo />} />
-          <Route path="/bus_line" element={<BusLineList />} />
+          <Route path="/bus_line" element={<BusLineList userRole={userRole} />} />
           <Route path="/bus_line/info/:id" element={<BusLineInfo />} />
           <Route path="/bus_line/save" element={<BusLineAdd />} />
           <Route path="/bus_line/edit/:id" element={<BusLineEdit />} />
-          <Route path="/course" element={<CourseList />} />
+          <Route path="/course" element={<CourseList userRole={userRole} />} />
           <Route path="/course/save" element={<CourseAdd />} />
           <Route path="/course/edit" element={<CourseEdit />} />
-          <Route path="/planned_course" element={<PlannedCourseList />} />
+          <Route path="/planned_course" element={<PlannedCourseList BusList userRole={userRole} />} />
           <Route path="/planned_course_to_plan" element={<PlannedCourseList_to_plan />} />
           <Route path="/planned_course/save" element={<PlannedCourseAdd />} />
           <Route path="/planned_course/with_data" element={<PlannedCourseAdd_with_data />} />
@@ -91,7 +91,7 @@ function App() {
           <Route path="/incident" element={<IncidentList />} />
           <Route path="/incident/save" element={<IncidentAdd />} />
           <Route path="/incident/info/:id" element={<IncidentInfo />} />
-          <Route path="/bus" element={<BusList />} />
+          <Route path="/bus" element={<BusList userRole={userRole} />} />
           <Route path="/bus/save" element={<BusAdd />} />
           <Route path="/bus/info/:id" element={<BusInfo />} />
           <Route path="/dashboard" element={<Dashboard />} />
