@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.DateUtils;
 
 import com.mklachl.sopkom.exceptions.IncydentException;
 import com.mklachl.sopkom.model.dto.IncydentDto;
@@ -13,6 +14,7 @@ import com.mklachl.sopkom.model.entity.Autobus;
 import com.mklachl.sopkom.model.entity.Incydent;
 import com.mklachl.sopkom.model.entity.Kierowca;
 import com.mklachl.sopkom.model.entity.Przejazd;
+import com.mklachl.sopkom.raporty.rozkład.DateHelper;
 import com.mklachl.sopkom.repository.AutobusRepository;
 import com.mklachl.sopkom.repository.IncydentRepository;
 import com.mklachl.sopkom.repository.KierowcaRepository;
@@ -72,7 +74,7 @@ public class IncydentServiceImpl implements IncydentService {
 
         if (incydentDto.getPrzejazdId() != null) {
             Przejazd przejazd = przejazdRepository.findById(incydentDto.getPrzejazdId())
-                    .orElseThrow(() -> new IncydentException("Przejazd not found"));
+                    .orElseThrow(() -> new IncydentException("Przejazd not found " + incydentDto.getPrzejazdId()));
             incydent.setPrzejazd(przejazd);
         }
 
@@ -89,10 +91,10 @@ public class IncydentServiceImpl implements IncydentService {
         Incydent incydentToUpdate = incydentRepository.findById(id)
                 .orElseThrow(() -> new IncydentException("Incydent not found"));
 
-        incydentToUpdate.setDodatkoweInformacje("orignlany wpis o " + incydentToUpdate.getDate() + " "  + updatedIncydentDto.getDodatkoweInformacje());
+        incydentToUpdate.setDodatkoweInformacje(updatedIncydentDto.getDodatkoweInformacje());
         
         incydentToUpdate.setTyp(updatedIncydentDto.getTyp());
-        incydentToUpdate.setDate(updatedIncydentDto.getDate());
+        incydentToUpdate.setDate(DateHelper.addDays(updatedIncydentDto.getDate(), 1));
         incydentToUpdate.setKrotko(updatedIncydentDto.getKrotko());
 
        

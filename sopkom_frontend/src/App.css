@@ -125,6 +125,11 @@ hover:route{
     width: 200px;
 }
 
+.incidentInput{
+    text-align:center;
+    width: 250px;
+}
+
 .selectInput{
     text-align:center;
     width: 250px;
@@ -183,9 +188,9 @@ hover:route{
 }
 
 .textAreaInput {
-    text-align: right;
+    text-align: left;
     font-size: large;
-    width: 200px;
+    width: 250px;
     min-height: 100px;
     height: auto;
     resize: vertical;

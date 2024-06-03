@@ -123,7 +123,7 @@ const PlannedCourseList = () => {
                 <table className="tableFormat">
                     <thead>
                         <tr>
-                            <th>Lp.</th>
+                            <th>Id.</th>
                             <th>Kurs</th>
                             <th>Data</th>
                             <th>Kierowca</th>
@@ -135,7 +135,7 @@ const PlannedCourseList = () => {
                     <tbody>
                         {Array.isArray(filteredData) && filteredData.map((course, index) => (
                             <tr key={course.przejazdId}>
-                                <td>{index + 1}</td>
+                                <td>{course.przejazdId}</td>
                                 <td><Link className="infoBtn" to={`/planned_course/info/${course.przejazdId}`}>{course.liniaNumer}</Link></td>
                                 <td>{formatDateTime(course.dataStartu)}</td>
                                 <td>{course.kierowcaImieNazwisko}</td>
