@@ -18,11 +18,11 @@ function extractLastPathComponent(url) {
 }
 
 const IncidentInfo = () => {
-  const [incidentData, setIncidentData] = useState([]);
+  const [incidentData, setIncidentData] = useState({});
+  const [lineData, setLineData] = useState([]);
   const [driverData, setDriverData] = useState([]);
   const [busData, setBusData] = useState([]);
   const [savedMessage, setSavedMessage] = useState("");
-  const [formData, setFormData] = useState();
 
   const getCourseData = async () => {
     try {
@@ -32,9 +32,21 @@ const IncidentInfo = () => {
       }
       const data = await response.json();
       setIncidentData(data);
-      setFormData(data);
     } catch (error) {
         console.error("Error fetching incident data:", error);
+    }
+  }
+
+  const getLineData = async () => {
+    try {
+      const response = await fetch(SERVER_URL + "/api/linia", {method: "GET", credentials: "include"});
+      if (!response.ok) {
+        throw new Error("Error fetching line data");
+      }
+      const data = await response.json();
+      setLineData(data);
+    } catch (error) {
+      console.error("Error fetching line data:", error);
     }
   }
 
@@ -66,7 +78,7 @@ const IncidentInfo = () => {
 
   const saveChanges = async () => {
     try {
-      const response = await fetch(SERVER_URL + "/api/incydent/" + extractLastPathComponent(window.location.href), {
+      const response = await fetch(SERVER_URL + "/api/incydent" + extractLastPathComponent(window.location.href), {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json"
@@ -85,6 +97,7 @@ const IncidentInfo = () => {
 
   useEffect(() => {
     getDriverData();
+    getLineData();
     getBusData();
     getCourseData();
   }, []);
@@ -105,19 +118,19 @@ const IncidentInfo = () => {
           <tbody>
             <tr>
               <th>Typ incydentu:</th>
-              <td><input className="infoInput" required type="text" name="typ" value={incidentData.typ || ''} onChange={handleInputChange} /></td>
+              <td><input className="incidentInput" required type="text" name="typ" value={incidentData.typ || ''} onChange={handleInputChange} /></td>
             </tr>
             <tr>
               <th>Krótki opis:</th>
-              <td><input className="infoInput" required type="text" name="krotko" value={incidentData.krotko || ''} onChange={handleInputChange} /></td>
+              <td><input className="incidentInput" required type="text" name="krotko" value={incidentData.krotko || ''} onChange={handleInputChange} /></td>
             </tr>
             <tr>
               <th>Data incydentu:</th>
-              <td><input className="infoInput" required type="text" name="date" value={incidentData.date || ''} onChange={handleInputChange} /></td>
+              <td><input className="incidentInput" required type="text" name="date" value={incidentData.date || ''} onChange={handleInputChange} /></td>
             </tr>
             <tr>
               <th>Koszt:</th>
-              <td><input className="infoInput" required type="text" name="koszty" value={incidentData.koszty || ''} onChange={handleInputChange} /></td>
+              <td><input className="incidentInput" required type="text" name="koszty" value={incidentData.koszty || ''} onChange={handleInputChange} /></td>
             </tr>
             <tr>
               <th>Kierowca:</th>
@@ -126,10 +139,10 @@ const IncidentInfo = () => {
                   id="drv_sel"
                   name="kierowcaId"
                   className="dropDownCourse"
-                  defaultValue={""}
+                  value={incidentData.kierowcaId || ""}
                   onChange={handleInputChange}
                 >
-                  <option key="-1" value="">Brak kierowcy</option>
+                  <option key="-1" value="null">Brak kierowcy</option>
                   {Array.isArray(driverData) && driverData.map((driver) => (
                     <option key={driver.kierowcaId} value={driver.kierowcaId}>
                       {driver.kierowcaId} - {driver.imie} {driver.nazwisko}
@@ -145,10 +158,10 @@ const IncidentInfo = () => {
                   id="bus_sel"
                   name="autobusId"
                   className="dropDownCourse"
-                  defaultValue={""}
+                  value={incidentData.autobusId || ""}
                   onChange={handleInputChange}
                 >
-                  <option key="-1" value="">Brak autobusu</option>
+                  <option key="-1" value="null">Brak autobusu</option>
                   {Array.isArray(busData) && busData.map((bus) => (
                     <option key={bus.autbousId} value={bus.autbousId}>
                       {bus.autbousId} - {bus.numerRejestracyjny}
@@ -164,13 +177,13 @@ const IncidentInfo = () => {
                   id="przejazd_sel"
                   name="przejazdId"
                   className="dropDownCourse"
-                  defaultValue={""}
+                  value={incidentData.przejazdId || ""}
                   onChange={handleInputChange}
                 >
-                  <option key="-1" value="">Brak przejazdu</option>
-                  {Array.isArray(busData) && busData.map((bus) => (
-                    <option key={bus.autbousId} value={bus.autbousId}>
-                      {bus.autbousId} - {bus.numerRejestracyjny}
+                  <option key="-1" value="null">Brak przejazdu</option>
+                  {Array.isArray(lineData) && lineData.map((line) => (
+                    <option key={line.id} value={line.id}>
+                      {line.id} - {line.numer}
                     </option>
                   ))}
                 </select>
