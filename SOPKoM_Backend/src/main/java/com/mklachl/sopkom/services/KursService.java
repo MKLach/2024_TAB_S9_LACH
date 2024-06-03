@@ -6,6 +6,7 @@ import com.mklachl.sopkom.model.entity.Harmonogram;
 import com.mklachl.sopkom.model.entity.Kurs;
 import com.mklachl.sopkom.model.entity.Linia;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 public interface KursService {
@@ -23,4 +24,5 @@ public interface KursService {
     List<Kurs> findKursByKierunek(Short kierunek);
 
     List<Kurs> findKursByTypAutobusu(Short typAutobusu);
+  
 }

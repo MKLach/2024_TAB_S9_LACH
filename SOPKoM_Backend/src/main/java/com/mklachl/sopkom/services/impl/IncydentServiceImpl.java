@@ -58,21 +58,18 @@ public class IncydentServiceImpl implements IncydentService {
         incydent.setDate(incydentDto.getDate());
         incydent.setKrotko(incydentDto.getKrotko());
 
-        // Fetch and set Autobus
         if (incydentDto.getAutobusId() != null) {
             Autobus autobus = autobusRepository.findById(incydentDto.getAutobusId())
                     .orElseThrow(() -> new IncydentException("Autobus not found"));
             incydent.setAutobus(autobus);
         }
 
-        // Fetch and set Kierowca
         if (incydentDto.getKierowcaId() != null) {
             Kierowca kierowca = kierowcaRepository.findById(incydentDto.getKierowcaId())
                     .orElseThrow(() -> new IncydentException("Kierowca not found"));
             incydent.setKierowca(kierowca);
         }
 
-        // Fetch and set Przejazd
         if (incydentDto.getPrzejazdId() != null) {
             Przejazd przejazd = przejazdRepository.findById(incydentDto.getPrzejazdId())
                     .orElseThrow(() -> new IncydentException("Przejazd not found"));
@@ -88,7 +85,7 @@ public class IncydentServiceImpl implements IncydentService {
     
     @Override
     public Incydent updateIncydent(long id, IncydentDto updatedIncydentDto) throws IncydentException {
-        // Find the incident by ID
+        
         Incydent incydentToUpdate = incydentRepository.findById(id)
                 .orElseThrow(() -> new IncydentException("Incydent not found"));
 
@@ -103,23 +100,28 @@ public class IncydentServiceImpl implements IncydentService {
             Autobus autobus = autobusRepository.findById(updatedIncydentDto.getAutobusId())
                     .orElseThrow(() -> new IncydentException("Autobus not found"));
             incydentToUpdate.setAutobus(autobus);
+        } else {
+        	incydentToUpdate.setAutobus(null);
         }
 
         if (updatedIncydentDto.getKierowcaId() != null) {
             Kierowca kierowca = kierowcaRepository.findById(updatedIncydentDto.getKierowcaId())
                     .orElseThrow(() -> new IncydentException("Kierowca not found"));
             incydentToUpdate.setKierowca(kierowca);
+        } else {
+        	incydentToUpdate.setKierowca(null);
         }
 
         if (updatedIncydentDto.getPrzejazdId() != null) {
             Przejazd przejazd = przejazdRepository.findById(updatedIncydentDto.getPrzejazdId())
                     .orElseThrow(() -> new IncydentException("Przejazd not found"));
             incydentToUpdate.setPrzejazd(przejazd);
+        } else {
+        	incydentToUpdate.setPrzejazd(null);
         }
 
         incydentToUpdate.setKoszty(updatedIncydentDto.getKoszty());
 
-        // Save the updated incident
         incydentToUpdate = incydentRepository.save(incydentToUpdate);
         
         return incydentToUpdate;

@@ -59,5 +59,9 @@ public interface PrzejazdService {
     List<Przejazd> findPrzejazdyByKursAndData(Kurs kurs, Date data);
 
     Optional<Przejazd> findPrzejazdById(long id);
+    
+    List<Date> findAllDatesForKurs(Kurs kurs, int count);
+
+	Przejazd createDetachedPrzejazd(Kurs kurs, Date dataPrzejazdu);
 
 }

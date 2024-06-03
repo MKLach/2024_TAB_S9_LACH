@@ -7,6 +7,7 @@ import com.mklachl.sopkom.exceptions.LiniaNotFoundException;
 import com.mklachl.sopkom.model.dto.przejazd.PrzejazdDtoInput;
 import com.mklachl.sopkom.model.dto.przejazd.PrzejazdDtoUpdate;
 import com.mklachl.sopkom.model.entity.Autobus;
+import com.mklachl.sopkom.model.entity.Harmonogram;
 import com.mklachl.sopkom.model.entity.Kierowca;
 import com.mklachl.sopkom.model.entity.Kurs;
 import com.mklachl.sopkom.model.entity.KursPrzystanekWlini;
@@ -25,11 +26,14 @@ import com.mklachl.sopkom.services.PrzejazdService;
 
 import jakarta.transaction.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @Service
 public class PrzejazdServiceImpl implements PrzejazdService {
@@ -164,6 +168,83 @@ public class PrzejazdServiceImpl implements PrzejazdService {
     public List<Przejazd> findPrzejazdyByKursAndData(Kurs kurs, Date data){ return przejazdRepository.findAllByKursAndData(kurs, data); }
 
 	@Override
+	public Przejazd createDetachedPrzejazd(Kurs kurs, Date dataPrzejazdu) {
+		
+		Przejazd przejazd = new Przejazd();
+		
+		przejazd.setKurs(kurs);
+		
+		przejazd.setData(dataPrzejazdu);
+		
+		var list = new ArrayList<PrzejazdKursPrzystanekWlini>();
+		
+		var list2 = kurs.getKursPrzystanekWlinii();
+		
+		if(kurs.getKierunek().shortValue() == 0) {
+			
+			Date startRaw = DateHelper.copyTimeComponents(
+					kurs.getKursPrzystanekWlinii().get(0).getGodzinna(), 
+					dataPrzejazdu);
+			
+			przejazd.setDataStartu( DateHelper.addMinutesToDate(startRaw, -30));
+					
+			
+			Date endRaw = DateHelper.copyTimeComponents(
+					kurs.getKursPrzystanekWlinii().get(list2.size()-1).getGodzinna(),
+					dataPrzejazdu);
+			
+			endRaw = DateHelper.addMinutesToDate(endRaw, 30);
+			
+			if(endRaw.before(startRaw)) {
+				endRaw = DateHelper.addDays(endRaw, 1);
+			}
+			
+			przejazd.setDataKonca(endRaw);
+			
+		} else {
+			Date startRaw = DateHelper.copyTimeComponents(
+					kurs.getKursPrzystanekWlinii().get(list2.size()-1).getGodzinna(), 
+					dataPrzejazdu);
+			
+			przejazd.setDataStartu( DateHelper.addMinutesToDate(startRaw, -30));
+					
+			
+			Date endRaw = DateHelper.copyTimeComponents(
+					kurs.getKursPrzystanekWlinii().get(0).getGodzinna(),
+					dataPrzejazdu);
+			
+			endRaw = DateHelper.addMinutesToDate(endRaw, 30);
+			
+			if(endRaw.before(startRaw)) {
+				endRaw = DateHelper.addDays(endRaw, 1);
+			}
+			
+			przejazd.setDataKonca(endRaw);
+			
+			przejazd.setDataKonca(DateHelper.addMinutesToDate(endRaw, 30));
+		}
+		
+		
+		for(int i = 0; i < list2.size(); i++) {
+			
+			KursPrzystanekWlini kpwl = list2.get(i);
+			PrzejazdKursPrzystanekWlini pkpwl = new PrzejazdKursPrzystanekWlini();
+			pkpwl.setKursPrzystanekWlini(kpwl);
+			pkpwl.setRealnaGodzinna(null);
+			pkpwl.setPrzejazd(przejazd);
+			
+			
+			list.add(pkpwl);
+			
+		}
+		
+		przejazd.setPrzejazdKursPrzystanekWlini(list);
+		
+		
+		return przejazd;
+	}
+
+	@Override
 	public Przejazd savePrzejazd(PrzejazdDtoInput przejazdDto) {
 		
 		Przejazd przejazd = new Przejazd();
@@ -250,7 +331,6 @@ public class PrzejazdServiceImpl implements PrzejazdService {
 	}
 
 
-
 	@Override
 	@Transactional(rollbackOn = {LiniaNotFoundException.class})
 	public Przejazd updatePrzejazd(PrzejazdDtoUpdate przejazdDto) throws Exception {
@@ -306,6 +386,22 @@ public class PrzejazdServiceImpl implements PrzejazdService {
 		return przejazdRepository.save(p);
 	}
 
+	@Override
+	public List<Date> findAllDatesForKurs(Kurs kurs, int maxCount) {
+		Harmonogram harmongram = kurs.getHarmonogram();
+		
+		var result = DateHelper.getAllDatesForHarmonogram(harmongram, maxCount);
+		var copy = new LinkedList<Date>(result);
 	
+		var data = this.findPrzejazdByKurs(kurs);
+	
+		List<Date> dates = data.stream()
+                 .map(item -> item.getDataStartu())
+                 .collect(Collectors.toList());
+		
+		copy.removeAll(dates);
+		return copy;
+		
+	}
 
 }

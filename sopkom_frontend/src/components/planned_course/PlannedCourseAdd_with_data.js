@@ -67,26 +67,7 @@ const PlannedCourseAdd_with_data = () => {
       
     }
   }
-  const getDates = async() => {
-	  
-	  if(!formData.kursId){
-		  return;
-	  }
-	  
-	  try {
-      const response = await fetch(SERVER_URL + "/api/przejazd/allDates?kurs_id=" + formData.kursId, { method: "GET", credentials: "include" });
-      if (!response.ok) {
-        throw new Error("error on get 2");
-      }
-      const data = await response.json();
-      
-      setCouresDataDates(data);
-    } catch (error) {
-      console.error(error);
-    }
-	  
-	  
-  }
+  
 
   const getDriverData = async () => {
 	  
@@ -153,22 +134,23 @@ const PlannedCourseAdd_with_data = () => {
 				
 		//console.log(searchParams.get("data"));
 		setTimeout(() => {
-        	window.location.href = '/planned_course_unplanned';
+        	//window.location.href = '/planned_course_to_plan';
       	}, 100);
 				
 	  } else{
 		  
 		  getCourseData(searchParams.get("kurs_id"));
-		  
-		  
-		  
-		  
+		  formData.kursId = searchParams.get("kurs_id");
+		  formData.dataPrzejazdu = searchParams.get("data")
 	  }
 	  
-	  formData.dataPrzejazdu = searchParams.get("data")
-	
 	 
   }, [])
+  
+  useEffect(() => {
+	  getDriverData();
+	  getBusData();
+  }, [formData.dataPrzejazdu])
   
   return (
     <div className="pt-40">
@@ -178,16 +160,19 @@ const PlannedCourseAdd_with_data = () => {
         <form className="addForm" onSubmit={handleSubmit}>
           <table className="addFormat">
             <tbody>
-              { course && <tr>
-              	 Kurs: {course.kierunek ? course.linia.numer + " " + course.przystanki[course.przystanki.length-1].godzinna + " "
-							+ " ODW" : course.linia.numer + " " + course.przystanki[0].godzinna + " "}
+            <tr>
+            	 <td className="addWhat"> Kurs:</td>
+              { course && 
+              	
+              	<td> {course.kierunek ? course.linia.numer + " " + course.przystanki[course.przystanki.length-1].godzinna + " "
+							+ " ODW" : course.linia.numer + " " + course.przystanki[0].godzinna + " "}</td>
                
                
-              	</tr>
               }
               
+             </tr>
              
-             { formData.kursId && coursesDataDates.length > 0 &&
+             { course &&
               <tr>
                {/* <td className="addWhat">Data przejazdu : </td>
                 <td>
@@ -202,23 +187,9 @@ const PlannedCourseAdd_with_data = () => {
                 </td>
                */ }
                 
-                <td className="addWhat">Data przejazdu: {searchParams.get("data")}</td>
+                <td className="addWhat">Data przejazdu: </td>
                 <td>
-                  <select
-                    id = "date_sel"
-                    name="dataPrzejazdu"
-                    className="dropDownCourse"
-                    defaultValue={""}
-                    onChange={handleChangeData}
-                    required
-                  >
-                    <option key = "-1" value="">Wybierz Datę</option>
-                    {Array.isArray(coursesDataDates) && coursesDataDates.map((courseDate) => (
-                      <option key={courseDate} value={courseDate}>
-                        {courseDate}
-                      </option>
-                    ))}
-                  </select>
+                  {searchParams.get("data")}
                 </td>
                 
                 
@@ -273,7 +244,7 @@ const PlannedCourseAdd_with_data = () => {
               }
             </tbody>
           </table>
-          <button className="infoBtn" type="submit">Dodaj kurs</button>
+          <button className="infoBtn" type="submit">Zaplanuj</button>
         </form>
       </div>
       <Link className="infoBtn"  to={`/planned_course`} >Powrót</Link>

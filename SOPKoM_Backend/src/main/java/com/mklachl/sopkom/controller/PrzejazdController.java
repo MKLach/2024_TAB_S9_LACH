@@ -2,6 +2,8 @@ package com.mklachl.sopkom.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,6 +34,7 @@ import com.mklachl.sopkom.repository.HarmonogramRepository;
 import com.mklachl.sopkom.repository.KierowcaRepository;
 import com.mklachl.sopkom.repository.KursRepository;
 import com.mklachl.sopkom.repository.PrzejazdRepository;
+import com.mklachl.sopkom.services.KursService;
 import com.mklachl.sopkom.services.PrzejazdService;
 
 @RestController
@@ -43,6 +46,10 @@ public class PrzejazdController {
 	
 	@Autowired
 	public KursRepository kursRepository;
+	
+	@Autowired
+	public KursService kursService;
+	
 	
 	@Autowired
 	public PrzejazdService przejazdService;
@@ -83,6 +90,9 @@ public class PrzejazdController {
 		}
 	
 	}
+	
+
+	
 	
 	@DeleteMapping({"/{przejazd_id}", "/{przejazd_id}/"})
 	public ResponseEntity<?> deletePrzejazd(@PathVariable(name="przejazd_id") Long przejazdid){
@@ -212,11 +222,60 @@ public class PrzejazdController {
 		
 		var temp = autobusRepository.findAllByAvailable(startRaw, endRaw).stream().filter((item ) -> { return item.getStatus().equals("OK");}) .map(AutobusDto::new).collect(Collectors.toList());
 		
-		
-		
 		return ResponseEntity.ok(temp);
 	}
+	
+	
+	@GetMapping({"/przyszle", "/przyszle/"})
+	public ResponseEntity<?> getPrzyszłePrzejazdy(){
 		
+		List<PrzejazdDtoOutput> przyszlePrzejazdy = new ArrayList<PrzejazdDtoOutput>();
+		
+		for(Kurs kurs : kursRepository.findAll()) {
+			
+			List<Date> datesForKurs = przejazdService.findAllDatesForKurs(kurs, 30);
+			
+			Date godzinna_startu = kurs.getKierunek() == 0 ? 
+					kurs.getKursPrzystanekWlinii().get(0).getGodzinna() : 
+					kurs.getKursPrzystanekWlinii().get(0).getGodzinna();
+			
+			List<PrzejazdDtoOutput> a = datesForKurs.stream()
+					.filter((item) -> {
+						Calendar c = Calendar.getInstance();
+						c.setTime(godzinna_startu);
+						
+						Date startWithFulLDate = DateHelper.copyTimeComponents(godzinna_startu, item);
+						System.out.println(new Date());
+						System.out.println(startWithFulLDate);
+						
+						return startWithFulLDate.after(new Date());
+						
+						
+					} )
+					
+					
+					.map((date) -> new PrzejazdDtoOutput(przejazdService.createDetachedPrzejazd(kurs, date), true)).collect(Collectors.toList());
+			
+			
+			
+			przyszlePrzejazdy.addAll(a);
+			
+		}
+		
+		przyszlePrzejazdy.sort(new Comparator<PrzejazdDtoOutput>() {
+
+			@Override
+			public int compare(PrzejazdDtoOutput o1, PrzejazdDtoOutput o2) {
+				
+				return o1.getData().compareTo(o2.getData());
+			}
+		});
+		
+		
+		return ResponseEntity.ok(przyszlePrzejazdy);
+		
+	}
+	
 	
 	@GetMapping("/allDates")
 	public ResponseEntity<?> gatAllAvaliableDatesForKurs(@RequestParam(name="kurs_id") Long kursId){
@@ -233,9 +292,7 @@ public class PrzejazdController {
 		
 		var result = DateHelper.getAllDatesForHarmonogram(harmongram);
 		var copy = new LinkedList<Date>(result);
-		
-		//for( var datein : result) {
-		
+	
 		var data = przejazdService.findPrzejazdByKurs(kurs);
 		
 		System.out.println(data.size());
@@ -248,14 +305,6 @@ public class PrzejazdController {
 		List<String> list = copy.stream().map(item -> format.format(item)).collect(Collectors.toList());
 		
 		list.removeAll(dates);
-		 
-		//System.out.println(dates);
-		//System.out.println(copy);
-		
-		//copy.removeAll(dates);
-		 
-		
-		
 		
 		return ResponseEntity.ok(list);
 	}

@@ -23,14 +23,14 @@ const IncidentAdd = () => {
   const [busData, setBusData] = useState([]);
   const [savedMessage, setSavedMessage] = useState("");
   const [formData, setFormData] = useState({
-  typ: "",
-  date: "",
-  krotko: "",
-  autobusId: "",
-  kierowcaId: "",
-  przejazdId: "",
-  dodatkoweInformacje: "",
-  koszty: "",
+	  typ: "",
+	  date: "",
+	  krotko: "",
+	  autobusId: "",
+	  kierowcaId: "",
+	  przejazdId: "",
+	  dodatkoweInformacje: "",
+	  koszty: "",
   });
 
   const getCourseData = async () => {

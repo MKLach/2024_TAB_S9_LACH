@@ -92,6 +92,34 @@ public class PrzejazdDtoOutput {
         System.out.println(przystanki.size());
 
     }
+    
+    public PrzejazdDtoOutput(Przejazd przejazd, boolean a) {
+        this.przejazdId = przejazd.getPrzejazdId();
+        this.kursId = przejazd.getKurs().getKursId();
+        this.liniaNumer = przejazd.getKurs().getLinia().getNumer();
+        this.dataStartu = przejazd.getDataStartu();
+        this.dataKonca = przejazd.getDataKonca();
+        this.kierowcaImieNazwisko = null;
+        this.autobusNazwa = null;
+        this.autobusNumerRejestracyjny = null;
+        this.spalanie = 0;
+        this.cenaZaLitr = 0;
+        this.dlugoscTrasy = 0;
+        this.liczbaBiletow = 0;
+        this.kierunek = przejazd.getKurs().getKierunek().shortValue();
+       
+        
+        this.data = przejazd.getData();
+       
+        this.przystanki = przejazd.getPrzejazdKursPrzystanekWlini().stream()
+                .map(PrzejazdKursPrzystanekWliniDto::new).collect(Collectors.toList());
+        
+        this.status = "Do zaplanowania";
+        
+      
+        
+    }
+    
 
     // Getters and Setters
     public Long getPrzejazdId() {
