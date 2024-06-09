@@ -1,39 +1,68 @@
 package com.mklachl.sopkom.model.dto.linia;
 
-import com.mklachl.sopkom.model.entity.Przystanek;
 import com.mklachl.sopkom.model.entity.PrzystanekWlini;
 
+/**
+ * Data Transfer Object (DTO) wejściowy dla encji PrzystanekWlini, używany w kontekście linii.
+ */
 public class PrzystanekDtoDlaLiniaInput {
+
+    /**
+     * Identyfikator przystanku.
+     */
     private Long przystanekId;
 
+    /**
+     * Kolejność przystanku w linii.
+     */
     private Short kolejnosc;
 
-    public PrzystanekDtoDlaLiniaInput(){
-
+    /**
+     * Konstruktor domyślny.
+     */
+    public PrzystanekDtoDlaLiniaInput() {
     }
 
-    public PrzystanekDtoDlaLiniaInput(PrzystanekWlini przystanek){
+    /**
+     * Konstruktor przyjmujący obiekt encji PrzystanekWlini.
+     * @param przystanek Obiekt encji PrzystanekWlini.
+     */
+    public PrzystanekDtoDlaLiniaInput(PrzystanekWlini przystanek) {
         this.przystanekId = przystanek.getPrzystanek().getPrzystanekId();
         this.kolejnosc = przystanek.getKolejnosc();
     }
 
-    // Getters
+    // Getters and Setters
+
+    /**
+     * Zwraca identyfikator przystanku.
+     * @return przystanekId Identyfikator przystanku.
+     */
     public Long getPrzystanekId() {
         return przystanekId;
     }
-    
-    public Short getKolejnosc() {
-		return kolejnosc;
-	}
 
-
-    // Setters
+    /**
+     * Ustawia identyfikator przystanku.
+     * @param przystanekId Identyfikator przystanku.
+     */
     public void setPrzystanekId(Long przystanekId) {
         this.przystanekId = przystanekId;
     }
 
-	public void setKolejnosc(Short kolejnosc) {
-		this.kolejnosc = kolejnosc;
-	}
-    
+    /**
+     * Zwraca kolejność przystanku w linii.
+     * @return kolejnosc Kolejność przystanku.
+     */
+    public Short getKolejnosc() {
+        return kolejnosc;
+    }
+
+    /**
+     * Ustawia kolejność przystanku w linii.
+     * @param kolejnosc Kolejność przystanku.
+     */
+    public void setKolejnosc(Short kolejnosc) {
+        this.kolejnosc = kolejnosc;
+    }
 }
