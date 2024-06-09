@@ -20,34 +20,30 @@ import com.mklachl.sopkom.topdf.Pdf;
 @RequestMapping("/api/raporty")
 public class RaportyController {
 
-	
-	@Autowired
-	Pdf pdfService;
-	
-	
-	@RequestMapping(value = "/rozklad", method = RequestMethod.GET)
-	@ResponseBody
-	public ResponseEntity<FileSystemResource> generateRozklad(@RequestParam(name="id") Long id) throws FileNotFoundException, IOException {
-	  
-    	File fileIn;
-		try {
-			fileIn = pdfService.genRozklad(id);
-			System.out.println(fileIn.getAbsolutePath());
-			   
-			 return ResponseEntity.ok()
-			            .contentLength(fileIn.length())
-			            .contentType(MediaType.parseMediaType(MediaType.APPLICATION_PDF_VALUE))
-			            .body(new FileSystemResource(fileIn.getAbsolutePath()));
-			 
-		} catch (Exception e) {
-			
-			e.printStackTrace();
-		}
-		
-		return  ResponseEntity.notFound().build();
-	
-    		
-	    
-	}
-	
+    @Autowired
+    Pdf pdfService;
+    
+    /**
+     * Endpoint do generowania raportu w formacie PDF.
+     * @param id ID raportu
+     * @return ResponseEntity z plikiem PDF
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    @RequestMapping(value = "/rozklad", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<FileSystemResource> generateRozklad(@RequestParam(name="id") Long id) throws FileNotFoundException, IOException {
+        File fileIn;
+        try {
+            fileIn = pdfService.genRozklad(id);
+            System.out.println(fileIn.getAbsolutePath());
+            return ResponseEntity.ok()
+                .contentLength(fileIn.length())
+                .contentType(MediaType.parseMediaType(MediaType.APPLICATION_PDF_VALUE))
+                .body(new FileSystemResource(fileIn.getAbsolutePath()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.notFound().build();
+    }
 }
