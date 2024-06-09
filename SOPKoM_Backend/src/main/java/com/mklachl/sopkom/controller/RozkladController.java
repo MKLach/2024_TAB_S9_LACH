@@ -21,38 +21,33 @@ import com.mklachl.sopkom.repository.PrzystanekRepository;
 @RequestMapping("/api/rozklad")
 public class RozkladController {
 
-	@Autowired
-	public PrzystanekRepository repo;
-	
-	@Autowired
-	public DateHelper rozkladHelper;
-	
-	@GetMapping()
-	public ResponseEntity<?> test(@RequestParam(name="id") Long id, @RequestParam(name="date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date){
-		
-		Przystanek normalny = repo.findById(id).get();
-		
-		//Przystanek odwrotny = normalny.getPrzystanekOdwrotny();
-		
-		RozkladDto dto = new RozkladDto();
-		dto.setNormalny(new PrzystanekDto(normalny));
-		
-		dto.setDate(date);
-		
-		//for(int i = 0; i < kur)
-		
-	
-		var vat = rozkladHelper.getAllByPrzystanekId(id, date);
-		
-		for(var $$$ : vat) {
-			dto.addKurs($$$.getLinia(), $$$.getT(), $$$.isOdw());
-		}
-		
-		return new ResponseEntity<>(dto,
-				HttpStatus.OK);
-		
-	}
-	
-	
-	
+    @Autowired
+    public PrzystanekRepository repo;
+    
+    @Autowired
+    public DateHelper rozkladHelper;
+    
+    /**
+     * Endpoint do pobrania rozkładu dla przystanku w określonym dniu.
+     * @param id ID przystanku
+     * @param date Data, dla której ma być wygenerowany rozkład
+     * @return ResponseEntity z RozkladDto
+     */
+    @GetMapping()
+    public ResponseEntity<?> test(@RequestParam(name="id") Long id, @RequestParam(name="date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date){
+        
+        Przystanek normalny = repo.findById(id).get();
+        
+        RozkladDto dto = new RozkladDto();
+        dto.setNormalny(new PrzystanekDto(normalny));
+        dto.setDate(date);
+        
+        var vat = rozkladHelper.getAllByPrzystanekId(id, date);
+        
+        for(var $$$ : vat) {
+            dto.addKurs($$$.getLinia(), $$$.getT(), $$$.isOdw());
+        }
+        
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
 }
