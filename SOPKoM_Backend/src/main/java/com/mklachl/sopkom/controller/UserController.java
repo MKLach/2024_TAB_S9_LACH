@@ -16,22 +16,21 @@ import com.mklachl.sopkom.services.UserService;
 @CrossOrigin(origins = {"*"}, maxAge = 3600)
 public class UserController {
 
-	@Autowired
+    @Autowired
     private UserService userService;
-  
-	// localhost:8080/user
+
+    /**
+     * Endpoint do pobrania danych zalogowanego użytkownika.
+     * @return UserDto z danymi użytkownika
+     */
     @GetMapping
-    public UserDto getLoggedInUser(){
+    public UserDto getLoggedInUser() {
+        User user = Helpers.getUserFromContext(userService);
         
-    	User user = Helpers.getUserFromContext(userService);
-        
-    	UserDto userDto = new UserDto(user);
-        
-        if(user == null){
+        if (user == null) {
             throw new NullPointerException("critical exception!!!");
         }
-        
-        return userDto;
-    }
 
+        return new UserDto(user);
+    }
 }
