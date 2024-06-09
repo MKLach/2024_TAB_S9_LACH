@@ -1,32 +1,46 @@
 package com.mklachl.sopkom.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
+/**
+ * Data Transfer Object (DTO) dla obiektu opakowującego datę.
+ */
 public class DateWrapperDto {
 
-	@JsonFormat(pattern = "dd.MM.yyyy")
-	private Date date;
-	
-	
-	public DateWrapperDto(Date date) {
-		this.date = date;
-		
-	}
-	
-	public DateWrapperDto() {
-		
-	}
+    /**
+     * Data w formacie "dd.MM.yyyy".
+     */
+    @JsonFormat(pattern = "dd.MM.yyyy")
+    private Date date;
 
-	public Date getDate() {
-		return date;
-	}
+    /**
+     * Konstruktor przyjmujący datę.
+     * @param date Data.
+     */
+    public DateWrapperDto(Date date) {
+        this.date = date;
+    }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
-	
-	
-	
+    /**
+     * Konstruktor domyślny.
+     */
+    public DateWrapperDto() {
+    }
+
+    /**
+     * Zwraca datę.
+     * @return date Data.
+     */
+    public Date getDate() {
+        return date;
+    }
+
+    /**
+     * Ustawia datę.
+     * @param date Data.
+     */
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }
