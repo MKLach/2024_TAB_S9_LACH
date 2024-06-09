@@ -1,26 +1,40 @@
 package com.mklachl.sopkom.controller;
 
+/**
+ * Klasa SimpleMessage służy do przechowywania prostych wiadomości tekstowych.
+ */
 public class SimpleMessage {
 
-	public String message;
-	
-	public SimpleMessage() {
-		super();
-	}
+    /** Wiadomość tekstowa */
+    public String message;
 
-	public SimpleMessage(String message) {
-		super();
-		this.message = message;
-	}
+    /** Konstruktor domyślny */
+    public SimpleMessage() {
+        super();
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    /**
+     * Konstruktor inicjalizujący wiadomość
+     * @param message wiadomość do ustawienia
+     */
+    public SimpleMessage(String message) {
+        super();
+        this.message = message;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
-	
-	
+    /**
+     * Pobiera wiadomość
+     * @return wiadomość
+     */
+    public String getMessage() {
+        return message;
+    }
+
+    /**
+     * Ustawia wiadomość
+     * @param message wiadomość do ustawienia
+     */
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }
