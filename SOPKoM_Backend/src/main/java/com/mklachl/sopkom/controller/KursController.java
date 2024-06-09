@@ -38,6 +38,11 @@ import com.mklachl.sopkom.repository.PrzystanekWliniRepository;
 import com.mklachl.sopkom.services.KursService;
 import com.mklachl.sopkom.services.LiniaService;
 
+
+/**
+ * Kontroler dla zasobu Kurs.
+ * Obsługuje operacje tworzenia, pobierania, aktualizacji i usuwania kursów.
+ */
 @RestController
 @RequestMapping(path = "/api/kurs")
 public class KursController {
@@ -64,7 +69,11 @@ public class KursController {
 	@Autowired
 	public KursRepository kursRepo;
 	
-	
+	/**
+     * Szablon obiektu KursDto.
+     * @param linia_id Identyfikator linii.
+     * @return Obiekt KursDto.
+     */
 	@GetMapping("/template/{id}")
     public ResponseEntity<?> getTemplateKurs(@PathVariable(name = "id") Long linia_id) {
 		
@@ -110,7 +119,11 @@ public class KursController {
         return ResponseEntity.ok(dto);
     }
 	
-	
+	/**
+     * Szablon obiektu InputKursDto.
+     * @param linia_id Identyfikator linii.
+     * @return Obiekt InputKursDto.
+     */
 	@GetMapping("/template/input/{id}")
     public ResponseEntity<?> getTemplateKursInput(@PathVariable(name = "id") Long linia_id) {
 		
@@ -154,7 +167,11 @@ public class KursController {
         return ResponseEntity.ok(dto);
     }
 	
-	
+	 /**
+     * Pobiera wszystkie kursy lub filtrowane po identyfikatorze linii.
+     * @param linia_id Identyfikator linii (opcjonalny).
+     * @return Lista obiektów KursDto.
+     */
 	@GetMapping(path ={"", "/"})
     public ResponseEntity<?> getAllKursy(@RequestParam(name="linia_id", defaultValue = "-1") Long linia_id) {
 		
@@ -187,13 +204,21 @@ public class KursController {
         return ResponseEntity.ok(ret);
     }
 	
-	
+	/**
+     * Pobiera kurs po identyfikatorze.
+     * @param id Identyfikator kursu.
+     * @return Obiekt KursDto.
+     */
 	@GetMapping("/{id}")
     public ResponseEntity<?> getKurs(@PathVariable(name="id") Long id) {
 		
         return ResponseEntity.ok(new KursDto(kursRepo.findById(id).get()));
     }
-	
+	/**
+     * Tworzy nowy kurs.
+     * @param inputKursDto Obiekt InputKursDto.
+     * @return Status operacji.
+     */
 	@PostMapping("/save")
 	public ResponseEntity<?> addKurs(@RequestBody InputKursDto inputKursDto) {
 		
@@ -258,7 +283,12 @@ public class KursController {
 		
         return ResponseEntity.badRequest().build();
     }
-	
+	/**
+     * Aktualizuje kurs po identyfikatorze.
+     * @param id Identyfikator kursu.
+     * @param inputKursDto Obiekt InputKursDto.
+     * @return Status operacji.
+     */
 	@PatchMapping("/{id}")
 	public ResponseEntity<?> updateKurs(@PathVariable(name="id") Long id, @RequestBody InputKursDto inputKursDto) {
 		
@@ -325,7 +355,11 @@ public class KursController {
 		
 		 return ResponseEntity.ok().body(inputKursDto);
     }
-	
+	/**
+     * Usuwa kurs po identyfikatorze.
+     * @param id Identyfikator kursu.
+     * @return Status operacji.
+     */
 	@DeleteMapping("/{id}")
     public ResponseEntity<?> deleteKurs(@PathVariable(name="id") Long id) {
 		
