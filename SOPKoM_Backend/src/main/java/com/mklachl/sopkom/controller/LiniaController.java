@@ -8,14 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.mklachl.sopkom.exceptions.LiniaNotFoundException;
 import com.mklachl.sopkom.exceptions.PrzystanekNotFoundException;
@@ -36,6 +29,10 @@ public class LiniaController {
     @Autowired
     LiniaRepository liniaRepository;
 
+    /**
+     * Endpoint zwracający szablonowy obiekt LiniaDtoOutput.
+     * @return Szablonowy obiekt LiniaDtoOutput
+     */
     @GetMapping(path = "template", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> template() {
         LiniaDtoOutput liniaDto = new LiniaDtoOutput();
@@ -62,14 +59,13 @@ public class LiniaController {
         
         liniaDto.setPrzystanki(list);
         
-        //dto.setPrzystanekOdwrotny(Long.valueOf(12));
-        //dto.setPrzystanekOdwrotnyNazwa("Przsytanek odwrotny test (nie wymagane)");
-
-        // Zwrócenie przykładowego DTO w odpowiedzi HTTP
         return new ResponseEntity<>(liniaDto, HttpStatus.OK);
     }
     
-    
+    /**
+     * Endpoint zwracający szablonowy obiekt LiniaDtoInput.
+     * @return Szablonowy obiekt LiniaDtoInput
+     */
     @GetMapping(path = "templateInput", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> templateInput() {
         LiniaDtoInput liniaDto = new LiniaDtoInput();
@@ -91,50 +87,14 @@ public class LiniaController {
         }
         
         liniaDto.setPrzystanki(list);
-        
-        //dto.setPrzystanekOdwrotny(Long.valueOf(12));
-        //dto.setPrzystanekOdwrotnyNazwa("Przsytanek odwrotny test (nie wymagane)");
 
-        // Zwrócenie przykładowego DTO w odpowiedzi HTTP
         return new ResponseEntity<>(liniaDto, HttpStatus.OK);
     }
 
-    
     /**
-     * 
-     * przykładowe co ma być wysłane do bazy, 
-       wybór przystanklów to ma być dropdown
-       przysantki będziemy tworzyli w osebnej kategori
-       a pózniej je wybierali z tworzenia lini
-       
-       KOLEJNOSC STARTUJEMY OD 1, NIE OD 0!!!
-       
-       https://ej2.syncfusion.com/react/documentation/drop-down-list/filtering
-       (jakiś przykład)
-       
-    {
-	    "id": 1,
-	    "numer": "M500",
-	    "przystanki": [
-	        {
-	            "przystanekId": 1,
-	            "kolejnosc": 1
-	        },
-	        {
-	            "przystanekId": 2,
-	            "kolejnosc": 2
-	        },
-	        {
-	            "przystanekId": 3,
-	            "kolejnosc": 3
-	        },
-	        {
-	            "przystanekId": 4,
-	            "kolejnosc": 4,
-	        }
-	    ]
-	}
-     
+     * Endpoint do dodawania nowej linii.
+     * @param liniaDto DTO linii do dodania
+     * @return Dodany obiekt LiniaDtoOutput
      */
     @PostMapping("/save")
     public ResponseEntity<?> addLinia(@RequestBody LiniaDtoInput liniaDto){
@@ -150,6 +110,11 @@ public class LiniaController {
         return new ResponseEntity<>(new LiniaDtoOutput(linia), HttpStatus.OK);
     }
 
+    /**
+     * Endpoint do pobierania linii według ID.
+     * @param id ID linii
+     * @return Obiekt LiniaDtoOutput
+     */
     @GetMapping("/{id}")
     public ResponseEntity<?> getLinia(@PathVariable("id") Long id){
         Optional<Linia> linia = liniaRepository.findById(id);
@@ -158,12 +123,14 @@ public class LiniaController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         
-       
-        
-        
         return new ResponseEntity<>(new LiniaDtoOutput(linia.get()), HttpStatus.OK);
     }
 
+    /**
+     * Endpoint do usuwania linii według ID.
+     * @param id ID linii
+     * @return Odpowiedź HTTP
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteLinia(@PathVariable("id") Long id) {
         if(liniaRepository.findById(id).isEmpty()) {
@@ -173,6 +140,12 @@ public class LiniaController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * Endpoint do aktualizacji linii.
+     * @param id ID linii
+     * @param liniaDtoInput DTO linii do aktualizacji
+     * @return Zaktualizowany obiekt LiniaDtoOutput
+     */
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateLinia(@PathVariable("id") Long id, @RequestBody LiniaDtoInput liniaDtoInput) {
         
@@ -188,18 +161,24 @@ public class LiniaController {
         return new ResponseEntity<>(new LiniaDtoOutput(updated), HttpStatus.OK);
     }
 
+    /**
+     * Endpoint do pobierania wszystkich linii.
+     * @return Lista wszystkich linii
+     */
     @GetMapping
     public ResponseEntity<?> getAllPrzystanki() {
         List<LiniaDtoOutput> list = new ArrayList<>();
-        
-        
         
         liniaRepository.findAll().forEach(linia -> {
             list.add(new LiniaDtoOutput(linia));
         });
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
-    
+
+    /**
+     * Endpoint do pobierania wszystkich linii z pełnymi danymi.
+     * @return Lista wszystkich linii z pełnymi danymi
+     */
     @GetMapping("/input")
     public ResponseEntity<?> getAllPrzystankiFull() {
     	  List<LiniaDtoInput> list = new ArrayList<>();
@@ -209,7 +188,12 @@ public class LiniaController {
           });
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
-    
+
+    /**
+     * Endpoint do pobierania pełnych danych linii według ID.
+     * @param id ID linii
+     * @return Obiekt LiniaDtoInput
+     */
     @GetMapping("/input/{id}")
     public ResponseEntity<?> getPrzystanekFull(@PathVariable("id") Long id){
     	  Optional<Linia> linia = liniaRepository.findById(id);
@@ -218,7 +202,6 @@ public class LiniaController {
               return new ResponseEntity<>(HttpStatus.NOT_FOUND);
           }
           
-         
           return new ResponseEntity<>(new LiniaDtoInput(linia.get()), HttpStatus.OK);
     }
     
