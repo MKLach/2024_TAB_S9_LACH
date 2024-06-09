@@ -18,12 +18,17 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/przystanek")
 public class PrzystanekController {
+    
     @Autowired
     PrzystanekService przystanekService;
 
     @Autowired
     PrzystanekRepository przystanekRepo;
 
+    /**
+     * Endpoint do pobrania przykładowego obiektu PrzystanekDto.
+     * @return ResponseEntity z przykładowym PrzystanekDto
+     */
     @GetMapping(path = "template", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> template() {
         PrzystanekDto dto = new PrzystanekDto();
@@ -37,18 +42,28 @@ public class PrzystanekController {
         dto.setSzerokoscGeograficzna("52.2297");
         
         dto.setPrzystanekOdwrotny(Long.valueOf(12));
-        dto.setPrzystanekOdwrotnyNazwa("Przsytanek odwrotny test (nie wymagane)");
+        dto.setPrzystanekOdwrotnyNazwa("Przystanek odwrotny test (nie wymagane)");
 
         // Zwrócenie przykładowego DTO w odpowiedzi HTTP
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    /**
+     * Endpoint do zapisu nowego przystanku.
+     * @param przystanekDto DTO przystanku do zapisania
+     * @return ResponseEntity z zapisanym PrzystanekDto
+     */
     @PostMapping("/save")
     public ResponseEntity<?> addPrzystanek(@RequestBody PrzystanekDto przystanekDto){
         Przystanek przystanek = przystanekService.savePrzystanek(przystanekDto);
         return new ResponseEntity<>(new PrzystanekDto(przystanek), HttpStatus.OK);
     }
 
+    /**
+     * Endpoint do pobrania przystanku na podstawie ID.
+     * @param id ID przystanku
+     * @return ResponseEntity z PrzystanekDto
+     */
     @GetMapping("/{id}")
     public ResponseEntity<?> getPrzystanek(@PathVariable("id") Long id){
         Optional<Przystanek> przystanek = przystanekService.findPrzystanekById(id);
@@ -58,6 +73,11 @@ public class PrzystanekController {
         return new ResponseEntity<>(new PrzystanekDto(przystanek.get()), HttpStatus.OK);
     }
 
+    /**
+     * Endpoint do usunięcia przystanku na podstawie ID.
+     * @param id ID przystanku
+     * @return ResponseEntity wskazujący wynik operacji
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePrzystanek(@PathVariable("id") Long id) {
         if(przystanekRepo.findById(id).isEmpty()) {
@@ -65,17 +85,20 @@ public class PrzystanekController {
         }
         
         try {
-        	przystanekRepo.deleteById(id);
+            przystanekRepo.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         
-        
         } catch (Exception e) {
-        	
-        	return new ResponseEntity<>(new SimpleMessage(e.getMessage()), HttpStatus.FORBIDDEN);
-		}
-        
+            return new ResponseEntity<>(new SimpleMessage(e.getMessage()), HttpStatus.FORBIDDEN);
+        }
     }
 
+    /**
+     * Endpoint do aktualizacji przystanku na podstawie ID.
+     * @param id ID przystanku
+     * @param przystanekDto DTO przystanku z zaktualizowanymi polami
+     * @return ResponseEntity z zaktualizowanym PrzystanekDto
+     */
     @PatchMapping("/{id}")
     public ResponseEntity<?> updatePrzystanek(@PathVariable("id") Long id, @RequestBody PrzystanekDto przystanekDto) {
         Optional<Przystanek> currentPrzystanek = przystanekRepo.findById(id);
@@ -92,31 +115,28 @@ public class PrzystanekController {
         przystanek.setDlugoscGeograficzna(przystanekDto.getDlugoscGeograficzna());
         przystanek.setSzerokoscGeograficzna(przystanekDto.getSzerokoscGeograficzna());
         
-        
         if(przystanekDto.getPrzystanekOdwrotny() != null) {
 
-            if(przystanekDto.getPrzystanekOdwrotny().longValue()==-1) {
+            if(przystanekDto.getPrzystanekOdwrotny().longValue() == -1) {
                 przystanek.setPrzystanekOdwrotny(null);
-            }else{
-
+            } else {
                 var przystanekOdwrotny = przystanekRepo.findById(przystanekDto.getPrzystanekOdwrotny());
-
                 if(przystanekOdwrotny.isPresent()) {
                     przystanek.setPrzystanekOdwrotny(przystanekOdwrotny.get());
-
                 } else {
                     System.out.println("no przystanek odwrotny present!");
                 }
-
             }
-
-            
         }
         
         przystanek = przystanekRepo.save(przystanek);
         return new ResponseEntity<>(new PrzystanekDto(przystanek), HttpStatus.OK);
     }
 
+    /**
+     * Endpoint do pobrania wszystkich przystanków.
+     * @return ResponseEntity z listą PrzystanekDto
+     */
     @GetMapping
     public ResponseEntity<?> getAllPrzystanki() {
         List<PrzystanekDto> list = new ArrayList<>();
@@ -126,6 +146,10 @@ public class PrzystanekController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
     
+    /**
+     * Endpoint do pobrania wszystkich przystanków z pełnymi informacjami.
+     * @return ResponseEntity z listą PrzystanekDtoFull
+     */
     @GetMapping("/full")
     public ResponseEntity<?> getAllPrzystankiFull() {
         List<PrzystanekDtoFull> list = new ArrayList<>();
@@ -135,6 +159,11 @@ public class PrzystanekController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
     
+    /**
+     * Endpoint do pobrania przystanku z pełnymi informacjami na podstawie ID.
+     * @param id ID przystanku
+     * @return ResponseEntity z PrzystanekDtoFull
+     */
     @GetMapping("/full/{id}")
     public ResponseEntity<?> getPrzystanekFull(@PathVariable("id") Long id){
         Optional<Przystanek> przystanek = przystanekService.findPrzystanekById(id);
@@ -143,5 +172,4 @@ public class PrzystanekController {
         }
         return new ResponseEntity<>(new PrzystanekDtoFull(przystanek.get()), HttpStatus.OK);
     }
-    
 }
