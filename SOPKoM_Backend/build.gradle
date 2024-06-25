@@ -21,10 +21,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	
 	runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	implementation 'com.itextpdf:itextpdf:5.5.13.3'
+	
+	implementation files('plibs/MKLachLNetworkLib_before_07.03.2023.jar')
+	implementation files('plibs/MKLachLJsonLib.jar')
 }
 
 tasks.named('test') {

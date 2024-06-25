@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SERVER_URL } from '../constant';
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 
 const CourseEdit = () => {
   const [courseData, setCourseData] = useState([]);
@@ -8,7 +8,7 @@ const CourseEdit = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [savedMessage, setSavedMessage] = useState("");
-
+  const history = useNavigate();
   const [formData, setFormData] = useState({
 	kursId: 0, 
     liniaId: 0,
@@ -133,7 +133,7 @@ const CourseEdit = () => {
        setSavedMessage("Dodano!");
   
       setTimeout(() => {
-        window.location.href = '/course/?linia_id='+formData.liniaId;
+        history('/course/?linia_id='+formData.liniaId);
       }, 100);
      
        

@@ -383,6 +383,10 @@ public class PrzejazdServiceImpl implements PrzejazdService {
 		
 		p.setPrzejazdBilet(list);
 		
+		Autobus a = p.getAutobus();
+		a.setPrzebieg(a.getPrzebieg() + p.getDlugoscTrasy());
+		a=autobusRepository.save(a);
+		
 		return przejazdRepository.save(p);
 	}
 

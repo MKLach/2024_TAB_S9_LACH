@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { SERVER_URL } from '../constant';
-import { Link } from "react-router-dom";
+import { Link,  } from "react-router-dom";
+
 
 const BusList = ({ userRole }) => {
   const [busData, setBusData] = useState([]);
@@ -14,6 +15,7 @@ const BusList = ({ userRole }) => {
       const data = await response.json();
       setBusData(data);
     } catch (error) {
+	  console.error(SERVER_URL + "/api/autobus/");
       console.error("Error fetching bus data:", error);
     }
   };

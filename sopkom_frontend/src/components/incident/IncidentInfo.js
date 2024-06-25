@@ -170,8 +170,8 @@ const IncidentInfo = () => {
                 </select>
               </td>
             </tr>
-            <tr>
-              <th>Przejazd:</th>
+           {false && <tr>
+               <th>Przejazd:</th>
               <td>
                 <select
                   id="przejazd_sel"
@@ -188,7 +188,7 @@ const IncidentInfo = () => {
                   ))}
                 </select>
               </td>
-            </tr>
+            </tr>}
             <tr>
               <th>Dodatkowe informacje:</th>
               <td><textarea className="textAreaInput" required name="dodatkoweInformacje" value={incidentData.dodatkoweInformacje || ''} onChange={handleInputChange} /></td>

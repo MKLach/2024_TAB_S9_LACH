@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SERVER_URL } from '../constant';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 
 function extractLastPathComponent(url) {
     let index = 0;
@@ -30,7 +31,7 @@ const BusLineEdit = () => {
   const [savedMessage, setSavedMessage] = useState("");
   const [busStops, setBusStops] = useState([]);
   const listId = extractLastPathComponent(window.location.pathname);
-
+  const history = useNavigate();
 
   useEffect(() => {
     getLineData();
@@ -72,7 +73,7 @@ const BusLineEdit = () => {
                 throw new Error("Failed to delete driver");
             }
             setTimeout(() => {
-                window.location.href = '/bus_line';
+                history('/bus_line');
             }, 100);
 
         } catch (error) {

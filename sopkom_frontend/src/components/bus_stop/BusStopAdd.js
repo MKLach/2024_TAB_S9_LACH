@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { SERVER_URL } from '../constant';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const BusStopAdd = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +15,7 @@ const BusStopAdd = () => {
   const [showInfo, setShowInfo] = useState(false);
 
   const [savedMessage, setSavedMessage] = useState("");
-
+  const history = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,7 +34,7 @@ const BusStopAdd = () => {
       }
 
       setTimeout(() => {
-        window.location.href = '/bus_stop';
+        history('/bus_stop');
       }, 100);
 
       setSavedMessage("Dodano przystanek");

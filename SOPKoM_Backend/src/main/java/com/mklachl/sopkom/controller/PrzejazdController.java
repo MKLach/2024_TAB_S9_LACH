@@ -233,25 +233,55 @@ public class PrzejazdController {
 		
 		for(Kurs kurs : kursRepository.findAll()) {
 			
+			var data = przejazdRepository.findAllByKurs(kurs);
+			
+			
 			List<Date> datesForKurs = przejazdService.findAllDatesForKurs(kurs, 30);
 			
 			Date godzinna_startu = kurs.getKierunek() == 0 ? 
 					kurs.getKursPrzystanekWlinii().get(0).getGodzinna() : 
 					kurs.getKursPrzystanekWlinii().get(0).getGodzinna();
 			
+			
+			
+			var datesInvalid = data.stream().map((przejazd) -> przejazd.getData()).toList();
+			
+			
+			if(kurs.getLinia().getNumer().equals("G124")) {
+				System.out.println(kurs.getLinia().getNumer() + data.stream().map((przejazd) -> przejazd.getData()).toList());
+				System.out.println(datesForKurs);
+			}
+			
 			List<PrzejazdDtoOutput> a = datesForKurs.stream()
+					.filter((dataIn) -> {
+						
+						for(Date invalid : datesInvalid) {
+							
+							if(invalid.getYear() == dataIn.getYear()) {
+								if(invalid.getMonth() == dataIn.getMonth()) {
+									if(invalid.getDay() == dataIn.getDay()) {
+										return false;
+									}
+								}
+							}
+							
+						}
+						
+						
+						return true;
+					})
 					.filter((item) -> {
 						Calendar c = Calendar.getInstance();
 						c.setTime(godzinna_startu);
 						
 						Date startWithFulLDate = DateHelper.copyTimeComponents(godzinna_startu, item);
-						System.out.println(new Date());
-						System.out.println(startWithFulLDate);
+						//System.out.println(new Date());
+						//System.out.println(startWithFulLDate);
 						
 						return startWithFulLDate.after(new Date());
 						
-						
 					} )
+					
 					
 					
 					.map((date) -> new PrzejazdDtoOutput(przejazdService.createDetachedPrzejazd(kurs, date), true)).collect(Collectors.toList());

@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect , useState} from 'react';
 import {SERVER_URL} from '../constant';
 import { Link } from "react-router-dom";
-import { useHistory } from 'react-router-dom';
+import { useHistory, useNavigate } from 'react-router-dom';
 
 
 function extractLastPathComponent(url) {
@@ -102,7 +102,7 @@ function DayTime(dateTimeStr) {
 const PlannedCourseInfo = () => {
 	const [courseData, setCourseData] = useState([]);
     const [savedMessage, setSavedMessage] = useState("");
-
+    const history = useNavigate();
     //Trza zmienić API
 	const getCourseData = async () => {
 
@@ -138,7 +138,7 @@ const PlannedCourseInfo = () => {
                     throw new Error("Failed to delete planned course");
                 }
                 setTimeout(() => {
-                    window.location.href = '/planned_course';
+                    history('/planned_course');
                 }, 100);
 
             } catch (error) {

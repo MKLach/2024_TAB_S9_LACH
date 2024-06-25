@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect , useState} from 'react';
 import {SERVER_URL} from '../constant';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 function extractLastPathComponent(url) {
@@ -25,7 +25,7 @@ const BusStopInfo = () => {
 	});
     const [savedMessage, setSavedMessage] = useState("");
     const [availableStops, setAvailableStops] = useState([]);
-
+	const history = useNavigate();
     const saveChanges = async () => {
         try {
             const response = await fetch(SERVER_URL + "/api/przystanek/" + stopData.przystanekId, {
@@ -102,7 +102,7 @@ const BusStopInfo = () => {
                     throw new Error("Failed to delete bus stop");
                 }
                 setTimeout(() => {
-                    window.location.href = '/bus_stop';
+                    history('/bus_stop');
                 }, 100);
 
             } catch (error) {

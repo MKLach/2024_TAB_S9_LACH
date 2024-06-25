@@ -1,0 +1,41 @@
+name: mklachl-sopkom
+   
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "HjklQwerty9876"
+    volumes:
+      - db:/var/opt/mssql
+      - ./_db/sql:/tmp/sql
+    command: /bin/bash -c '/opt/mssql/bin/sqlservr & sleep 30 & /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P HjklQwerty9876 -i /tmp/sql/create-database.sql & /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P HjklQwerty9876 -i /tmp/sql/init-database.sql & wait'
+    ports:
+      - "1533:1433"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P HjklQwerty9876 -Q 'select 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  java-backend:
+    build:
+      context: ./SOPKoM_Backend
+      dockerfile: Dockerfile
+    depends_on:
+      mssql:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+      - "60053:60053"
+   
+  react-frontend:
+    build:
+      context: ./sopkom_frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+
+volumes:
+  db:
+    driver: local

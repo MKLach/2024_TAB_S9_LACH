@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SERVER_URL } from './components/constant';
+import { SERVER_URL , setServerUrl} from './components/constant';
 import './App.css';
 import DriverList from './components/driver/DriverList';
 import DriverAdd from './components/driver/DriverAdd';
@@ -32,22 +32,28 @@ import Dashboard from './components/Dashboard';
 import UserPage from './components/UserPage';
 import Footer from './components/Footer';
 import Home from './components/Home';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {  BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
   const [userRole, setUserRole] = useState('ROLE_USER');
-
+  
   const getUser = async () => {
+	  //SERVER_URL = window.location.hostname+":8080";
+	  setServerUrl("http://"+window.location.hostname+":8080");
+	  console.log(SERVER_URL);
     try {
       const response = await fetch(
+		  
         SERVER_URL + '/user',
         { method: 'GET', redirect: "follow", credentials: 'include', origin:"*" }
       );
+      console.log("a "+response.url);
       if (response.redirected) {
-        console.log(response.url);
+        console.log("a "+response.url);
         document.location = response.url;
         return;
       }
+      
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }

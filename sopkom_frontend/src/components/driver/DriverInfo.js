@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect , useState} from 'react';
 import {SERVER_URL} from '../constant';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useHistory } from 'react-router-dom';
 
 
@@ -23,7 +23,7 @@ function extractLastPathComponent(url) {
 const DriverInfo = () => {
 	const [driverData, setDriverData] = useState([]);
     const [savedMessage, setSavedMessage] = useState("");
-
+    const history = useNavigate();
     const saveChanges = async () => {
         try {
             const response = await fetch(SERVER_URL + "/api/kierowca/" + driverData.kierowcaId, {
@@ -84,7 +84,7 @@ const DriverInfo = () => {
                     throw new Error("Failed to delete driver");
                 }
                 setTimeout(() => {
-                    window.location.href = '/driver';
+                   history('/driver');
                 }, 100);
 
             } catch (error) {

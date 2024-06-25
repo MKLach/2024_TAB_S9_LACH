@@ -15,6 +15,7 @@ public class LoggingFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         System.out.printf("Handling incoming request: %s, %s\n", request.getRequestURI(), request.getMethod());
+        request.getParameterNames().asIterator().forEachRemaining(System.out::println);
         try {
         	filterChain.doFilter(request, response);
         } catch (Exception e) {

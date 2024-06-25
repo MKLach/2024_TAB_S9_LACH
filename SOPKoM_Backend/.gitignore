@@ -17,8 +17,6 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-plibs/
-src/main/java/com/mklachl/sopkom/experimental/
 
 raporty/
 BusHandlingServer/

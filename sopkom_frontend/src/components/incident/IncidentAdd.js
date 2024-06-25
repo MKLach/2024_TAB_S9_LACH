@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SERVER_URL } from '../constant';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function extractLastPathComponent(url) {
     let index = 0;
@@ -42,7 +42,7 @@ const IncidentAdd = () => {
   const [lineData, setLineData] = useState([]);
   const [busData, setBusData] = useState([]);
   const [savedMessage, setSavedMessage] = useState("");
-
+  const history = useNavigate();
   const getDriverData = async () => {
     try {
       const response = await fetch(SERVER_URL + "/api/kierowca/", {method: "GET", credentials: "include"});
@@ -100,7 +100,7 @@ const IncidentAdd = () => {
       }
 
       setTimeout(() => {
-        window.location.href = '/incident';
+        history('/incident');
       }, 200);
 
       setSavedMessage("Dodano incydent");
@@ -195,7 +195,7 @@ const IncidentAdd = () => {
                   </select>
                 </td>
               </tr>
-              <tr>
+              {false && <tr>
                 <th>Przejazd:</th>
                 <td>
                   <select
@@ -213,7 +213,7 @@ const IncidentAdd = () => {
                     ))}
                   </select>
                 </td>
-              </tr>
+              </tr>}
               <tr>
                 <th>Dodatkowe informacje:</th>
                 <td><textarea className="textAreaInput" required name="dodatkoweInformacje" value={formData.dodatkoweInformacje || ''} onChange={handleInputChange} /></td>

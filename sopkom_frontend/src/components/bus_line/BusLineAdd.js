@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SERVER_URL } from '../constant';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const BusLineAdd = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +12,8 @@ const BusLineAdd = () => {
   const [showInfo, setShowInfo] = useState(false);
   const [savedMessage, setSavedMessage] = useState("");
   const [busStops, setBusStops] = useState([]);
+  const history = useNavigate();
+  
 
   useEffect(() => {
     fetchBusStops();
@@ -47,7 +49,7 @@ const BusLineAdd = () => {
       }
 
       setTimeout(() => {
-        window.location.href = '/bus_line';
+        history('/bus_line');
       }, 100);
 
       setSavedMessage("Dodano przystanek");

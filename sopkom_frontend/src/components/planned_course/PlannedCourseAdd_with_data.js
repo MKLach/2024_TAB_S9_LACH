@@ -16,7 +16,7 @@ const PlannedCourseAdd_with_data = () => {
   const [busData, setBusData] = useState([]);
   const [savedMessage, setSavedMessage] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
- 
+  const history = useNavigate();
   
   const [coursesDataDates, setCouresDataDates] = useState([
 	  "dd.MM.yyyy"
@@ -45,7 +45,7 @@ const PlannedCourseAdd_with_data = () => {
       setSavedMessage("Dodano kurs");
 
 	  setTimeout(() => {
-        window.location.href = '/planned_course';
+        history('/planned_course');
       }, 100);
 
     } catch (error) {
@@ -134,7 +134,7 @@ const PlannedCourseAdd_with_data = () => {
 				
 		//console.log(searchParams.get("data"));
 		setTimeout(() => {
-        	window.location.href = '/planned_course_to_plan';
+        	history('/planned_course_to_plan');
       	}, 100);
 				
 	  } else{

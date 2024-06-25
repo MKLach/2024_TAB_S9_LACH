@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { SERVER_URL } from '../constant';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const DriverAdd = () => {
   const [formData, setFormData] = useState({
@@ -9,7 +9,7 @@ const DriverAdd = () => {
     nazwisko: "",
     pesel: "",
   });
-
+  const history = useNavigate();
   const [savedMessage, setSavedMessage] = useState("");
 
   const handleSubmit = async () => {
@@ -27,7 +27,7 @@ const DriverAdd = () => {
       }
 
       setTimeout(() => {
-        window.location.href = '/driver';
+        history('/driver');
       }, 100);
 
       setSavedMessage("Dodano kierowcę");

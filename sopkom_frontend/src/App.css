@@ -189,6 +189,13 @@ hover:route{
     text-align: right;
 }
 
+.addWhat2 {
+    padding: 8px;
+    width: 300px;
+    text-align: center;
+}
+
+
 .addInput {
     text-align: center;
     width: 250px;

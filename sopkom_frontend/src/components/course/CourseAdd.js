@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SERVER_URL } from '../constant';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const CourseAdd = () => {
   const [lineData, setLineData] = useState([]);
@@ -18,6 +18,8 @@ const CourseAdd = () => {
     //przystanki: [{}]
     przystanki: [{ przystanekWLini: {nazwa: "", przystanekId: "", kolejnosc: 0 }, godzinna: "" }]
   });
+
+   const history = useNavigate();
 
   const getLineData = async () => {
     try {
@@ -153,7 +155,7 @@ const CourseAdd = () => {
        setSavedMessage("Dodano!");
   
       setTimeout(() => {
-        window.location.href = '/course/?linia_id='+formData.liniaId;
+        history('/course/?linia_id='+formData.liniaId);
       }, 100);
      
        

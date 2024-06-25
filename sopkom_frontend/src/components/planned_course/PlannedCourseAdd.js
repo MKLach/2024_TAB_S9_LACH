@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SERVER_URL } from '../constant';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 const PlannedCourseAdd = () => {
@@ -15,7 +15,7 @@ const PlannedCourseAdd = () => {
   const [driverData, setDriverData] = useState([]);
   const [busData, setBusData] = useState([]);
   const [savedMessage, setSavedMessage] = useState("");
-  
+  const history = useNavigate();
   const [coursesDataDates, setCouresDataDates] = useState([
 	  "dd.MM.yyyy"
   ]);
@@ -43,7 +43,7 @@ const PlannedCourseAdd = () => {
       setSavedMessage("Dodano kurs");
 
 	  setTimeout(() => {
-        window.location.href = '/planned_course';
+        history('/planned_course');
       }, 100);
 
     } catch (error) {

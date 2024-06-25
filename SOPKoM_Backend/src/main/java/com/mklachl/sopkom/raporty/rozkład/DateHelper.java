@@ -1,11 +1,14 @@
 package com.mklachl.sopkom.raporty.rozkład;
 
 import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -221,7 +224,7 @@ public class DateHelper {
 	public static List<Date> getAllDatesForHarmonogram(Harmonogram harm, int max){
 		
 		List<Date> lista = new ArrayList<>();
-		
+	
 		
 		for(Date date = new Date(); lista.size() < max; date = addDays(date, 1)) {
 			
